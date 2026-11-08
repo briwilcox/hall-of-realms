@@ -2487,7 +2487,11 @@ function shareLink(b) {
   const str = stateHash(), url = location.href.split("#")[0] + (str ? "#" + str : "");
   const say = t => { const o = b.textContent; b.textContent = t; srEl.textContent = t; setTimeout(() => { b.textContent = o; }, 1800); };
   if (coarse && navigator.share) { navigator.share({ title: document.title, url }).catch(() => {}); return; }
-  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(() => say("Link copied"), () => say("Link is in the address bar"));
+  // The older copy command still works in some browsers that refuse the clipboard API, so it goes first.
+  const ta = document.createElement("textarea"); ta.value = url; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+  document.body.appendChild(ta); ta.select(); let ok = false; try { ok = document.execCommand("copy"); } catch (e) {} ta.remove(); b.focus({ preventScroll: true });
+  if (ok) say("Link copied");
+  else if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(() => say("Link copied"), () => say("Link is in the address bar"));
   else say("Link is in the address bar");
 }
 
