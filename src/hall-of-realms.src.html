@@ -9,7 +9,7 @@
 :root{
   --paper:#f5f3ef; --sheet:#ffffff; --ink:#1c1a17; --ink-2:#4a4540; --ink-3:#7a7369;
   --rule:#e2ddd6; --rule-2:#f0ede8; --band:#f0ede8; --accent:#c2520a; --accent-2:#9a4108; --cursor:#b3261e;
-  --plaque:#1c1a17; --plaque-ink:#f5f3ef;
+  --plaque:#ffffff; --plaque-ink:#1c1a17;
   --sea:#e4e0d8; --land:#f3f0ea; --unk:#d3cdc3;
   --f-IE:#2a78d6; --f-AA:#eb6834; --f-TM:#1baf7a; --f-NC:#eda100; --f-AU:#e87ba4; --f-AM:#008300; --f-DR:#6250d6; --f-ST:#e34948; --f-OT:#8a9396;
   --display:"Playfair Display", Georgia, serif;
@@ -56,7 +56,7 @@ h1{font-family:var(--display);font-weight:400;font-size:clamp(38px,6vw,76px);let
 .visit h2{font-family:var(--body);font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.2em;color:var(--accent);margin:0 0 6px}
 .visit ul{margin:0;padding:0 0 0 1.1em;font-family:var(--prose);font-size:15px;line-height:1.5;color:var(--ink-2);display:grid;gap:2px}
 @media (max-width:900px){.walltext{grid-template-columns:minmax(0,1fr)}}
-.directory{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:10px 12px;background:var(--plaque);color:var(--plaque-ink);border-radius:2px}
+.directory{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:10px 12px;background:var(--plaque);color:var(--plaque-ink);border:1px solid var(--rule);border-radius:2px}
 .directory .group-label{color:color-mix(in srgb,var(--plaque-ink) 65%,transparent)}
 .directory button{background:transparent;color:var(--plaque-ink);border-color:color-mix(in srgb,var(--plaque-ink) 30%,transparent)}
 .directory button:hover{border-color:var(--plaque-ink)}
@@ -122,7 +122,13 @@ html.has-entry #entrypane{display:block}
 #map{display:block;width:100%;touch-action:none;cursor:grab;border-radius:1px}
 #map.dragging{cursor:grabbing}
 .mapbar{display:flex;gap:8px;align-items:center}
-.mapbar input[type=range]{flex:1;min-width:0;accent-color:var(--accent)}
+.mapbar input[type=range]{flex:1;min-width:0;-webkit-appearance:none;appearance:none;height:26px;margin:0;background:transparent;accent-color:var(--accent);--p:100%}
+.mapbar input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:linear-gradient(var(--accent),var(--accent)) 0 0/var(--p) 100% no-repeat,var(--rule)}
+.mapbar input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:22px;margin-top:-9px;border-radius:2px;background:var(--accent);border:2px solid var(--sheet);box-shadow:0 0 0 1px var(--accent)}
+.mapbar input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:var(--rule)}
+.mapbar input[type=range]::-moz-range-progress{height:4px;border-radius:2px;background:var(--accent)}
+.mapbar input[type=range]::-moz-range-thumb{width:8px;height:18px;border-radius:2px;background:var(--accent);border:2px solid var(--sheet);box-shadow:0 0 0 1px var(--accent)}
+.mapbar input[type=range]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .mapbar .yr{font-family:var(--mono);font-size:12px;min-width:9ch;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-2)}
 .maplegend{font-size:11.5px;color:var(--ink-3)}
 .mapcard.big{position:fixed;z-index:40;top:max(14px,env(safe-area-inset-top,0px));bottom:max(14px,env(safe-area-inset-bottom,0px));left:max(14px,env(safe-area-inset-left,0px));right:max(14px,env(safe-area-inset-right,0px));
@@ -168,7 +174,7 @@ body.mapbig aside{z-index:50}
 .xs-region li i{width:9px;height:9px;border-radius:1px;flex:none}
 .xs-region li span{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
 .xs-region .cult{font-family:var(--prose);font-size:13px;color:var(--ink-3);font-style:italic;margin-top:3px}
-.tip{position:fixed;pointer-events:none;z-index:60;background:var(--plaque);color:var(--plaque-ink);padding:7px 10px;border-radius:2px;font-size:12.5px;max-width:290px;box-shadow:0 6px 18px rgba(0,0,0,.22)}
+.tip{position:fixed;pointer-events:none;z-index:60;background:var(--plaque);color:var(--plaque-ink);border:1px solid var(--rule);padding:7px 10px;border-radius:2px;font-size:12.5px;max-width:290px;box-shadow:0 6px 18px rgba(0,0,0,.22)}
 .tip b{font-family:var(--display);font-weight:400;font-size:15px;letter-spacing:.03em;display:block}
 .tip span{font-family:var(--mono);font-size:11.5px;opacity:.82;display:block}
 .tip:not([hidden]){animation:tipin .12s ease-out}
@@ -215,7 +221,7 @@ footer a{color:var(--accent)}
 [data-skin="retro"] .walltext{background:var(--sheet);box-shadow:var(--in);padding:14px}
 [data-skin="retro"] .lede{font-size:17px}
 [data-skin="retro"] .lede::first-letter{font-family:var(--display);font-weight:700;color:var(--accent)}
-[data-skin="retro"] .directory{background:var(--chrome);border-radius:0;box-shadow:var(--in);padding:8px}
+[data-skin="retro"] .directory{background:var(--chrome);border-radius:0;border:0;box-shadow:var(--in);padding:8px}
 [data-skin="retro"] .group-label,[data-skin="retro"] .directory .group-label{color:#000;letter-spacing:.04em;text-transform:none;font-size:12px;font-weight:700}
 [data-skin="retro"] button,[data-skin="retro"] .directory button{font-family:var(--body);font-size:12px;color:#000;background:var(--chrome);border:0;border-radius:0;box-shadow:var(--out);padding:5px 10px}
 [data-skin="retro"] button:hover{border:0}
@@ -236,7 +242,9 @@ footer a{color:var(--accent)}
 [data-skin="retro"] .maphead .snap{color:#000}
 [data-skin="retro"] .maphead .snap b{color:var(--accent)}
 [data-skin="retro"] .mapbar .yr,[data-skin="retro"] .maplegend{color:#000}
-[data-skin="retro"] .mapbar input[type=range]{accent-color:var(--accent)}
+[data-skin="retro"] .mapbar input[type=range]::-webkit-slider-runnable-track{border-radius:0;background:#fff;box-shadow:var(--in)}
+[data-skin="retro"] .mapbar input[type=range]::-webkit-slider-thumb{border-radius:0;background:var(--chrome);border:0;box-shadow:var(--out)}
+[data-skin="retro"] .mapbar input[type=range]::-moz-range-thumb{border-radius:0;background:var(--chrome);border:0;box-shadow:var(--out)}
 [data-skin="retro"] .mapcard.big{border:0;border-radius:0;box-shadow:var(--out),0 0 0 100vmax rgba(20,40,44,.55)}
 [data-skin="retro"] #ledger{background:var(--sheet);box-shadow:var(--in);margin:3px}
 [data-skin="retro"] .entry{border-bottom:2px groove #c0c0c0}
@@ -351,28 +359,29 @@ footer a{color:var(--accent)}
 
   .tabbar{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:30;
     padding:3px max(8px, env(safe-area-inset-right,0px)) env(safe-area-inset-bottom,0px) max(8px, env(safe-area-inset-left,0px));
-    background:color-mix(in srgb,var(--sheet) 84%,transparent);-webkit-backdrop-filter:saturate(1.6) blur(18px);backdrop-filter:saturate(1.6) blur(18px);border-top:1px solid var(--rule)}
+    background:var(--sheet);border-top:1px solid var(--rule)}
   .tabbar button{all:unset;display:grid;justify-items:center;align-content:center;gap:2px;min-height:50px;font-family:var(--body);font-size:10.5px;font-weight:600;letter-spacing:.02em;color:var(--ink-3);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color .15s}
   .tabbar svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s cubic-bezier(.2,.8,.2,1)}
   .tabbar button[aria-current="page"]{color:var(--accent)}
   .tabbar button[aria-current="page"] svg{transform:translateY(-1px) scale(1.08)}
   .tabbar button:active svg{transform:scale(.92)}
-  .tabbar button:focus-visible{outline:2px solid var(--accent);outline-offset:-5px;border-radius:10px}
+  .tabbar button:focus-visible{outline:2px solid var(--accent);outline-offset:-5px;border-radius:2px}
 
   .fab{display:flex;position:fixed;z-index:29;left:max(12px, env(safe-area-inset-left,0px));right:max(12px, env(safe-area-inset-right,0px));
     bottom:calc(66px + env(safe-area-inset-bottom,0px));gap:8px;align-items:center;justify-content:flex-end;pointer-events:none}
   .fab > *{pointer-events:auto}
   .fab > :not([hidden]){animation:pop .24s cubic-bezier(.2,.8,.2,1)}
   :root:not([data-view="timeline"]):is([data-view]) .zoomers{display:none}
-  .zoomers{display:flex;flex:none;border-radius:12px;background:var(--sheet);box-shadow:0 6px 20px rgba(0,0,0,.18),0 0 0 1px var(--rule);overflow:hidden}
+  .zoomers{display:flex;flex:none;border:1px solid var(--rule);border-radius:2px;background:var(--sheet);box-shadow:0 2px 10px rgba(0,0,0,.12);overflow:hidden}
   .zoomers button{border:0;border-radius:0;width:48px;height:44px;font-size:21px;line-height:1;background:transparent;color:var(--ink)}
   .zoomers button + button{border-left:1px solid var(--rule)}
-  .chipbtn{display:flex;align-items:center;gap:8px;margin-right:auto;min-height:44px;padding:0 15px;border:0;border-radius:12px;background:var(--plaque);color:var(--plaque-ink);box-shadow:0 6px 20px rgba(0,0,0,.24);font-size:14px}
+  .chipbtn{display:flex;align-items:center;gap:8px;margin-right:auto;min-height:44px;padding:0 14px;border:1px solid var(--rule);border-radius:2px;background:var(--sheet);color:var(--ink);box-shadow:0 2px 10px rgba(0,0,0,.12);font-size:14px}
+  .chipbtn svg{color:var(--accent)}
   .chipbtn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
   .chipbtn b{font-family:var(--mono);font-weight:500}
-  .mini{flex:1 1 auto;min-width:0;display:flex;align-items:stretch;background:var(--sheet);border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.2),0 0 0 1px var(--rule);overflow:hidden}
+  .mini{flex:1 1 auto;min-width:0;display:flex;align-items:stretch;background:var(--sheet);border:1px solid var(--rule);border-radius:2px;box-shadow:0 2px 10px rgba(0,0,0,.12);overflow:hidden}
   .mini-open{all:unset;flex:1;min-width:0;display:flex;gap:11px;align-items:center;padding:8px 6px 8px 12px;cursor:pointer;-webkit-tap-highlight-color:transparent}
-  .mini-open i{width:6px;align-self:stretch;border-radius:3px;flex:none}
+  .mini-open i{width:5px;align-self:stretch;border-radius:1px;flex:none}
   .mini-open span{min-width:0;display:grid}
   .mini-open b{font-family:var(--display);font-size:16px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .mini-open small{font-family:var(--mono);font-size:11px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -383,7 +392,7 @@ footer a{color:var(--accent)}
   html.has-entry .scrim{opacity:1;pointer-events:auto}
   html.has-entry{overflow:hidden}
   #entrypane{display:block;position:fixed;left:0;right:0;bottom:0;z-index:45;max-height:calc(100vh - 56px);max-height:calc(100dvh - env(safe-area-inset-top,0px) - 34px);
-    overflow-y:auto;overscroll-behavior:contain;background:var(--sheet);border-radius:16px 16px 0 0;box-shadow:0 -12px 44px rgba(0,0,0,.3);
+    overflow-y:auto;overscroll-behavior:contain;background:var(--sheet);border-top:1px solid var(--rule);border-radius:6px 6px 0 0;box-shadow:0 -8px 30px rgba(0,0,0,.22);
     padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateY(calc(100% + 48px));visibility:hidden;
     transition:transform .38s cubic-bezier(.2,.86,.24,1),visibility 0s linear .38s}
   html.has-entry #entrypane{transform:none;visibility:visible;transition:transform .38s cubic-bezier(.2,.86,.24,1)}
@@ -1444,6 +1453,22 @@ RAW.trim().split("\n").forEach(line => {
   const [name, s, e, fam, regs, flag, note] = line.split("|");
   ITEMS.push({ id: ITEMS.length, name, s: Math.max(+s, Y0), e: +e, rawS: +s, fam, regs: regs.split(" "), culture: flag === "c", note: note || "", lname: name.toLowerCase(), prev: new Set(), next: new Set() });
 });
+const SHORT_RE = /^(Kingdom|Crown|Empire|Republic|Sultanate|Khanate|Grand Duchy|Grand Principality|Emirate|Viceroyalty|Federal Republic|Duchy|Principality|Tsardom|Caliphate|Confederation|Union|Islamic Emirate|Islamic Republic) of (the )?(.+)$/;
+function shortName(n) { const m = n.match(SHORT_RE); return (m ? m[3] : n).replace(/ \([^)]*\)$/, ""); }
+const GENERIC_RE = / (Empire|Caliphate|Khaganate|Kingdom|Sultanate|Khanate|Dynasty|dynasty|Republic|Confederacy|Confederation|kingdoms|city-states|culture)$/;
+function tinyName(n) { const t = shortName(n).replace(GENERIC_RE, ""); return t.length >= 3 ? t : shortName(n); }
+ITEMS.forEach(it => { it.short = shortName(it.name); it.tiny = tinyName(it.name); });
+// Text widths, cached per font, so labels can try several forms each frame without re-measuring.
+const twCache = new Map();
+function textW(g, t) { const k = g.font + "|" + t; let v = twCache.get(k); if (v === undefined) { v = g.measureText(t).width; twCache.set(k, v); } return v; }
+// The longest start of a name that fits, with an ellipsis; null when fewer than four letters would show.
+function clipText(g, t, max) {
+  if (textW(g, t) <= max) return t;
+  let n = Math.min(t.length - 1, Math.floor(max / (textW(g, t) / t.length)));
+  while (n >= 4 && textW(g, t.slice(0, n).trimEnd() + "…") > max) n--;
+  return n >= 4 ? t.slice(0, n).trimEnd() + "…" : null;
+}
+if (document.fonts) document.fonts.addEventListener("loadingdone", () => twCache.clear());
 document.getElementById("count").textContent = ITEMS.length;
 document.getElementById("yrs").textContent = (NOW - Y0 - (Y0 < 0 && NOW > 0 ? 1 : 0)).toLocaleString("en-US");
 { const byName = new Map(ITEMS.map(i => [i.name, i]));
@@ -1610,17 +1635,21 @@ function drawChart() {
         if (sel || hov) { g.globalAlpha = 1; rr(g, x0 - 1.5, y - 1.5, w + 3, BAR + 3, 4); g.strokeStyle = C.ink; g.lineWidth = sel ? 2 : 1.25; g.stroke(); }
         else if (selected && (selected.prev.has(it) || selected.next.has(it))) { g.globalAlpha = 1; rr(g, x0 - 1, y - 1, w + 2, BAR + 2, 3.5); g.strokeStyle = rgba(C.ink, .5); g.lineWidth = 1; g.stroke(); }
         // labels
+        // Label order: full, short, then shortest name inside the bar; full or short name in the gap after it; then a clipped short name inside.
         g.font = it.culture ? fontCult : fontState;
-        const tw = g.measureText(it.name).width;
-        const vx0 = Math.max(x0, G + 2), vw = Math.min(x0 + w, G + W) - vx0;
+        const vx0 = Math.max(x0, G + 2), vw = Math.min(x0 + w, G + W) - vx0, ty = y + BAR / 2 + .5;
+        const inkIn = it.culture ? C.ink2 : labelInk(col), inkOut = it.culture ? C.ink3 : C.ink2;
         g.globalAlpha = dim ? 0.25 : 1;
-        if (tw + 10 <= vw) {
-          g.fillStyle = it.culture ? C.ink2 : labelInk(col);
-          g.fillText(it.name, vx0 + 5, y + BAR / 2 + .5);
-        } else if (!it.culture || !dim) {
-          const next = lane[k + 1]; const room = (next ? X(next.s) : G + W) - (x0 + w) - 8;
-          if (tw <= room && x0 + w > G && x0 + w + 4 + tw < G + W) { g.fillStyle = it.culture ? C.ink3 : C.ink2; g.fillText(it.name, x0 + w + 4, y + BAR / 2 + .5); }
+        let lbl = null, out = false;
+        if (textW(g, it.name) + 10 <= vw) lbl = it.name;
+        else if (textW(g, it.short) + 10 <= vw) lbl = it.short;
+        else if (textW(g, it.tiny) + 10 <= vw) lbl = it.tiny;
+        else if (!it.culture || !dim) {
+          const next = lane[k + 1]; const room = Math.min((next ? X(next.s) : G + W) - (x0 + w) - 8, G + W - (x0 + w) - 6);
+          if (x0 + w > G) { if (textW(g, it.name) <= room) { lbl = it.name; out = true; } else if (textW(g, it.short) <= room) { lbl = it.short; out = true; } }
+          if (!lbl && vw > 30) lbl = clipText(g, it.short, vw - 9);
         }
+        if (lbl) { g.fillStyle = out ? inkOut : inkIn; g.fillText(lbl, out ? x0 + w + 4 : vx0 + 5, ty); }
         g.globalAlpha = 1;
       });
     });
@@ -2081,6 +2110,7 @@ function mapSync() {
   const yo = document.getElementById("yrOut"); yo.textContent = fy(y);
   const sl = document.getElementById("yr"), sv = Math.round(U(Math.max(Y0, Math.min(NOW, y))) * 1000);
   if (+sl.value !== sv && !yrSliding) sl.value = sv;
+  sl.style.setProperty("--p", sl.value / 10 + "%");
   sl.setAttribute("aria-valuetext", fy(y));
   if (i !== curSnap) { if (curSnap >= 0) startFade(); curSnap = i; mapDirty = true; }
   if (!mapDirty && key === lastMapKey) return;
@@ -2130,23 +2160,26 @@ function drawMap() {
   }
   g.beginPath(); path({ type: "Sphere" }); g.strokeStyle = C.rule; g.lineWidth = 1; g.stroke();
   // labels
-  const minA = bigMap ? 700 : 1800, placed = [];
+  const small = MW < 500, minA = small ? 70 : bigMap ? 700 : 1800, placed = [];
   const cand = [];
   for (const f of feats) { if (famDim(f)) continue; const a = path.area(f); if (a < minA) continue; cand.push([a, f]); }
-  cand.sort((a, b) => b[0] - a[0]);
+  cand.sort((a, b) => (small ? a[1].cult - b[1].cult : 0) || b[0] - a[0]);
   g.textAlign = "center"; g.textBaseline = "middle"; g.lineJoin = "round";
   for (const [a, f] of cand.slice(0, 160)) {
     const c = path.centroid(f); if (!isFinite(c[0])) continue;
-    const fs = Math.max(9, Math.min(bigMap ? 16 : 13, Math.sqrt(a) / 7));
+    const fs = Math.max(small ? 8.5 : 9, Math.min(bigMap ? 16 : 13, Math.sqrt(a) / 7));
     g.font = `${f.cult ? "italic 400" : "600"} ${fs}px ${C.fLabel}`;
-    const tw = g.measureText(f.name).width;
-    if (tw > Math.sqrt(a) * 1.9) continue;
-    const box = [c[0] - tw / 2 - 2, c[1] - fs / 2 - 1, c[0] + tw / 2 + 2, c[1] + fs / 2 + 1];
+    if (f.short === undefined) { f.short = shortName(f.name); f.tiny = tinyName(f.name); }
+    const fit = Math.sqrt(a) * (small ? 5 : 1.9);
+    const name = [f.name, f.short, f.tiny].find(n => textW(g, n) <= fit);
+    if (!name) continue;
+    const tw2 = textW(g, name);
+    const box = [c[0] - tw2 / 2 - 2, c[1] - fs / 2 - 1, c[0] + tw2 / 2 + 2, c[1] + fs / 2 + 1];
     if (box[0] < 2 || box[2] > MW - 2 || box[1] < 2 || box[3] > MH - 2) continue;
     if (placed.some(b => !(box[2] < b[0] || box[0] > b[2] || box[3] < b[1] || box[1] > b[3]))) continue;
     placed.push(box);
-    g.strokeStyle = rgba(C.sheet, 0.85); g.lineWidth = 3; g.strokeText(f.name, c[0], c[1]);
-    g.fillStyle = f.cult ? C.ink2 : C.ink; g.fillText(f.name, c[0], c[1]);
+    g.strokeStyle = rgba(C.sheet, 0.85); g.lineWidth = 3; g.strokeText(name, c[0], c[1]);
+    g.fillStyle = f.cult ? C.ink2 : C.ink; g.fillText(name, c[0], c[1]);
   }
   g.textAlign = "left";
   if (fadeT0) {
@@ -2284,7 +2317,7 @@ const yrIn = document.getElementById("yr");
 const yrFrom = v => Math.max(Y0, Math.min(NOW, Math.round(Uinv(v / 1000))));
 yrIn.addEventListener("pointerdown", () => { yrSliding = true; stopPlay(); });
 addEventListener("pointerup", () => { yrSliding = false; });
-yrIn.addEventListener("input", () => { pinnedYear = yrFrom(+yrIn.value); hoverYear = null; lastPanelKey = ""; renderPanel(); draw(); });
+yrIn.addEventListener("input", () => { yrIn.style.setProperty("--p", yrIn.value / 10 + "%"); pinnedYear = yrFrom(+yrIn.value); hoverYear = null; lastPanelKey = ""; renderPanel(); draw(); });
 yrIn.addEventListener("change", () => { yrSliding = false; mapSync(); });
 let playTimer = null;
 const playBtn = document.getElementById("play");
@@ -2496,7 +2529,7 @@ function shareLink(b) {
 }
 
 // ---- Theme & boot -------------------------------------------------------------
-function retheme() { readColors(); hatch = null; mapHatch = null; draw(); mapDirty = true; mapSync(); if (selected) drawLocator(selected); }
+function retheme() { twCache.clear(); readColors(); hatch = null; mapHatch = null; draw(); mapDirty = true; mapSync(); if (selected) drawLocator(selected); }
 const SKINS = ["light", "dark", "retro"];
 function savedSkin() { try { const site = localStorage.getItem("zth-theme"); return localStorage.getItem("hall-of-realms-skin") || (site === "dark" ? "dark" : "light"); } catch (e) { return "light"; } }
 function setSkin(k, keep = true) {
