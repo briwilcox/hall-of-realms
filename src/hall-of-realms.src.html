@@ -1,0 +1,2025 @@
+<title>Hall of Realms</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: an exhibit hall. Inscribed title and wall text up top; the long case (timeline) on the left with each region as a hall bay; a reading stand at right holding the atlas and the entry for whatever you pick; an encyclopedia index closes the hall. */
+:root{
+  --paper:#e4e6e1; --sheet:#f6f6f2; --ink:#191c1a; --ink-2:#4a504c; --ink-3:#767d78;
+  --rule:#cdd1ca; --rule-2:#e3e6e0; --band:#edefea; --accent:#86601c; --accent-2:#5d4313; --cursor:#9b2c1f;
+  --plaque:#22201b; --plaque-ink:#efe9da;
+  --sea:#d8e0de; --land:#e2e5df; --unk:#c6cbc4;
+  --f-IE:#2a78d6; --f-AA:#eb6834; --f-TM:#1baf7a; --f-NC:#eda100; --f-AU:#e87ba4; --f-AM:#008300; --f-DR:#6250d6; --f-ST:#e34948; --f-OT:#8a9396;
+  --display:"Marcellus SC", "Trajan Pro", "Times New Roman", serif;
+  --prose:"Newsreader", "Iowan Old Style", Georgia, serif;
+  --body:"IBM Plex Sans Condensed", "Arial Narrow", "Helvetica Neue", sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --cv-label:"IBM Plex Sans Condensed", "Arial Narrow", sans-serif; --cv-display:"Marcellus SC", Georgia, serif; --cv-mono:"IBM Plex Mono", monospace;
+}
+:root[data-skin="dark"]{
+    color-scheme:dark;
+    --paper:#0d1210; --sheet:#141a17; --ink:#e8e9e3; --ink-2:#aeb4ad; --ink-3:#7e867f;
+    --rule:#2b332f; --rule-2:#202824; --band:#18201c; --accent:#d2aa5f; --accent-2:#e6c88a; --cursor:#ff8a73;
+    --plaque:#2a261d; --plaque-ink:#efe6cf;
+    --sea:#0d1817; --land:#232b27; --unk:#3a433e;
+    --f-IE:#3987e5; --f-AA:#d95926; --f-TM:#199e70; --f-NC:#c98500; --f-AU:#d55181; --f-AM:#008300; --f-DR:#9085e9; --f-ST:#e66767; --f-OT:#6f797c;
+}
+/* Retro skin: a mid-90s CD-ROM encyclopedia. Teal desktop, silver beveled windows, navy title bars, white reading panes, system fonts. */
+:root[data-skin="retro"]{
+  --paper:#4f7c82; --sheet:#ffffff; --ink:#000000; --ink-2:#1e1e1e; --ink-3:#4d4d4d;
+  --rule:#808080; --rule-2:#c8c8c8; --band:#eef0f6; --accent:#000080; --accent-2:#1084d0; --cursor:#c00000;
+  --plaque:#c0c0c0; --plaque-ink:#000000; --chrome:#c0c0c0;
+  --sea:#8fb4dc; --land:#efe6c4; --unk:#b9b9b9;
+  --display:"Times New Roman", Times, serif; --prose:"Times New Roman", Times, Georgia, serif;
+  --body:Tahoma, Verdana, "MS Sans Serif", Geneva, sans-serif; --mono:"Courier New", Courier, monospace;
+  --cv-label:Tahoma, Verdana, Geneva, sans-serif; --cv-display:"Times New Roman", Times, serif; --cv-mono:"Courier New", Courier, monospace;
+  --out:inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+  --in:inset -1px -1px #ffffff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px #808080;
+  --titlebar:linear-gradient(90deg,#000080,#1084d0);
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.45;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:28px 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.hall{max-width:1600px;margin:0 auto}
+header{display:grid;gap:14px;margin-bottom:18px}
+.overline,.eyebrow{font-family:var(--body);font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.2em;color:var(--accent)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(38px,6vw,76px);letter-spacing:.14em;line-height:1;margin:0;text-wrap:balance}
+.inscription{display:grid;gap:10px;justify-items:start;padding-bottom:14px;border-bottom:1px solid var(--accent);box-shadow:0 4px 0 -3px var(--accent)}
+.facts{display:flex;flex-wrap:wrap;gap:4px 22px;font-family:var(--body);font-size:12.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-2)}
+.facts b{font-family:var(--mono);font-weight:500;letter-spacing:0;color:var(--ink);font-variant-numeric:tabular-nums;margin-right:5px}
+.walltext{display:grid;grid-template-columns:minmax(0,62ch) minmax(0,40ch);gap:12px 48px;align-items:start}
+.lede{margin:0;font-family:var(--prose);font-size:18px;line-height:1.55;color:var(--ink)}
+.lede::first-letter{font-family:var(--display);font-size:3.1em;float:left;line-height:.82;margin:.06em .08em 0 0;color:var(--accent)}
+.visit h2{font-family:var(--body);font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.2em;color:var(--accent);margin:0 0 6px}
+.visit ul{margin:0;padding:0 0 0 1.1em;font-family:var(--prose);font-size:15px;line-height:1.5;color:var(--ink-2);display:grid;gap:2px}
+@media (max-width:900px){.walltext{grid-template-columns:minmax(0,1fr)}}
+.directory{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:10px 12px;background:var(--plaque);color:var(--plaque-ink);border-radius:2px}
+.directory .group-label{color:color-mix(in srgb,var(--plaque-ink) 65%,transparent)}
+.directory button{background:transparent;color:var(--plaque-ink);border-color:color-mix(in srgb,var(--plaque-ink) 30%,transparent)}
+.directory button:hover{border-color:var(--plaque-ink)}
+.directory button[aria-pressed="true"]{background:var(--plaque-ink);color:var(--plaque);border-color:var(--plaque-ink)}
+.directory .search input{background:color-mix(in srgb,var(--plaque-ink) 8%,transparent);color:var(--plaque-ink);border-color:color-mix(in srgb,var(--plaque-ink) 30%,transparent)}
+.directory .search input::placeholder{color:color-mix(in srgb,var(--plaque-ink) 55%,transparent)}
+.directory #matchInfo{color:color-mix(in srgb,var(--plaque-ink) 65%,transparent)}
+.controls{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.group{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.group-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.16em;color:var(--ink-3);margin-right:4px;font-weight:600}
+button,.search input{font:inherit;font-size:13px;color:var(--ink);background:var(--sheet);border:1px solid var(--rule);border-radius:2px;padding:4px 9px;cursor:pointer}
+button:hover{border-color:var(--ink-3)}
+button[aria-pressed="true"]{background:var(--ink);color:var(--sheet);border-color:var(--ink)}
+button:focus-visible,input:focus-visible,canvas:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.search input{cursor:text;width:230px;max-width:60vw}
+.search{display:flex;gap:6px;align-items:center}
+#matchInfo{font-family:var(--mono);font-size:12px;color:var(--ink-3);min-width:6ch}
+.key{display:grid;gap:6px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 8px 3px 6px;font-size:12.5px}
+.chip i{width:12px;height:12px;border-radius:1px;display:inline-block;flex:none}
+.chip.dim{opacity:.4}
+.chip i.hatch{background-image:repeating-linear-gradient(135deg,var(--ink-3) 0 1.5px,transparent 1.5px 4px);border:1px solid var(--ink-3)}
+.legend .note{font-size:12px;color:var(--ink-3)}
+.wrap{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:18px;align-items:start}
+@media (max-width:1250px){.wrap{grid-template-columns:minmax(0,1fr) 370px}}
+.chartbox{background:var(--sheet);border:1px solid var(--rule);border-radius:2px;min-width:0;box-shadow:0 1px 0 var(--rule)}
+.casehead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;padding:10px 12px 8px;border-bottom:1px solid var(--rule)}
+.casehead h2{font-family:var(--display);font-weight:400;font-size:20px;letter-spacing:.08em;margin:0}
+.casehead span{font-size:12px;color:var(--ink-3)}
+.axiswrap{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--sheet);border-bottom:1px solid var(--rule)}
+canvas{display:block;width:100%}
+#axis{height:62px;cursor:ew-resize;touch-action:none}
+#chart{touch-action:pan-y;cursor:grab}
+#chart.dragging{cursor:grabbing}
+.hint{font-size:12px;color:var(--ink-3);padding:6px 10px;border-top:1px solid var(--rule-2)}
+aside{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);max-height:calc(100vh - 24px);overflow:auto;background:var(--sheet);border:1px solid var(--rule);border-radius:2px}
+#ledger{padding:14px 16px 20px}
+.mapcard{position:sticky;top:0;z-index:2;background:var(--sheet);border-bottom:1px solid var(--rule);padding:10px 12px 10px;display:grid;gap:7px}
+.maphead{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.maphead .snap{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);flex:1 1 140px;min-width:0;line-height:1.3}
+.maphead .snap b{color:var(--ink);font-weight:500}
+.maphead button{font-size:12px;padding:3px 8px}
+#map{display:block;width:100%;touch-action:none;cursor:grab;border-radius:1px}
+#map.dragging{cursor:grabbing}
+.mapbar{display:flex;gap:8px;align-items:center}
+.mapbar input[type=range]{flex:1;min-width:0;accent-color:var(--accent)}
+.mapbar .yr{font-family:var(--mono);font-size:12px;min-width:9ch;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.maplegend{font-size:11.5px;color:var(--ink-3)}
+.mapcard.big{position:fixed;z-index:40;top:max(14px,env(safe-area-inset-top,0px));bottom:max(14px,env(safe-area-inset-bottom,0px));left:max(14px,env(safe-area-inset-left,0px));right:max(14px,env(safe-area-inset-right,0px));
+  border:1px solid var(--rule);border-radius:3px;grid-template-rows:auto minmax(0,1fr) auto auto;box-shadow:0 0 0 100vmax rgba(8,12,10,.55),0 20px 60px rgba(0,0,0,.35);padding:14px 16px}
+.mapcard.big #map{height:100%}
+body.mapbig aside{z-index:50}
+.mapcard.big .maphead .snap{font-size:13px}
+/* encyclopedia entry */
+.entry{display:grid;gap:10px;padding-bottom:16px;margin-bottom:16px;border-bottom:3px double var(--rule)}
+.entry .eyebrow{display:flex;justify-content:space-between;gap:8px}
+.entry .eyebrow button{all:unset;cursor:pointer;color:var(--ink-3);font-size:11px;letter-spacing:.12em}
+.entry .eyebrow button:hover{color:var(--ink)}
+.entry h2{font-family:var(--display);font-weight:400;font-size:28px;line-height:1.1;letter-spacing:.04em;margin:0;text-wrap:balance}
+.entry .dek{font-family:var(--prose);font-style:italic;font-size:15px;color:var(--ink-2);margin:-4px 0 0}
+.infobox{border:1px solid var(--rule);background:var(--band);font-size:13px}
+.infobox .loc{display:block;width:100%;height:170px;border-bottom:1px solid var(--rule)}
+.infobox figcaption{font-size:11.5px;color:var(--ink-3);padding:5px 9px;border-bottom:1px solid var(--rule)}
+.infobox table{width:100%;border-collapse:collapse}
+.infobox th{text-align:left;font-weight:600;font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);padding:6px 9px;vertical-align:top;width:34%}
+.infobox td{padding:6px 9px;vertical-align:top}
+.infobox tr+tr th,.infobox tr+tr td{border-top:1px solid var(--rule-2)}
+.infobox td .num{font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums}
+.infobox .sw{display:inline-block;width:10px;height:10px;border-radius:1px;margin-right:6px;vertical-align:-1px}
+.xref{all:unset;cursor:pointer;color:var(--accent);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
+.xref:hover{color:var(--accent-2)}
+.entry .body{font-family:var(--prose);font-size:15.5px;line-height:1.55;margin:0}
+.entry h3{font-size:10.5px;text-transform:uppercase;letter-spacing:.16em;color:var(--ink-3);margin:2px 0 0;font-weight:600}
+.entry .contemps{font-family:var(--prose);font-size:14.5px;line-height:1.6;margin:0}
+.entry .actions{display:flex;gap:6px;flex-wrap:wrap}
+.entry .actions a{font-size:13px;color:var(--ink);border:1px solid var(--rule);border-radius:2px;padding:4px 9px;text-decoration:none;background:var(--sheet)}
+.entry .actions a:hover{border-color:var(--ink-3)}
+/* world in year */
+.xs-head{display:grid;gap:2px;border-bottom:1px solid var(--accent);padding-bottom:8px;margin-bottom:6px}
+.xs-year{font-family:var(--display);font-size:30px;line-height:1.05;letter-spacing:.04em}
+.xs-sum{font-family:var(--prose);font-style:italic;font-size:14px;color:var(--ink-2)}
+.xs-region{margin-top:12px}
+.xs-region h3{font-family:var(--display);font-weight:400;font-size:15px;letter-spacing:.06em;color:var(--ink);margin:0 0 4px;padding-bottom:3px;border-bottom:1px solid var(--rule-2)}
+.xs-region ul{list-style:none;margin:0;padding:0;display:grid;gap:1px}
+.xs-region li button{all:unset;display:flex;gap:7px;align-items:center;cursor:pointer;font-size:13.5px;width:100%;padding:1px 2px;border-radius:1px}
+.xs-region li button:hover,.xs-region li button:focus-visible{background:var(--band)}
+.xs-region li i{width:9px;height:9px;border-radius:1px;flex:none}
+.xs-region li span{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.xs-region .cult{font-family:var(--prose);font-size:13px;color:var(--ink-3);font-style:italic;margin-top:3px}
+.tip{position:fixed;pointer-events:none;z-index:60;background:var(--plaque);color:var(--plaque-ink);padding:7px 10px;border-radius:2px;font-size:12.5px;max-width:290px;box-shadow:0 6px 18px rgba(0,0,0,.22)}
+.tip b{font-family:var(--display);font-weight:400;font-size:15px;letter-spacing:.03em;display:block}
+.tip span{font-family:var(--mono);font-size:11.5px;opacity:.82;display:block}
+/* index */
+.index{margin-top:28px;background:var(--sheet);border:1px solid var(--rule);border-radius:2px;padding:18px 20px 24px}
+.index-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 20px;border-bottom:1px solid var(--accent);padding-bottom:10px;margin-bottom:12px}
+.index-head h2{font-family:var(--display);font-weight:400;font-size:30px;letter-spacing:.1em;margin:0}
+.index-head p{margin:0;font-family:var(--prose);font-style:italic;color:var(--ink-2);font-size:15px}
+.letters{display:flex;flex-wrap:wrap;gap:2px;margin-bottom:12px}
+.letters a{font-family:var(--display);font-size:15px;color:var(--accent);text-decoration:none;padding:2px 6px;border-radius:1px}
+.letters a:hover{background:var(--band)}
+.cols{columns:4 230px;column-gap:28px}
+.cols h3{font-family:var(--display);font-weight:400;font-size:22px;color:var(--accent);margin:10px 0 4px;break-after:avoid;border-bottom:1px solid var(--rule-2)}
+.cols h3:first-child{margin-top:0}
+.cols ul{list-style:none;margin:0;padding:0}
+.cols li{break-inside:avoid}
+.cols li button{all:unset;cursor:pointer;display:flex;gap:8px;align-items:baseline;width:100%;font-family:var(--prose);font-size:14px;line-height:1.45;padding:0 2px}
+.cols li button:hover,.cols li button:focus-visible{background:var(--band)}
+.cols li i{width:8px;height:8px;border-radius:1px;flex:none;transform:translateY(-1px)}
+.cols li em{font-style:italic;color:var(--ink-2)}
+.cols li span{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-3);white-space:nowrap;font-variant-numeric:tabular-nums}
+footer{margin:20px auto 0;font-family:var(--prose);font-size:13.5px;color:var(--ink-3);display:grid;gap:8px}
+footer h2{font-family:var(--body);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.2em;color:var(--accent);margin:0}
+footer p{margin:0;max-width:110ch}
+footer a{color:var(--accent)}
+@media (max-width:900px){
+  .wrap{grid-template-columns:minmax(0,1fr)}
+  aside{position:fixed;left:0;right:0;bottom:0;top:auto;max-height:52vh;border-radius:6px 6px 0 0;z-index:15;
+    padding:0 max(4px, env(safe-area-inset-right,0px)) env(safe-area-inset-bottom,0px) max(4px, env(safe-area-inset-left,0px));box-shadow:0 -6px 20px rgba(0,0,0,.15)}
+  body{padding-bottom:calc(54vh + 20px)}
+  .xs-year{font-size:22px}
+  .entry h2{font-size:23px}
+}
+
+[data-skin="retro"] body{font-size:13px}
+[data-skin="retro"] header{background:var(--chrome);box-shadow:var(--out);padding:3px 3px 12px;gap:10px}
+[data-skin="retro"] header::before{content:"Hall of Realms · Multimedia Atlas of States and Peoples";display:block;background:var(--titlebar);color:#fff;font:700 13px var(--body);padding:4px 8px;letter-spacing:.01em}
+[data-skin="retro"] header > *{margin-inline:9px}
+[data-skin="retro"] header > *:first-child{margin-inline:0}
+[data-skin="retro"] .inscription{background:var(--sheet);box-shadow:var(--in);border:0;padding:16px 14px 12px}
+[data-skin="retro"] h1{font-family:var(--display);font-weight:700;letter-spacing:.005em;color:var(--accent)}
+[data-skin="retro"] .overline,[data-skin="retro"] .eyebrow,[data-skin="retro"] .visit h2{color:var(--accent);letter-spacing:.08em}
+[data-skin="retro"] .facts{letter-spacing:.04em;color:var(--ink)}
+[data-skin="retro"] .walltext{background:var(--sheet);box-shadow:var(--in);padding:14px}
+[data-skin="retro"] .lede{font-size:17px}
+[data-skin="retro"] .lede::first-letter{font-family:var(--display);font-weight:700;color:var(--accent)}
+[data-skin="retro"] .directory{background:var(--chrome);border-radius:0;box-shadow:var(--in);padding:8px}
+[data-skin="retro"] .group-label,[data-skin="retro"] .directory .group-label{color:#000;letter-spacing:.04em;text-transform:none;font-size:12px;font-weight:700}
+[data-skin="retro"] button,[data-skin="retro"] .directory button{font-family:var(--body);font-size:12px;color:#000;background:var(--chrome);border:0;border-radius:0;box-shadow:var(--out);padding:5px 10px}
+[data-skin="retro"] button:hover{border:0}
+[data-skin="retro"] button:active,[data-skin="retro"] button[aria-pressed="true"],[data-skin="retro"] .directory button[aria-pressed="true"]{box-shadow:var(--in);background:#d6d6d6;color:#000}
+[data-skin="retro"] .search input,[data-skin="retro"] .directory .search input{background:#fff;color:#000;border:0;border-radius:0;box-shadow:var(--in);font-family:var(--body);padding:5px 8px}
+[data-skin="retro"] .directory .search input::placeholder{color:#6a6a6a}
+[data-skin="retro"] .directory #matchInfo,[data-skin="retro"] #matchInfo{color:#000}
+[data-skin="retro"] .key{background:var(--sheet);box-shadow:var(--in);padding:8px}
+[data-skin="retro"] .chartbox,[data-skin="retro"] aside,[data-skin="retro"] .index{background:var(--chrome);border:0;border-radius:0;box-shadow:var(--out);padding:3px}
+[data-skin="retro"] .casehead,[data-skin="retro"] .index-head{background:var(--titlebar);border:0;padding:4px 8px;margin:0}
+[data-skin="retro"] .casehead h2,[data-skin="retro"] .index-head h2{font:700 13px var(--body);letter-spacing:.01em;color:#fff}
+[data-skin="retro"] .casehead span,[data-skin="retro"] .index-head p{color:#dfe7ff;font-family:var(--body);font-style:normal;font-size:12px}
+[data-skin="retro"] .axiswrap{background:var(--sheet);border-bottom:1px solid #808080}
+[data-skin="retro"] #chart{box-shadow:none}
+[data-skin="retro"] .hint{background:var(--chrome);color:#000;border-top:0}
+[data-skin="retro"] .mapcard{background:var(--chrome);border-bottom:0;padding:6px}
+[data-skin="retro"] #map{box-shadow:var(--in);padding:2px;background:var(--sheet)}
+[data-skin="retro"] .maphead .snap{color:#000}
+[data-skin="retro"] .maphead .snap b{color:var(--accent)}
+[data-skin="retro"] .mapbar .yr,[data-skin="retro"] .maplegend{color:#000}
+[data-skin="retro"] .mapbar input[type=range]{accent-color:var(--accent)}
+[data-skin="retro"] .mapcard.big{border:0;border-radius:0;box-shadow:var(--out),0 0 0 100vmax rgba(20,40,44,.55)}
+[data-skin="retro"] #ledger{background:var(--sheet);box-shadow:var(--in);margin:3px}
+[data-skin="retro"] .entry{border-bottom:2px groove #c0c0c0}
+[data-skin="retro"] .entry .eyebrow{background:var(--titlebar);color:#fff;padding:4px 8px;margin:-14px -16px 2px;letter-spacing:.02em;text-transform:none;font-size:12px}
+[data-skin="retro"] .entry .eyebrow button{color:#fff;font-family:var(--body);box-shadow:none;background:none;padding:0}
+[data-skin="retro"] .entry h2{font-family:var(--display);font-weight:700;color:var(--accent);letter-spacing:0;font-size:26px}
+[data-skin="retro"] .infobox{background:#ffffe8;border:0;box-shadow:var(--in);padding:2px}
+[data-skin="retro"] .infobox th{color:#000;letter-spacing:.02em;text-transform:none;font-size:12px}
+[data-skin="retro"] .infobox figcaption{color:#000;font-style:italic}
+[data-skin="retro"] .xref{color:#0000ee}
+[data-skin="retro"] .xref:hover{color:#c00000}
+[data-skin="retro"] .entry h3{color:var(--accent);letter-spacing:.04em;text-transform:none;font-size:12.5px}
+[data-skin="retro"] .entry .actions a{color:#000;background:var(--chrome);border:0;border-radius:0;box-shadow:var(--out);font-family:var(--body);font-size:12px;padding:5px 10px}
+[data-skin="retro"] .xs-head{border-bottom:2px groove #c0c0c0}
+[data-skin="retro"] .xs-year{font-family:var(--display);font-weight:700;color:var(--accent);letter-spacing:0}
+[data-skin="retro"] .xs-region h3{font-family:var(--display);font-weight:700;letter-spacing:0;font-size:15px}
+[data-skin="retro"] .tip{background:#ffffe1;color:#000;border:1px solid #000;border-radius:0;box-shadow:2px 2px 0 rgba(0,0,0,.35);font-family:var(--body)}
+[data-skin="retro"] .tip b{font-family:var(--body);font-weight:700;font-size:12.5px}
+[data-skin="retro"] .index{margin-top:24px}
+[data-skin="retro"] .index > :not(.index-head){background:var(--sheet);margin:0;padding:12px 14px}
+[data-skin="retro"] .letters{box-shadow:var(--in)}
+[data-skin="retro"] .letters a{color:#0000ee;font-family:var(--body);font-weight:700}
+[data-skin="retro"] .cols{box-shadow:var(--in)}
+[data-skin="retro"] .cols h3{font-family:var(--display);font-weight:700;color:var(--accent)}
+[data-skin="retro"] footer,[data-skin="retro"] footer h2{color:#ffffff}
+[data-skin="retro"] footer{font-family:var(--body);font-size:12.5px}
+[data-skin="retro"] footer a{color:#ffff9e}
+[data-skin="retro"] aside::-webkit-scrollbar{width:16px}
+[data-skin="retro"] aside::-webkit-scrollbar-track{background:#dcdcdc}
+[data-skin="retro"] aside::-webkit-scrollbar-thumb{background:#c0c0c0;box-shadow:var(--out)}
+[data-skin="retro"] :focus-visible{outline:1px dotted #000;outline-offset:-4px}
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="hall">
+<header>
+  <div class="inscription">
+    <span class="overline">An atlas of states and peoples · 3100 BCE to 2026</span>
+    <h1>Hall of Realms</h1>
+    <div class="facts"><span><b id="count"></b>entries</span><span><b>12</b>halls</span><span><b>49</b>border maps</span><span><b>5,126</b>years</span></div>
+  </div>
+  <div class="walltext">
+    <p class="lede">The atlas sets five thousand years of states and peoples side by side. Each region of the world gets a hall, and each row in a hall follows one line of succession. A bar's color shows the language its rulers spoke. Choosing a year redraws the borders on the map at right and lists everything standing then; selecting anything opens its encyclopedia entry.</p>
+    <div class="visit"><h2>Using the exhibit</h2><ul>
+      <li>Hovering over the timeline shows the world in that year, and a click on empty space pins it.</li>
+      <li>A click on a bar, a territory or an index entry opens its article.</li>
+      <li>Dragging pans the timeline. Pinching, or scrolling over the time axis, zooms it.</li>
+      <li>Dragging the globe turns it, and Play runs the borders forward through time.</li>
+    </ul></div>
+  </div>
+  <div class="directory controls">
+    <div class="search"><input id="q" type="search" placeholder="Search: Maurya, Inca, Song…" aria-label="Find a state or culture"><span id="matchInfo"></span></div>
+    <div class="group" id="eras" role="group" aria-label="Jump to an era"><span class="group-label">Era</span></div>
+    <div class="group" role="group" aria-label="Time scale"><span class="group-label">Scale</span>
+      <button id="mDeep" aria-pressed="true" title="More room for recent centuries">Deep time</button>
+      <button id="mEven" aria-pressed="false" title="Every century the same width">Even</button>
+    </div>
+    <div class="group" role="group" aria-label="Theme"><span class="group-label">Theme</span><button type="button" data-skin="light" aria-pressed="false">Light</button><button type="button" data-skin="dark" aria-pressed="false">Dark</button><button type="button" data-skin="retro" aria-pressed="true" title="Mid-90s CD-ROM encyclopedia look">Retro</button></div>
+    <div class="group" role="group" aria-label="Zoom"><span class="group-label">Zoom</span><button id="zIn" aria-label="Zoom in">+</button><button id="zOut" aria-label="Zoom out">−</button></div>
+  </div>
+  <div class="key"><span class="group-label">Key · language family of the ruling group (click to isolate)</span>
+  <div class="legend" id="legend" role="group" aria-label="Language families"></div></div>
+</header>
+
+<div class="wrap">
+  <div class="chartbox">
+    <div class="casehead"><h2>Timeline of the Halls</h2><span>Each row follows one line of succession; the dotted line marks 1 CE.</span></div>
+    <div class="axiswrap"><canvas id="axis" aria-label="Time axis and overview. Scroll or drag to change the visible years."></canvas></div>
+    <canvas id="chart" tabindex="0" aria-label="World history timeline. Arrow keys pan, plus and minus zoom."></canvas>
+    <div class="hint">A click on a bar opens its article, and a click on empty space pins the year (Esc releases it). On a trackpad, pinching zooms and a sideways swipe pans.</div>
+  </div>
+  <aside id="panel">
+    <section class="mapcard" id="mapcard" aria-label="Map of the chosen year">
+      <div class="maphead">
+        <span class="snap" id="snapLabel"></span>
+        <div class="group" role="group" aria-label="Map style"><button id="vFlat" type="button" aria-pressed="true">Map</button><button id="vGlobe" type="button" aria-pressed="false">Globe</button></div>
+        <button id="vBig" type="button" aria-pressed="false" title="Enlarge the map">Enlarge</button>
+      </div>
+      <canvas id="map" aria-label="Map of states and cultures in the chosen year. Drag to rotate the globe; scroll to zoom."></canvas>
+      <div class="mapbar"><button id="play" type="button">Play</button><input id="yr" type="range" min="-3100" max="2026" step="1" value="2026" aria-label="Year"><span class="yr" id="yrOut"></span></div>
+      <div class="maplegend">Hovering over a territory shows its name, and a click finds it on the timeline. Scrolling zooms the map; dragging turns the globe.</div>
+    </section>
+    <div id="ledger" aria-live="polite"></div>
+  </aside>
+</div>
+<section class="index" aria-labelledby="idxTitle">
+  <div class="index-head"><h2 id="idxTitle">Index</h2><p>Every entry in the exhibit, alphabetical by its proper name.</p></div>
+  <nav class="letters" id="letters" aria-label="Index letters"></nav>
+  <div class="cols" id="indexCols"></div>
+</section>
+<footer>
+  <h2>Sources and notes</h2>
+  <p>Dates are conventional ranges from standard reference chronologies. Early dates are approximate, and many polities began and ended gradually. A state that ruled across several regions appears in each of their halls. Color follows the ruling group's language (the Mughals count as Turkic, the Qing as Tungusic), so it records who governed; the people living there may have spoken another language entirely. Predecessors and successors come from a curated list of successions covering inheritance, partition, independence and conquest. Each article pairs a short curator's note with facts drawn from the data.</p>
+  <p>Map borders come from <a href="https://github.com/aourednik/historical-basemaps">historical-basemaps</a> by André Ourednik (GPL-3.0): 48 snapshots from 3000 BCE to 2010, simplified for this page. Present-day borders come from Natural Earth (public domain) via world-atlas and show de facto lines as of 2026. The map shows the latest snapshot at or before the chosen year, so between snapshots it lags events. Each territory takes its color from a matching timeline entry or language family; about 1% stays grey as unclassified.</p>
+</footer>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script id="mapdata" type="application/json">/*MAPDATA*/</script>
+<script>
+// ---- Families -------------------------------------------------------------
+const FAMS = [
+  ["IE","Indo-European"],["AA","Afro-Asiatic"],["TM","Turkic, Mongolic & Tungusic"],["NC","Niger-Congo & Nilo-Saharan"],
+  ["AU","Austronesian, Austroasiatic & Tai"],["AM","Indigenous American"],["DR","Dravidian"],["ST","Sino-Tibetan"],
+  ["OT","Other & isolates (Japonic, Koreanic, Uralic, Sumerian…)"]
+];
+const FAMNAME = Object.fromEntries(FAMS);
+const REGIONS = [
+  ["EUR","Europe","Europe"],["NAF","North Africa & the Nile","N. Africa"],["WAF","West & Central Africa","W. Africa"],
+  ["SAF","East & Southern Africa","E/S Africa"],["MEA","Middle East & Iran","Mid. East"],["CAS","Central Asia, Steppe & Siberia","C. Asia"],
+  ["SAS","South Asia","S. Asia"],["EAS","East Asia","E. Asia"],["SEA","Southeast Asia","SE Asia"],["OCE","Oceania","Oceania"],
+  ["NAM","North America & Mesoamerica","N. America"],["SAM","South America","S. America"]
+];
+const NOW = 2026, Y0 = -3100, Y1 = NOW;
+
+// name|start|end|family|regions|c=culture|note
+const RAW = `
+Neolithic farmers of Old Europe|-3100|-2500|OT|EUR|c
+Cycladic culture|-3100|-2000|OT|EUR|c
+Corded Ware cultures|-2900|-2350|IE|EUR|c|Steppe-derived farmers and herders who likely spread Indo-European languages across northern Europe.
+Bell Beaker culture|-2800|-1800|OT|EUR|c
+Únětice culture|-2300|-1600|IE|EUR|c
+Nordic Bronze Age|-1700|-500|IE|EUR|c
+Tumulus culture|-1600|-1200|IE|EUR|c
+Urnfield culture|-1300|-750|IE|EUR|c
+Hallstatt culture|-800|-450|IE|EUR|c
+Celts (La Tène)|-450|-50|IE|EUR|c
+Germanic peoples|-500|500|IE|EUR|c
+Balts|-1000|1250|IE|EUR|c
+Slavs|400|900|IE|EUR|c
+Uralic hunter-fishers (Finns, Sámi)|-3100|1500|OT|EUR|c
+Norse seafarers (Viking Age)|793|1066|IE|EUR|c
+Minoan Crete|-2700|-1450|OT|EUR||Palace societies on Crete writing the undeciphered Linear A.
+Mycenaean Greece|-1600|-1100|IE|EUR||The earliest Greek-speaking states, recorded in Linear B.
+Greek Dark Ages|-1100|-800|IE|EUR|c
+Archaic Greek city-states|-800|-480|IE|EUR
+Classical Greece|-480|-323|IE|EUR
+Macedon|-808|-168|IE|EUR|
+Etruscan city-states|-900|-100|OT|EUR
+Roman Kingdom|-753|-509|IE|EUR
+Roman Republic|-509|-27|IE|EUR NAF MEA
+Roman Empire|-27|395|IE|EUR NAF MEA|Split permanently into western and eastern halves in 395.
+Western Roman Empire|395|476|IE|EUR
+Byzantine Empire|395|1453|IE|EUR MEA|The eastern Roman Empire, ruled from Constantinople until the Ottoman conquest.
+Visigothic Kingdom|418|721|IE|EUR
+Ostrogothic Kingdom|493|553|IE|EUR
+Frankish Kingdom (Merovingian)|481|751|IE|EUR
+Kingdom of the Lombards|568|774|IE|EUR
+Carolingian Empire|751|888|IE|EUR
+Anglo-Saxon kingdoms|500|927|IE|EUR
+Kingdom of England|927|1707|IE|EUR
+Kingdom of Scotland|843|1707|IE|EUR
+Great Britain / United Kingdom|1707|2026|IE|EUR
+West Francia|843|987|IE|EUR
+Kingdom of France|987|1792|IE|EUR
+France|1792|2026|IE|EUR
+Holy Roman Empire|962|1806|IE|EUR
+Kingdom of Prussia|1701|1871|IE|EUR
+Germany|1871|2026|IE|EUR|Unified in 1871; divided into East and West from 1949 to 1990.
+Papal States|754|1870|IE|EUR
+Republic of Venice|697|1797|IE|EUR
+Kingdom of Sicily|1130|1816|IE|EUR
+Kingdom of the Two Sicilies|1816|1861|IE|EUR
+Kingdom of Italy|1861|1946|IE|EUR
+Italy|1946|2026|IE|EUR
+Al-Andalus (Córdoba)|711|1031|AA|EUR|Muslim Iberia under the Umayyad emirate and caliphate of Córdoba.
+Emirate of Granada|1230|1492|AA|EUR
+Kingdom of Asturias–León|718|1230|IE|EUR
+Kingdom of Navarre|824|1620|IE|EUR
+Crown of Aragon|1035|1516|IE|EUR
+Crown of Castile|1065|1516|IE|EUR
+Spain|1516|2026|IE|EUR
+Portugal|1139|2026|IE|EUR
+Swiss Confederacy|1291|2026|IE|EUR
+Dutch Republic|1581|1795|IE|EUR
+Netherlands|1815|2026|IE|EUR
+Kingdom of Denmark|950|1523|IE|EUR
+Denmark–Norway|1523|1814|IE|EUR
+Denmark|1814|2026|IE|EUR
+Kingdom of Norway|872|1397|IE|EUR
+Kalmar Union|1397|1523|IE|EUR
+Kingdom of Sweden|970|1397|IE|EUR
+Sweden|1523|2026|IE|EUR
+Norway|1905|2026|IE|EUR
+Kingdom of Hungary|1000|1918|OT|EUR
+Hungary|1918|2026|OT|EUR
+Finland|1917|2026|OT|EUR
+Great Moravia|833|907|IE|EUR
+Kingdom of Bohemia|1198|1918|IE|EUR
+Kingdom of Poland|1025|1569|IE|EUR
+Grand Duchy of Lithuania|1236|1569|IE|EUR
+Polish–Lithuanian Commonwealth|1569|1795|IE|EUR
+Poland|1918|2026|IE|EUR
+Czechoslovakia|1918|1992|IE|EUR
+Yugoslavia|1918|1992|IE|EUR
+Avar Khaganate|567|822|TM|EUR
+First Bulgarian Empire|681|1018|IE|EUR
+Second Bulgarian Empire|1185|1396|IE|EUR
+Serbian Kingdom & Empire|1217|1459|IE|EUR
+Latin Empire|1204|1261|IE|EUR
+Wallachia|1330|1859|IE|EUR
+Moldavia|1346|1859|IE|EUR
+Romania|1859|2026|IE|EUR
+Greece|1830|2026|IE|EUR
+Kievan Rus'|882|1240|IE|EUR
+Grand Duchy of Moscow|1283|1547|IE|EUR
+Tsardom of Russia|1547|1721|IE|EUR CAS
+Russian Empire|1721|1917|IE|EUR CAS
+Soviet Union|1922|1991|IE|EUR CAS
+Russia|1991|2026|IE|EUR CAS
+Ukraine|1991|2026|IE|EUR
+Crimean Khanate|1441|1783|TM|EUR
+Huns|370|469|OT|EUR CAS|Steppe confederation of uncertain language that reached the Danube under Attila.
+Golden Horde|1242|1502|TM|EUR CAS
+Ottoman Empire|1299|1922|TM|EUR MEA|At its height ruled the Balkans, Anatolia, the Arab lands and North Africa.
+Habsburg Monarchy|1526|1804|IE|EUR
+Austrian Empire|1804|1867|IE|EUR
+Austria-Hungary|1867|1918|IE|EUR
+Austria|1918|2026|IE|EUR
+Ireland|1922|2026|IE|EUR
+Belgium|1830|2026|IE|EUR
+Principality & Kingdom of Serbia|1817|1918|IE|EUR
+Bulgaria|1878|2026|IE|EUR
+Albania|1912|2026|IE|EUR
+Iceland|1944|2026|IE|EUR
+East Germany|1949|1990|IE|EUR
+Lithuania|1990|2026|IE|EUR
+Latvia|1991|2026|IE|EUR
+Estonia|1991|2026|OT|EUR
+Belarus|1991|2026|IE|EUR
+Moldova|1991|2026|IE|EUR
+Slovenia|1991|2026|IE|EUR
+Croatia|1991|2026|IE|EUR
+North Macedonia|1991|2026|IE|EUR
+Bosnia and Herzegovina|1992|2026|IE|EUR
+Serbia and Montenegro|1992|2006|IE|EUR
+Serbia|2006|2026|IE|EUR
+Montenegro|2006|2026|IE|EUR
+Kosovo|2008|2026|IE|EUR|Declared independence from Serbia in 2008; recognition is partial.
+Czech Republic|1993|2026|IE|EUR
+Slovakia|1993|2026|IE|EUR
+
+Saharan pastoralists|-3100|-1000|AA|NAF|c
+Berber pastoralists|-1000|2026|AA|NAF|c
+Early Dynastic Egypt|-3100|-2686|AA|NAF
+Egyptian Old Kingdom|-2686|-2181|AA|NAF|The pyramid age.
+First Intermediate Period|-2181|-2055|AA|NAF
+Egyptian Middle Kingdom|-2055|-1650|AA|NAF
+Second Intermediate Period|-1650|-1550|AA|NAF
+Egyptian New Kingdom|-1550|-1069|AA|NAF|Egypt's imperial peak, from Thutmose III to Ramesses II.
+Third Intermediate Period|-1069|-664|AA|NAF
+Late Period Egypt|-664|-332|AA|NAF
+Ptolemaic Kingdom|-305|-30|IE|NAF|Greek-speaking dynasty founded by a general of Alexander.
+Kerma|-2500|-1500|NC|NAF|Nubian kingdom on the upper Nile, Egypt's main southern rival.
+Kush (Napatan)|-785|-300|NC|NAF|Its kings ruled Egypt as the 25th Dynasty.
+Kush (Meroitic)|-300|350|NC|NAF
+Nobatia|400|700|NC|NAF
+Makuria|450|1312|NC|NAF
+Alodia|500|1504|NC|NAF
+Funj Sultanate|1504|1821|NC|NAF
+Carthage|-814|-146|AA|NAF|Phoenician colony that became a western Mediterranean empire.
+Mauretania|-300|40|AA|NAF
+Numidia|-202|-46|AA|NAF
+Vandal Kingdom|439|534|IE|NAF
+Byzantine Africa & Egypt|534|698|IE|NAF
+Rashidun Caliphate|632|661|AA|NAF MEA
+Umayyad Caliphate|661|750|AA|NAF MEA CAS
+Abbasid Caliphate|750|1258|AA|NAF MEA|Baghdad-centered caliphate; effective power fragmented after about 945.
+Idrisid dynasty|788|974|AA|NAF
+Aghlabid emirate|800|909|AA|NAF
+Fatimid Caliphate|909|1171|AA|NAF MEA
+Almoravids|1040|1147|AA|NAF EUR
+Almohad Caliphate|1121|1269|AA|NAF EUR
+Ayyubid Sultanate|1171|1250|IE|NAF MEA|Founded by Saladin, of Kurdish origin.
+Mamluk Sultanate|1250|1517|TM|NAF MEA|Ruled by enslaved soldiers of Kipchak Turkic and later Circassian origin.
+Hafsid dynasty|1229|1574|AA|NAF
+Zayyanid dynasty|1235|1556|AA|NAF
+Marinid Sultanate|1244|1465|AA|NAF
+Saadi Sultanate|1510|1659|AA|NAF
+Alaouite Morocco|1631|2026|AA|NAF
+Ottoman Egypt|1517|1867|TM|NAF
+Ottoman Maghreb (Algiers, Tunis, Tripoli)|1516|1830|TM|NAF
+Khedivate of Egypt|1867|1914|AA|NAF
+Mahdist State|1885|1898|AA|NAF
+Anglo-Egyptian Sudan|1899|1956|IE|NAF
+French Algeria|1830|1962|IE|NAF
+French Tunisia|1881|1956|IE|NAF
+Italian Libya|1911|1951|IE|NAF
+French Morocco|1912|1956|IE|NAF
+Kingdom of Egypt|1922|1953|AA|NAF
+Egypt|1953|2026|AA|NAF
+Libya|1951|2026|AA|NAF
+Tunisia|1956|2026|AA|NAF
+Sudan|1956|2026|AA|NAF
+Algeria|1962|2026|AA|NAF
+
+Cereal farmers of the Sahel|-3100|2026|NC|WAF|c
+Tropical forest hunter-gatherers|-3100|2026|OT|WAF|c
+Western Bantu farmers|-1000|2026|NC|WAF|c
+Nok culture|-1000|300|NC|WAF|c|Iron-working farmers known for terracotta sculpture.
+Ghana Empire|300|1200|NC|WAF|Soninke empire grown rich on trans-Saharan gold.
+Kanem Empire|700|1380|NC|WAF
+Bornu Empire|1380|1893|NC|WAF
+Tekrur|800|1285|NC|WAF
+Hausa city-states|1000|1808|AA|WAF
+Ife|1000|1420|NC|WAF
+Benin Empire|1180|1897|NC|WAF
+Mali Empire|1235|1600|NC|WAF|Mansa Musa's empire; Timbuktu became a center of learning.
+Jolof Empire|1350|1549|NC|WAF
+Kingdom of Kongo|1390|1914|NC|WAF
+Mossi Kingdoms|1400|1896|NC|WAF
+Songhai Empire|1430|1591|NC|WAF
+Kingdom of Ndongo|1515|1671|NC|WAF
+Luba Kingdom|1585|1889|NC|WAF
+Oyo Empire|1600|1836|NC|WAF
+Kingdom of Dahomey|1600|1904|NC|WAF
+Kuba Kingdom|1625|1884|NC|WAF
+Lunda Empire|1665|1887|NC|WAF
+Ashanti Empire|1701|1901|NC|WAF
+Bambara Empire|1712|1861|NC|WAF
+Sokoto Caliphate|1804|1903|NC|WAF
+Portuguese Angola|1575|1975|IE|WAF
+Sierra Leone Colony|1808|1961|IE|WAF
+Liberia|1847|2026|IE|WAF
+Gold Coast|1867|1957|IE|WAF
+Congo Free State|1885|1908|IE|WAF
+Belgian Congo|1908|1960|IE|WAF
+French West Africa|1895|1958|IE|WAF
+British Nigeria|1900|1960|IE|WAF
+Ghana|1957|2026|NC|WAF
+Nigeria|1960|2026|NC|WAF
+DR Congo|1960|2026|NC|WAF
+Mali|1960|2026|NC|WAF
+Senegal|1960|2026|NC|WAF
+Angola|1975|2026|NC|WAF
+German Kamerun|1884|1916|IE|WAF
+French Equatorial Africa|1910|1958|IE|WAF
+Guinea|1958|2026|NC|WAF
+Cameroon|1960|2026|NC|WAF
+Côte d'Ivoire|1960|2026|NC|WAF
+Burkina Faso|1960|2026|NC|WAF
+Niger|1960|2026|NC|WAF
+Chad|1960|2026|NC|WAF
+Mauritania|1960|2026|AA|WAF
+Togo|1960|2026|NC|WAF
+Benin|1960|2026|NC|WAF
+Gabon|1960|2026|NC|WAF
+Republic of the Congo|1960|2026|NC|WAF
+Central African Republic|1960|2026|NC|WAF
+Sierra Leone|1961|2026|NC|WAF
+Gambia|1965|2026|NC|WAF
+Equatorial Guinea|1968|2026|NC|WAF
+Guinea-Bissau|1973|2026|NC|WAF
+
+Khoisan hunter-gatherers|-3100|2026|OT|SAF|c
+Southern Cushitic herders|-2000|1000|AA|SAF|c
+Eastern Bantu farmers & herders|-500|2026|NC|SAF|c
+Nilotic pastoralists|-500|2026|NC|SAF|c
+D'mt|-980|-400|AA|SAF
+Kingdom of Aksum|100|940|AA|SAF|Red Sea trading power; minted coins and adopted Christianity in the 4th century.
+Zagwe dynasty|900|1270|AA|SAF
+Ethiopian Empire|1270|1974|AA|SAF
+Derg|1974|1991|AA|SAF
+Ethiopia|1991|2026|AA|SAF
+Ifat Sultanate|1285|1415|AA|SAF
+Adal Sultanate|1415|1577|AA|SAF
+Ajuran Sultanate|1300|1700|AA|SAF
+Kilwa Sultanate|957|1513|NC|SAF|Swahili city-state that controlled the gold trade down the coast.
+Mapungubwe|1075|1220|NC|SAF
+Great Zimbabwe|1220|1450|NC|SAF
+Kingdom of Mutapa|1430|1760|NC|SAF
+Rozvi Empire|1660|1866|NC|SAF
+Bunyoro-Kitara|1300|1899|NC|SAF
+Buganda|1400|1966|NC|SAF
+Kingdom of Rwanda|1500|1962|NC|SAF
+Merina Kingdom|1540|1897|AU|SAF|Madagascar's highland kingdom; Malagasy is an Austronesian language.
+Zulu Kingdom|1816|1897|NC|SAF
+Portuguese Mozambique|1498|1975|IE|SAF
+Dutch Cape Colony|1652|1806|IE|SAF
+British Cape Colony|1806|1910|IE|SAF
+Boer republics|1852|1902|IE|SAF
+Sultanate of Zanzibar|1856|1964|AA|SAF
+German East Africa|1885|1919|IE|SAF
+British East Africa|1895|1963|IE|SAF
+Southern Rhodesia|1923|1965|IE|SAF
+Union of South Africa|1910|1961|IE|SAF
+South Africa (apartheid republic)|1961|1994|IE|SAF
+South Africa|1994|2026|NC|SAF
+Somalia|1960|2026|AA|SAF
+Madagascar|1960|2026|AU|SAF
+Uganda|1962|2026|NC|SAF
+Kenya|1963|2026|NC|SAF
+Tanzania|1964|2026|NC|SAF
+Rhodesia|1965|1979|IE|SAF
+Mozambique|1975|2026|NC|SAF
+Zimbabwe|1980|2026|NC|SAF
+Italian Eritrea & Somaliland|1889|1941|IE|SAF
+German South West Africa|1884|1915|IE|SAF
+South West Africa (South African rule)|1915|1990|IE|SAF
+Rwanda|1962|2026|NC|SAF
+Burundi|1962|2026|NC|SAF
+Zambia|1964|2026|NC|SAF
+Malawi|1964|2026|NC|SAF
+Botswana|1966|2026|NC|SAF
+Lesotho|1966|2026|NC|SAF
+Eswatini|1968|2026|NC|SAF
+Djibouti|1977|2026|AA|SAF
+Namibia|1990|2026|NC|SAF
+Eritrea|1993|2026|AA|SAF
+South Sudan|2011|2026|NC|SAF|The world's newest widely recognized country, independent from Sudan in 2011.
+
+Semitic pastoralists|-3100|-1000|AA|MEA|c
+Arab pastoral nomads|-1000|700|AA|MEA|c
+Late Uruk period|-3100|-2900|OT|MEA|Sumerian cities and the first writing.
+Sumerian city-states|-2900|-2334|OT|MEA
+Ebla|-2500|-2250|AA|MEA
+Elam|-2700|-539|OT|MEA
+Akkadian Empire|-2334|-2154|AA|MEA|Sargon's empire, often called the first.
+Gutian period|-2154|-2112|OT|MEA
+Third Dynasty of Ur|-2112|-2004|OT|MEA
+Isin–Larsa period|-2025|-1763|AA|MEA
+Old Assyrian period|-2025|-1378|AA|MEA
+Old Babylonian Empire|-1894|-1595|AA|MEA|Hammurabi's law code dates from here.
+Hittite Old Kingdom|-1650|-1430|IE|MEA
+Hittite New Kingdom|-1430|-1180|IE|MEA
+Mitanni|-1550|-1260|OT|MEA
+Kassite Babylonia|-1595|-1155|OT|MEA
+Middle Assyrian Empire|-1365|-912|AA|MEA
+Phoenician city-states|-1200|-332|AA|MEA
+Phrygia|-1200|-675|IE|MEA
+Lydia|-1200|-546|IE|MEA
+Neo-Hittite states|-1180|-700|IE|MEA
+Kingdom of Saba|-800|275|AA|MEA
+Kingdom of Israel|-930|-720|AA|MEA
+Kingdom of Judah|-930|-587|AA|MEA
+Urartu|-860|-590|OT|MEA
+Neo-Assyrian Empire|-912|-609|AA|MEA
+Median Empire|-678|-549|IE|MEA
+Neo-Babylonian Empire|-626|-539|AA|MEA
+Achaemenid Empire|-550|-330|IE|MEA NAF CAS SAS|Cyrus the Great's Persian empire, from the Aegean to the Indus.
+Seleucid Empire|-312|-63|IE|MEA CAS
+Parthian Empire|-247|224|IE|MEA CAS
+Kingdom of Armenia|-331|428|IE|MEA
+Hasmonean Kingdom|-140|-37|AA|MEA
+Nabataean Kingdom|-168|106|AA|MEA
+Himyarite Kingdom|-110|525|AA|MEA
+Sasanian Empire|224|651|IE|MEA CAS
+Ghassanids|220|638|AA|MEA
+Lakhmids|300|602|AA|MEA
+Bagratid Armenia|885|1045|IE|MEA
+Zaydi Imamate of Yemen|897|1962|AA|MEA
+Buyid dynasty|934|1062|IE|MEA
+Kingdom of Georgia|1008|1490|OT|MEA
+Seljuk Empire|1037|1194|TM|MEA CAS
+Sultanate of Rum|1077|1308|TM|MEA
+Cilician Armenia|1080|1375|IE|MEA
+Crusader states|1098|1291|IE|MEA
+Ilkhanate|1256|1335|TM|MEA
+Qara Qoyunlu|1374|1468|TM|MEA
+Aq Qoyunlu|1378|1503|TM|MEA
+Safavid Iran|1501|1736|TM|MEA|Turkic-speaking dynasty that made Shi'ism Iran's state religion.
+Afsharid Iran|1736|1796|TM|MEA
+Zand dynasty|1751|1794|IE|MEA
+Qajar Iran|1789|1925|TM|MEA
+Pahlavi Iran|1925|1979|IE|MEA
+Iran (Islamic Republic)|1979|2026|IE|MEA
+First Saudi State|1727|1818|AA|MEA
+Emirate of Nejd|1824|1891|AA|MEA
+Oman|1744|2026|AA|MEA
+British & French Mandates|1920|1948|IE|MEA
+Turkey|1923|2026|TM|MEA
+Iraq|1932|2026|AA|MEA
+Saudi Arabia|1932|2026|AA|MEA
+Syria|1946|2024|AA|MEA|Ba'athist rule from 1963 ended when Bashar al-Assad fell in December 2024.
+Syria (post-Assad)|2024|2026|AA|MEA|Transitional government formed after the fall of Assad in December 2024.
+Lebanon|1943|2026|AA|MEA
+Kuwait|1961|2026|AA|MEA
+North Yemen|1962|1990|AA|MEA
+South Yemen|1967|1990|AA|MEA
+Yemen|1990|2026|AA|MEA
+United Arab Emirates|1971|2026|AA|MEA
+Qatar|1971|2026|AA|MEA
+Bahrain|1971|2026|AA|MEA
+Palestinian Authority|1994|2026|AA|MEA
+Armenia|1991|2026|IE|MEA
+Georgia|1991|2026|OT|MEA
+Azerbaijan|1991|2026|TM|MEA
+Jordan|1946|2026|AA|MEA
+Israel|1948|2026|AA|MEA
+
+Yamnaya pastoralists|-3300|-2600|IE|CAS|c|Steppe herders widely linked to early Indo-European speakers.
+Afanasievo culture|-3300|-2500|IE|CAS|c
+Paleo-Siberian hunter-gatherers|-3100|1700|OT|CAS|c
+Oxus civilization (BMAC)|-2300|-1700|OT|CAS
+Sintashta culture|-2100|-1800|IE|CAS|c|Earliest known spoke-wheeled chariots.
+Andronovo culture|-2000|-1150|IE|CAS|c
+Karasuk culture|-1500|-800|OT|CAS|c
+Scythians|-900|-200|IE|CAS EUR|c
+Saka|-800|-100|IE|CAS|c
+Sarmatians|-500|400|IE|CAS EUR|c
+Turkic & Mongolic steppe nomads|-300|1900|TM|CAS|c
+Greco-Bactrian Kingdom|-256|-120|IE|CAS
+Xiongnu|-209|93|TM|CAS EAS|Steppe confederation that forced Han China into tribute.
+Yuezhi|-200|30|IE|CAS
+Tocharian city-states|0|840|IE|CAS
+Xianbei|93|234|TM|CAS
+Rouran Khaganate|330|555|TM|CAS
+Sogdian city-states|400|750|IE|CAS
+Hephthalites|450|560|OT|CAS SAS
+First Turkic Khaganate|552|603|TM|CAS
+Western Turkic Khaganate|603|742|TM|CAS
+Khazar Khaganate|650|969|TM|CAS EUR
+Second Turkic Khaganate|682|744|TM|CAS
+Uyghur Khaganate|744|840|TM|CAS
+Samanid Empire|819|999|IE|CAS
+Kara-Khanid Khanate|840|1212|TM|CAS
+Yenisei Kyrgyz Khaganate|840|1207|TM|CAS
+Khwarazmian Empire|1077|1231|TM|CAS MEA
+Kara Khitai|1124|1218|TM|CAS
+Mongol Empire|1206|1294|TM|CAS EAS MEA EUR|The largest contiguous land empire; it split into four khanates after Kublai.
+Chagatai Khanate|1225|1687|TM|CAS
+Northern Yuan|1368|1635|TM|CAS
+Timurid Empire|1370|1507|TM|CAS MEA
+Kazakh Khanate|1456|1847|TM|CAS
+Khanate of Sibir|1468|1598|TM|CAS
+Khanate of Bukhara|1500|1785|TM|CAS
+Khanate of Khiva|1511|1920|TM|CAS
+Dzungar Khanate|1634|1755|TM|CAS
+Kokand Khanate|1709|1876|TM|CAS
+Emirate of Bukhara|1785|1920|TM|CAS
+Mongolia|1911|2026|TM|CAS
+Kazakhstan|1991|2026|TM|CAS
+Uzbekistan|1991|2026|TM|CAS
+Kyrgyzstan|1991|2026|TM|CAS
+Turkmenistan|1991|2026|TM|CAS
+Tajikistan|1991|2026|IE|CAS
+
+Dravidian-speaking farmers & herders|-3100|-300|DR|SAS|c
+Vedic Indo-Aryans|-1500|-500|IE|SAS|c
+Early Harappan|-3300|-2600|OT|SAS
+Mature Harappan (Indus civilization)|-2600|-1900|OT|SAS|Planned cities with drains and standard weights; its script is undeciphered.
+Late Harappan|-1900|-1300|OT|SAS
+Mahajanapadas|-600|-345|IE|SAS
+Magadha|-684|-345|IE|SAS
+Anuradhapura Kingdom|-437|1017|IE|SAS
+Nanda Empire|-345|-322|IE|SAS
+Maurya Empire|-322|-185|IE|SAS|Ashoka's empire, the first to unite most of the subcontinent.
+Early Cholas|-300|300|DR|SAS
+Early Pandyas|-300|300|DR|SAS
+Cheras|-300|300|DR|SAS
+Shunga Empire|-185|-73|IE|SAS
+Indo-Greek Kingdom|-200|10|IE|SAS
+Indo-Scythians|-150|400|IE|SAS
+Satavahana dynasty|-100|220|IE|SAS
+Kushan Empire|30|375|IE|SAS CAS
+Vakataka dynasty|250|500|IE|SAS
+Pallava dynasty|275|897|DR|SAS
+Gupta Empire|320|550|IE|SAS|Classical age of Sanskrit literature and Indian mathematics.
+Licchavi Nepal|400|750|IE|SAS
+Chalukyas of Badami|543|753|DR|SAS
+Later Pandyas|590|1345|DR|SAS
+Harsha's empire|606|647|IE|SAS
+Gurjara-Pratihara|730|1036|IE|SAS
+Pala Empire|750|1161|IE|SAS
+Rashtrakuta dynasty|753|982|DR|SAS
+Chola Empire|848|1279|DR|SAS|Tamil empire whose navy raided Srivijaya.
+Western Chalukyas|973|1189|DR|SAS
+Ghaznavid Empire|977|1186|TM|SAS CAS
+Polonnaruwa Kingdom|1017|1232|IE|SAS
+Hoysala Empire|1026|1343|DR|SAS
+Kakatiya dynasty|1163|1323|DR|SAS
+Delhi Sultanate|1206|1526|TM|SAS
+Ahom Kingdom|1228|1826|AU|SAS|Tai-speaking kingdom in Assam.
+Vijayanagara Empire|1336|1646|DR|SAS
+Bahmani Sultanate|1347|1527|TM|SAS
+Bengal Sultanate|1352|1576|TM|SAS
+Kingdom of Mysore|1399|1947|DR|SAS
+Kingdom of Kandy|1469|1815|IE|SAS
+Deccan Sultanates|1490|1687|TM|SAS
+Mughal Empire|1526|1857|TM|SAS CAS|Founded by Babur, a Chagatai Turkic prince descended from Timur.
+Sur Empire|1540|1556|IE|SAS
+Maratha Confederacy|1674|1818|IE|SAS
+Durrani Empire|1747|1823|IE|SAS CAS
+Company rule in India|1757|1858|IE|SAS
+Kingdom of Nepal|1768|2008|IE|SAS
+Sikh Empire|1799|1849|IE|SAS
+Emirate of Afghanistan|1823|1926|IE|SAS CAS
+British Raj|1858|1947|IE|SAS
+Kingdom of Afghanistan|1926|1973|IE|SAS CAS
+Afghan republics|1973|1996|IE|SAS CAS|Daoud's republic, the Soviet-backed Democratic Republic, then civil war.
+Islamic Emirate of Afghanistan (first)|1996|2001|IE|SAS CAS
+Islamic Republic of Afghanistan|2001|2021|IE|SAS CAS
+Islamic Emirate of Afghanistan|2021|2026|IE|SAS CAS|Taliban rule restored in August 2021.
+Bhutan|1907|2026|ST|SAS
+India|1947|2026|IE|SAS
+Pakistan|1947|2026|IE|SAS
+Sri Lanka|1948|2026|IE|SAS
+Bangladesh|1971|2026|IE|SAS
+Nepal|2008|2026|IE|SAS
+
+Paleo-Asiatic hunter-gatherers|-3100|-1000|OT|EAS|c
+Longshan culture|-3000|-1900|ST|EAS|c
+Jōmon culture|-3100|-300|OT|EAS|c
+Mumun pottery culture|-1500|-300|OT|EAS|c
+Yayoi culture|-300|250|OT|EAS|c
+Erlitou culture|-1900|-1500|ST|EAS|Possibly the Xia dynasty of later Chinese tradition.
+Shang dynasty|-1600|-1046|ST|EAS|Earliest Chinese writing, on oracle bones.
+Western Zhou|-1046|-771|ST|EAS
+Spring and Autumn period|-770|-476|ST|EAS
+Warring States period|-475|-221|ST|EAS
+Gojoseon|-700|-108|OT|EAS
+Qin dynasty|-221|-206|ST|EAS|First unified Chinese empire.
+Western Han|-202|9|ST|EAS
+Xin dynasty|9|23|ST|EAS
+Eastern Han|25|220|ST|EAS
+Goguryeo|-37|668|OT|EAS
+Baekje|-18|660|OT|EAS
+Silla|-57|935|OT|EAS
+Three Kingdoms (China)|220|280|ST|EAS
+Kofun period|250|538|OT|EAS
+Jin dynasty|266|420|ST|EAS
+Sixteen Kingdoms|304|439|TM|EAS
+Northern Wei|386|535|TM|EAS
+Southern dynasties|420|589|ST|EAS
+Northern dynasties|535|581|TM|EAS
+Asuka period|538|710|OT|EAS
+Sui dynasty|581|618|ST|EAS
+Tang dynasty|618|907|ST|EAS|Cosmopolitan empire that reached into Central Asia.
+Tibetan Empire|618|842|ST|EAS CAS
+Balhae|698|926|TM|EAS
+Nara period|710|794|OT|EAS
+Nanzhao|738|902|ST|EAS
+Heian period|794|1185|OT|EAS
+Five Dynasties & Ten Kingdoms|907|979|ST|EAS
+Liao dynasty (Khitan)|916|1125|TM|EAS
+Goryeo|918|1392|OT|EAS
+Kingdom of Dali|937|1253|ST|EAS
+Northern Song|960|1127|ST|EAS
+Western Xia (Tangut)|1038|1227|ST|EAS
+Jin dynasty (Jurchen)|1115|1234|TM|EAS
+Southern Song|1127|1279|ST|EAS
+Kamakura shogunate|1185|1333|OT|EAS
+Yuan dynasty|1271|1368|TM|EAS|Mongol rule over all of China under Kublai Khan.
+Muromachi shogunate|1336|1573|OT|EAS
+Phagmodrupa Tibet|1354|1618|ST|EAS
+Ming dynasty|1368|1644|ST|EAS
+Joseon|1392|1897|OT|EAS
+Ryukyu Kingdom|1429|1879|OT|EAS
+Azuchi–Momoyama period|1568|1600|OT|EAS
+Tokugawa shogunate|1603|1868|OT|EAS
+Qing dynasty|1636|1912|TM|EAS|Manchu (Tungusic) dynasty; China's largest territorial extent.
+Ganden Phodrang Tibet|1642|1951|ST|EAS
+Empire of Japan|1868|1947|OT|EAS
+Korean Empire|1897|1910|OT|EAS
+Japanese Korea|1910|1945|OT|EAS
+Republic of China|1912|1949|ST|EAS
+Taiwan (Republic of China)|1949|2026|ST|EAS
+People's Republic of China|1949|2026|ST|EAS
+Japan|1947|2026|OT|EAS
+North Korea|1948|2026|OT|EAS
+British Hong Kong|1841|1997|IE|EAS
+Portuguese Macau|1557|1999|IE|EAS
+South Korea|1948|2026|OT|EAS
+
+Hoabinhian hunter-gatherers|-3100|-2000|OT|SEA|c
+Austronesian seafarers|-3000|2026|AU|SEA|c|Spread from Taiwan across island Southeast Asia, then the Pacific and Madagascar.
+Austroasiatic rice farmers|-2500|2026|AU|SEA|c
+Đông Sơn culture|-1000|100|AU|SEA|c
+Văn Lang|-700|-258|AU|SEA
+Âu Lạc|-257|-179|AU|SEA
+Pyu city-states|-200|1050|ST|SEA
+Nanyue|-204|-111|ST|SEA EAS
+Chinese rule of Vietnam|-111|939|ST|SEA
+Funan|68|550|AU|SEA
+Champa|192|1832|AU|SEA
+Chenla|550|802|AU|SEA
+Srivijaya|650|1275|AU|SEA|Malay thalassocracy controlling the Strait of Malacca.
+Medang (Mataram)|732|1016|AU|SEA
+Khmer Empire|802|1431|AU|SEA|Builders of Angkor Wat.
+Pagan Kingdom|849|1297|ST|SEA
+Đại Việt|968|1802|AU|SEA
+Singhasari|1222|1292|AU|SEA
+Sukhothai|1238|1438|AU|SEA
+Hanthawaddy|1287|1539|AU|SEA
+Lan Na|1292|1775|AU|SEA
+Majapahit|1293|1527|AU|SEA
+Ayutthaya Kingdom|1351|1767|AU|SEA
+Lan Xang|1353|1707|AU|SEA
+Ava Kingdom|1364|1555|ST|SEA
+Brunei Sultanate|1368|2026|AU|SEA
+Malacca Sultanate|1400|1511|AU|SEA
+Sulu Sultanate|1405|1915|AU|SEA
+Post-Angkor Cambodia|1431|1863|AU|SEA
+Aceh Sultanate|1496|1903|AU|SEA
+Toungoo Empire|1510|1752|ST|SEA
+Spanish Philippines|1565|1898|IE|SEA
+Mataram Sultanate|1587|1755|AU|SEA
+Dutch East India Company|1602|1799|IE|SEA
+Konbaung dynasty|1752|1885|ST|SEA
+Thonburi Kingdom|1767|1782|AU|SEA
+Siam (Rattanakosin)|1782|1932|AU|SEA
+Dutch East Indies|1800|1949|IE|SEA
+Nguyễn dynasty|1802|1945|AU|SEA
+British Malaya|1874|1957|IE|SEA
+British Burma|1885|1948|IE|SEA
+French Indochina|1887|1954|IE|SEA
+American Philippines|1898|1946|IE|SEA
+Thailand|1932|2026|AU|SEA
+Indonesia|1945|2026|AU|SEA
+Vietnam|1945|2026|AU|SEA
+Philippines|1946|2026|AU|SEA
+Myanmar|1948|2026|ST|SEA
+Cambodia|1953|2026|AU|SEA
+Laos|1953|2026|AU|SEA
+Malaysia|1957|2026|AU|SEA
+Portuguese Timor|1702|1975|IE|SEA
+Singapore|1965|2026|ST|SEA
+Timor-Leste|2002|2026|AU|SEA
+
+Aboriginal Australians|-3100|2026|OT|OCE|c|The world's oldest continuous cultures, over 50,000 years in Australia.
+Papuan farmers of New Guinea|-3100|2026|OT|OCE|c
+Lapita culture|-1600|-500|AU|OCE|c|Ancestors of the Polynesians, settling the western Pacific.
+Polynesian chiefdoms|-500|1800|AU|OCE|c
+Rapa Nui|800|1888|AU|OCE|c
+Tuʻi Tonga Empire|950|1865|AU|OCE
+Hawaiian chiefdoms|1000|1795|AU|OCE
+Saudeleur dynasty|1100|1628|AU|OCE
+Māori iwi|1300|2026|AU|OCE|c
+British Australian colonies|1788|1901|IE|OCE
+Kingdom of Hawaiʻi|1795|1893|AU|OCE
+New Zealand Colony|1841|1907|IE|OCE
+Kingdom of Tonga|1875|2026|AU|OCE
+Australia|1901|2026|IE|OCE
+New Zealand|1907|2026|IE|OCE
+Papua New Guinea|1975|2026|OT|OCE
+Samoa|1962|2026|AU|OCE
+Fiji|1970|2026|AU|OCE
+Solomon Islands|1978|2026|AU|OCE
+Vanuatu|1980|2026|AU|OCE
+
+Archaic hunter-gatherers|-3100|-1000|AM|NAM|c
+Plains bison hunters|-3100|1880|AM|NAM|c
+Arctic marine hunters (Paleo-Inuit, Inuit)|-2500|2026|AM|NAM|c
+Woodland cultures|-1000|1000|AM|NAM|c
+Adena culture|-800|100|AM|NAM|c
+Hopewell tradition|-100|500|AM|NAM|c
+Ancestral Puebloans|-1200|1600|AM|NAM|c
+Hohokam|200|1450|AM|NAM|c
+Mississippian culture|800|1600|AM|NAM|c
+Cahokia|1050|1350|AM|NAM|Largest city north of Mexico before 1800.
+Olmec|-1600|-350|AM|NAM|Mesoamerica's first major civilization.
+Preclassic Maya|-1000|250|AM|NAM
+Zapotec (Monte Albán)|-500|800|AM|NAM
+Teotihuacan|-100|550|AM|NAM
+Classic Maya|250|900|AM|NAM|Hundreds of city-states with a full writing system.
+Postclassic Maya|900|1697|AM|NAM
+Toltec (Tula)|900|1168|AM|NAM
+Mixtec kingdoms|940|1522|AM|NAM
+Taíno chiefdoms|1200|1520|AM|NAM
+Tarascan State|1300|1530|AM|NAM
+Aztec Empire|1428|1521|AM|NAM|The Triple Alliance of Tenochtitlan, Texcoco and Tlacopan.
+Iroquois Confederacy|1450|1784|AM|NAM
+Norse Greenland|985|1450|IE|NAM
+New Spain|1521|1821|IE|NAM
+New France|1534|1763|IE|NAM
+Thirteen Colonies|1607|1776|IE|NAM
+Comanchería|1706|1875|AM|NAM
+British North America|1763|1867|IE|NAM
+United States|1776|2026|IE|NAM
+Russian America|1799|1867|IE|NAM
+Haiti|1804|2026|IE|NAM
+Mexico|1821|2026|IE|NAM
+Federal Republic of Central America|1823|1841|IE|NAM
+Canada|1867|2026|IE|NAM
+Cuba|1902|2026|IE|NAM
+Spanish Cuba|1511|1898|IE|NAM
+Danish Greenland|1721|2026|IE|NAM
+Nicaragua|1838|2026|IE|NAM
+Costa Rica|1838|2026|IE|NAM
+Honduras|1838|2026|IE|NAM
+Guatemala|1841|2026|IE|NAM
+El Salvador|1841|2026|IE|NAM
+Dominican Republic|1844|2026|IE|NAM
+Panama|1903|2026|IE|NAM
+Jamaica|1962|2026|IE|NAM
+
+Archaic hunter-gatherers (South America)|-3100|-1000|AM|SAM|c
+Valdivia culture|-3100|-1500|AM|SAM|c
+Amazonian manioc farmers|-2000|2026|AM|SAM|c
+Caral–Supe (Norte Chico)|-3000|-1800|AM|SAM|Monumental pyramids in Peru, contemporary with Egypt's.
+Chavín|-900|-200|AM|SAM
+Paracas|-800|-100|AM|SAM
+Nazca|-100|800|AM|SAM
+Moche|100|800|AM|SAM
+Marajoara|400|1400|AM|SAM|c
+Tiwanaku|550|1000|AM|SAM
+Wari Empire|600|1000|AM|SAM
+Muisca Confederation|600|1540|AM|SAM
+Chimú|900|1470|AM|SAM
+Kingdom of Cusco|1200|1438|AM|SAM
+Inca Empire|1438|1533|AM|SAM|Tawantinsuyu, the largest empire in the pre-Columbian Americas.
+Colonial Brazil|1500|1815|IE|SAM
+Viceroyalty of Peru|1542|1824|IE|SAM
+Mapuche (Araucanía)|1550|1883|AM|SAM
+Viceroyalty of New Granada|1717|1819|IE|SAM
+Viceroyalty of the Río de la Plata|1776|1814|IE|SAM
+Paraguay|1811|2026|IE|SAM
+Kingdom of Brazil|1815|1822|IE|SAM
+Argentina|1816|2026|IE|SAM
+Chile|1818|2026|IE|SAM
+Gran Colombia|1819|1831|IE|SAM
+Peru|1821|2026|IE|SAM
+Empire of Brazil|1822|1889|IE|SAM
+Bolivia|1825|2026|IE|SAM
+Venezuela|1830|2026|IE|SAM
+Colombia|1831|2026|IE|SAM
+Brazil|1889|2026|IE|SAM
+Dutch Suriname|1667|1975|IE|SAM
+British Guiana|1814|1966|IE|SAM
+Uruguay|1828|2026|IE|SAM
+Ecuador|1830|2026|IE|SAM
+Guyana|1966|2026|IE|SAM
+Suriname|1975|2026|IE|SAM
+`;
+
+// Successions: "A > B" means B followed A (by inheritance, partition, independence or conquest)
+const CHAINS = `
+Mycenaean Greece > Greek Dark Ages > Archaic Greek city-states > Classical Greece
+Roman Kingdom > Roman Republic > Roman Empire > Western Roman Empire
+Roman Empire > Byzantine Empire > Ottoman Empire > Turkey
+Byzantine Empire > Latin Empire
+Western Roman Empire > Visigothic Kingdom
+Western Roman Empire > Ostrogothic Kingdom > Kingdom of the Lombards
+Frankish Kingdom (Merovingian) > Carolingian Empire > West Francia > Kingdom of France > France
+Carolingian Empire > Holy Roman Empire
+Anglo-Saxon kingdoms > Kingdom of England > Great Britain / United Kingdom
+Kingdom of Scotland > Great Britain / United Kingdom
+Kingdom of Prussia > Germany
+Holy Roman Empire > Austrian Empire
+Habsburg Monarchy > Austrian Empire > Austria-Hungary > Austria
+Austria-Hungary > Hungary
+Austria-Hungary > Czechoslovakia > Czech Republic
+Czechoslovakia > Slovakia
+Kingdom of Hungary > Hungary
+Kingdom of Bohemia > Czechoslovakia
+Kingdom of Sicily > Kingdom of the Two Sicilies > Kingdom of Italy > Italy
+Papal States > Kingdom of Italy
+Visigothic Kingdom > Al-Andalus (Córdoba)
+Kingdom of Asturias–León > Crown of Castile > Spain
+Crown of Aragon > Spain
+Emirate of Granada > Crown of Castile
+Dutch Republic > Netherlands
+Kingdom of Denmark > Kalmar Union > Denmark–Norway > Denmark
+Kingdom of Norway > Kalmar Union
+Kingdom of Sweden > Kalmar Union > Sweden
+Denmark–Norway > Norway
+Kingdom of Poland > Polish–Lithuanian Commonwealth > Poland
+Grand Duchy of Lithuania > Polish–Lithuanian Commonwealth
+Kievan Rus' > Grand Duchy of Moscow > Tsardom of Russia > Russian Empire > Soviet Union > Russia
+Soviet Union > Ukraine
+Soviet Union > Belarus
+Soviet Union > Lithuania
+Soviet Union > Latvia
+Soviet Union > Estonia
+Soviet Union > Moldova
+Soviet Union > Armenia
+Soviet Union > Georgia
+Soviet Union > Azerbaijan
+Soviet Union > Kazakhstan
+Soviet Union > Uzbekistan
+Soviet Union > Kyrgyzstan
+Soviet Union > Turkmenistan
+Soviet Union > Tajikistan
+Yugoslavia > Serbia and Montenegro > Serbia
+Serbia and Montenegro > Montenegro
+Yugoslavia > Slovenia
+Yugoslavia > Croatia
+Yugoslavia > Bosnia and Herzegovina
+Yugoslavia > North Macedonia
+Principality & Kingdom of Serbia > Yugoslavia
+Wallachia > Romania
+Moldavia > Romania
+First Bulgarian Empire > Second Bulgarian Empire
+Golden Horde > Crimean Khanate
+Golden Horde > Kazakh Khanate
+Golden Horde > Khanate of Sibir
+Early Dynastic Egypt > Egyptian Old Kingdom > First Intermediate Period > Egyptian Middle Kingdom > Second Intermediate Period > Egyptian New Kingdom > Third Intermediate Period > Late Period Egypt > Ptolemaic Kingdom
+Kerma > Kush (Napatan) > Kush (Meroitic) > Nobatia > Makuria > Funj Sultanate
+Kush (Meroitic) > Alodia > Funj Sultanate
+Carthage > Roman Republic
+Vandal Kingdom > Byzantine Africa & Egypt > Rashidun Caliphate > Umayyad Caliphate > Abbasid Caliphate
+Fatimid Caliphate > Ayyubid Sultanate > Mamluk Sultanate > Ottoman Egypt > Khedivate of Egypt > Kingdom of Egypt > Egypt
+Almoravids > Almohad Caliphate > Marinid Sultanate
+Almohad Caliphate > Hafsid dynasty
+Almohad Caliphate > Zayyanid dynasty
+Saadi Sultanate > Alaouite Morocco
+Ottoman Maghreb (Algiers, Tunis, Tripoli) > French Algeria > Algeria
+French Tunisia > Tunisia
+Italian Libya > Libya
+Anglo-Egyptian Sudan > Sudan > South Sudan
+Mahdist State > Anglo-Egyptian Sudan
+Ghana Empire > Mali Empire > Songhai Empire
+Kanem Empire > Bornu Empire
+Ife > Oyo Empire
+Gold Coast > Ghana
+British Nigeria > Nigeria
+Congo Free State > Belgian Congo > DR Congo
+Portuguese Angola > Angola
+French West Africa > Senegal
+French West Africa > Mali
+French West Africa > Guinea
+French West Africa > Côte d'Ivoire
+French West Africa > Burkina Faso
+French West Africa > Niger
+French West Africa > Mauritania
+French West Africa > Benin
+French Equatorial Africa > Chad
+French Equatorial Africa > Gabon
+French Equatorial Africa > Republic of the Congo
+French Equatorial Africa > Central African Republic
+German Kamerun > Cameroon
+Sierra Leone Colony > Sierra Leone
+D'mt > Kingdom of Aksum > Zagwe dynasty > Ethiopian Empire > Derg > Ethiopia
+Ethiopia > Eritrea
+Italian Eritrea & Somaliland > Somalia
+Ifat Sultanate > Adal Sultanate
+Mapungubwe > Great Zimbabwe > Kingdom of Mutapa > Rozvi Empire
+Dutch Cape Colony > British Cape Colony > Union of South Africa > South Africa (apartheid republic) > South Africa
+Boer republics > Union of South Africa
+Southern Rhodesia > Rhodesia > Zimbabwe
+Portuguese Mozambique > Mozambique
+German East Africa > Tanzania
+British East Africa > Kenya
+British East Africa > Uganda
+Merina Kingdom > Madagascar
+German South West Africa > South West Africa (South African rule) > Namibia
+Kingdom of Rwanda > Rwanda
+Late Uruk period > Sumerian city-states > Akkadian Empire > Gutian period > Third Dynasty of Ur > Isin–Larsa period > Old Babylonian Empire > Kassite Babylonia
+Old Assyrian period > Middle Assyrian Empire > Neo-Assyrian Empire > Neo-Babylonian Empire > Achaemenid Empire
+Median Empire > Achaemenid Empire > Seleucid Empire > Parthian Empire > Sasanian Empire > Rashidun Caliphate
+Macedon > Seleucid Empire
+Macedon > Ptolemaic Kingdom
+Hittite Old Kingdom > Hittite New Kingdom > Neo-Hittite states
+Kingdom of Israel > Neo-Assyrian Empire
+Hasmonean Kingdom > Roman Republic
+Abbasid Caliphate > Buyid dynasty
+Seljuk Empire > Sultanate of Rum
+Seljuk Empire > Khwarazmian Empire
+Ilkhanate > Timurid Empire
+Timurid Empire > Safavid Iran > Afsharid Iran > Zand dynasty > Qajar Iran > Pahlavi Iran > Iran (Islamic Republic)
+Aq Qoyunlu > Safavid Iran
+Qara Qoyunlu > Aq Qoyunlu
+First Saudi State > Emirate of Nejd > Saudi Arabia
+British & French Mandates > Syria > Syria (post-Assad)
+British & French Mandates > Lebanon
+British & French Mandates > Jordan
+British & French Mandates > Iraq
+British & French Mandates > Israel
+North Yemen > Yemen
+South Yemen > Yemen
+Zaydi Imamate of Yemen > North Yemen
+Xiongnu > Xianbei > Rouran Khaganate > First Turkic Khaganate > Western Turkic Khaganate
+First Turkic Khaganate > Second Turkic Khaganate > Uyghur Khaganate > Yenisei Kyrgyz Khaganate
+Mongol Empire > Golden Horde
+Mongol Empire > Chagatai Khanate
+Mongol Empire > Ilkhanate
+Mongol Empire > Yuan dynasty > Northern Yuan
+Chagatai Khanate > Timurid Empire > Khanate of Bukhara > Emirate of Bukhara
+Northern Yuan > Mongolia
+Greco-Bactrian Kingdom > Yuezhi > Kushan Empire
+Early Harappan > Mature Harappan (Indus civilization) > Late Harappan
+Magadha > Nanda Empire > Maurya Empire > Shunga Empire
+Gupta Empire > Harsha's empire
+Delhi Sultanate > Mughal Empire > Company rule in India > British Raj > India
+Sur Empire > Mughal Empire
+Bahmani Sultanate > Deccan Sultanates
+British Raj > Pakistan > Bangladesh
+Anuradhapura Kingdom > Polonnaruwa Kingdom
+Kingdom of Kandy > Sri Lanka
+Chalukyas of Badami > Rashtrakuta dynasty > Western Chalukyas > Hoysala Empire
+Durrani Empire > Emirate of Afghanistan > Kingdom of Afghanistan > Afghan republics > Islamic Emirate of Afghanistan (first) > Islamic Republic of Afghanistan > Islamic Emirate of Afghanistan
+Kingdom of Nepal > Nepal
+Erlitou culture > Shang dynasty > Western Zhou > Spring and Autumn period > Warring States period > Qin dynasty > Western Han > Xin dynasty > Eastern Han > Three Kingdoms (China) > Jin dynasty > Southern dynasties > Sui dynasty > Tang dynasty > Five Dynasties & Ten Kingdoms > Northern Song > Southern Song > Yuan dynasty > Ming dynasty > Qing dynasty > Republic of China > People's Republic of China
+Republic of China > Taiwan (Republic of China)
+Sixteen Kingdoms > Northern Wei > Northern dynasties > Sui dynasty
+Liao dynasty (Khitan) > Kara Khitai
+Jin dynasty (Jurchen) > Yuan dynasty
+Nanzhao > Kingdom of Dali
+Tibetan Empire > Phagmodrupa Tibet > Ganden Phodrang Tibet
+Silla > Goryeo > Joseon > Korean Empire > Japanese Korea > South Korea
+Japanese Korea > North Korea
+Goguryeo > Balhae
+Kofun period > Asuka period > Nara period > Heian period > Kamakura shogunate > Muromachi shogunate > Azuchi–Momoyama period > Tokugawa shogunate > Empire of Japan > Japan
+Văn Lang > Âu Lạc > Nanyue > Chinese rule of Vietnam > Đại Việt > Nguyễn dynasty > French Indochina > Vietnam
+French Indochina > Cambodia
+French Indochina > Laos
+Funan > Chenla > Khmer Empire > Post-Angkor Cambodia
+Pyu city-states > Pagan Kingdom > Ava Kingdom > Toungoo Empire > Konbaung dynasty > British Burma > Myanmar
+Sukhothai > Ayutthaya Kingdom > Thonburi Kingdom > Siam (Rattanakosin) > Thailand
+Lan Xang > Laos
+Medang (Mataram) > Singhasari > Majapahit
+Srivijaya > Malacca Sultanate
+Dutch East India Company > Dutch East Indies > Indonesia
+Spanish Philippines > American Philippines > Philippines
+British Malaya > Malaysia > Singapore
+Portuguese Timor > Timor-Leste
+Hawaiian chiefdoms > Kingdom of Hawaiʻi
+British Australian colonies > Australia
+New Zealand Colony > New Zealand
+Olmec > Preclassic Maya > Classic Maya > Postclassic Maya
+Toltec (Tula) > Aztec Empire > New Spain > Mexico
+New Spain > Federal Republic of Central America > Guatemala
+Federal Republic of Central America > Honduras
+Federal Republic of Central America > El Salvador
+Federal Republic of Central America > Nicaragua
+Federal Republic of Central America > Costa Rica
+New France > British North America > Canada
+Thirteen Colonies > United States
+Russian America > United States
+Spanish Cuba > Cuba
+Kingdom of Cusco > Inca Empire > Viceroyalty of Peru > Peru
+Viceroyalty of Peru > Viceroyalty of New Granada > Gran Colombia > Colombia
+Gran Colombia > Venezuela
+Gran Colombia > Ecuador
+Viceroyalty of Peru > Viceroyalty of the Río de la Plata > Argentina
+Viceroyalty of the Río de la Plata > Paraguay
+Viceroyalty of the Río de la Plata > Bolivia
+Viceroyalty of the Río de la Plata > Uruguay
+Viceroyalty of Peru > Chile
+Colonial Brazil > Kingdom of Brazil > Empire of Brazil > Brazil
+British Guiana > Guyana
+Dutch Suriname > Suriname
+Wari Empire > Chimú > Inca Empire
+Moche > Chimú
+`;
+const ITEMS = [];
+RAW.trim().split("\n").forEach(line => {
+  line = line.trim(); if (!line) return;
+  const [name, s, e, fam, regs, flag, note] = line.split("|");
+  ITEMS.push({ id: ITEMS.length, name, s: Math.max(+s, Y0), e: +e, rawS: +s, fam, regs: regs.split(" "), culture: flag === "c", note: note || "", lname: name.toLowerCase(), prev: new Set(), next: new Set() });
+});
+document.getElementById("count").textContent = ITEMS.length;
+{ const byName = new Map(ITEMS.map(i => [i.name, i]));
+  CHAINS.trim().split("\n").forEach(l => { const ns = l.split(" > ").map(x => byName.get(x.trim())); for (let k = 1; k < ns.length; k++) if (ns[k - 1] && ns[k]) { ns[k - 1].next.add(ns[k]); ns[k].prev.add(ns[k - 1]); } }); }
+
+// ---- Scale --------------------------------------------------------------------
+let mode = "deep";
+const P = 0.55, ANCHOR = 2100;
+const f = y => mode === "deep" ? -Math.pow(ANCHOR - y, P) : y;
+const finv = v => mode === "deep" ? ANCHOR - Math.pow(-v, 1 / P) : v;
+const U = y => (f(y) - f(Y0)) / (f(Y1) - f(Y0));
+const Uinv = u => finv(f(Y0) + u * (f(Y1) - f(Y0)));
+let view = { v0: 0, v1: 1 };
+
+// ---- Layout -------------------------------------------------------------------
+const chart = document.getElementById("chart"), axis = document.getElementById("axis");
+const cx = chart.getContext("2d"), ax = axis.getContext("2d");
+const LANE = 19, BAR = 15, RPAD_T = 10, RPAD_B = 10;
+let G = 150, W = 800, H = 0, DPR = 1, narrow = false;
+let layout = []; // [{reg, y, h, lanes:[[items]]}]
+
+function packLanes(items) {
+  const lanes = []; // {end, items}
+  items.sort((a, b) => a.s - b.s || b.e - a.e);
+  for (const it of items) {
+    let best = -1, bestEnd = -Infinity;
+    lanes.forEach((ln, i) => { if (ln.end <= it.s && ln.end > bestEnd) { best = i; bestEnd = ln.end; } });
+    if (best < 0) { lanes.push({ end: it.e, items: [it] }); }
+    else { lanes[best].end = it.e; lanes[best].items.push(it); }
+  }
+  return lanes.map(l => l.items);
+}
+function buildLayout() {
+  let y = 0; layout = [];
+  for (const [rid, rname, rshort] of REGIONS) {
+    const mine = ITEMS.filter(it => it.regs.includes(rid));
+    const states = packLanes(mine.filter(i => !i.culture)), cults = packLanes(mine.filter(i => i.culture));
+    const lanes = states.concat(cults);
+    const h = RPAD_T + lanes.length * LANE + RPAD_B;
+    layout.push({ rid, rname, rshort, y, h, lanes, nStates: states.length });
+    y += h;
+  }
+  H = y;
+}
+buildLayout();
+
+function resize() {
+  DPR = window.devicePixelRatio || 1;
+  const w = chart.parentElement.clientWidth;
+  narrow = w < 640; G = narrow ? 74 : 150;
+  W = w - G - 8;
+  chart.style.height = H + "px";
+  chart.width = Math.round(w * DPR); chart.height = Math.round(H * DPR);
+  axis.width = Math.round(w * DPR); axis.height = Math.round(62 * DPR);
+  draw();
+}
+const X = y => G + (U(y) - view.v0) / (view.v1 - view.v0) * W;
+const Yat = x => Uinv(view.v0 + (x - G) / W * (view.v1 - view.v0));
+
+// ---- Colors -------------------------------------------------------------------
+let C = {};
+function readColors() {
+  const cs = getComputedStyle(document.documentElement);
+  const g = n => cs.getPropertyValue(n).trim();
+  C = { paper: g("--paper"), sheet: g("--sheet"), ink: g("--ink"), ink2: g("--ink-2"), ink3: g("--ink-3"), rule: g("--rule"), rule2: g("--rule-2"), band: g("--band"), accent: g("--accent"), cursor: g("--cursor"), sea: g("--sea"), land: g("--land"), unk: g("--unk"), fLabel: g("--cv-label"), fDisp: g("--cv-display"), fMono: g("--cv-mono"), retro: document.documentElement.dataset.skin === "retro", fam: {} };
+  FAMS.forEach(([k]) => C.fam[k] = g("--f-" + k));
+  C.dark = lum(C.sheet) < 0.2;
+}
+function hexRGB(h) { h = h.replace("#", ""); if (h.length === 3) h = h.split("").map(c => c + c).join(""); const n = parseInt(h, 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
+function lum(h) { const [r, g, b] = hexRGB(h).map(v => { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); }); return .2126 * r + .7152 * g + .0722 * b; }
+const rgba = (h, a) => { const [r, g, b] = hexRGB(h); return `rgba(${r},${g},${b},${a})`; };
+const labelInk = h => lum(h) > 0.3 ? "#111618" : "#ffffff";
+
+// ---- State --------------------------------------------------------------------
+let hoverYear = null, pinnedYear = null, hoverItem = null, selected = null;
+let query = "", matches = [], matchIdx = -1;
+const famOn = new Set(FAMS.map(f => f[0]));
+const allFamsOn = () => famOn.size === FAMS.length;
+function isDim(it) {
+  if (!famOn.has(it.fam)) return true;
+  if (query && !it.lname.includes(query)) return true;
+  return false;
+}
+
+// ---- Formatting ---------------------------------------------------------------
+function fy(y) { y = Math.round(y); if (y >= NOW) return "present"; if (y < 0) return `${-y} BCE`; if (y === 0) return "1 CE"; return y < 1000 ? `${y} CE` : `${y}`; }
+function span(it) { return `${it.rawS < Y0 ? "c. " + fy(it.rawS) : fy(it.s)} – ${fy(it.e)}`; }
+function dur(it) { const d = Math.min(it.e, NOW) - it.rawS - (it.rawS < 0 && it.e > 0 ? 1 : 0); return d + (d === 1 ? " year" : " years"); }
+
+// ---- Ticks --------------------------------------------------------------------
+function ticks() {
+  const yA = Yat(G), yB = Yat(G + W), out = [];
+  const xs = [];
+  const near = x => { for (const t of xs) if (Math.abs(t - x) < (narrow ? 52 : 62)) return true; return false; };
+  for (const step of [1000, 500, 100, 50, 10, 5, 1]) {
+    const first = Math.ceil(Math.max(yA, Y0) / step) * step;
+    for (let y = first; y <= Math.min(yB, Y1); y += step) {
+      if (y === 0) continue;
+      const x = X(y); if (x < G - 1 || x > G + W + 1) continue;
+      if (X(y + step) - x < (narrow ? 46 : 58)) continue;
+      if (near(x)) continue;
+      xs.push(x); out.push({ y, x, major: step >= 500 || (y % 1000 === 0) });
+    }
+    if (xs.length > 40) break;
+  }
+  return out.sort((a, b) => a.x - b.x);
+}
+
+// ---- Drawing ------------------------------------------------------------------
+let hatch = null;
+function makeHatch() {
+  const c = document.createElement("canvas"); c.width = c.height = 6 * DPR;
+  const g = c.getContext("2d"); g.scale(DPR, DPR); g.strokeStyle = C.dark ? "rgba(255,255,255,.18)" : "rgba(0,0,0,.14)"; g.lineWidth = 1;
+  g.beginPath(); g.moveTo(0, 6); g.lineTo(6, 0); g.moveTo(-1, 1); g.lineTo(1, -1); g.moveTo(5, 7); g.lineTo(7, 5); g.stroke();
+  hatch = cx.createPattern(c, "repeat");
+}
+function rr(g, x, y, w, h, r) { r = Math.min(r, w / 2, h / 2); g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+
+let frame = 0;
+function draw() { if (!frame) frame = requestAnimationFrame(() => { frame = 0; drawChart(); drawAxis(); }); }
+
+function drawChart() {
+  const g = cx; g.setTransform(DPR, 0, 0, DPR, 0, 0);
+  g.fillStyle = C.sheet; g.fillRect(0, 0, G + W + 8, H);
+  const tk = ticks();
+  // region bands
+  layout.forEach((R, i) => {
+    if (i % 2 === 1) { g.fillStyle = C.band; g.fillRect(0, R.y, G + W + 8, R.h); }
+    g.strokeStyle = C.rule; g.lineWidth = 1; g.beginPath(); g.moveTo(0, R.y + .5); g.lineTo(G + W + 8, R.y + .5); g.stroke();
+  });
+  // grid
+  g.save(); g.beginPath(); g.rect(G, 0, W, H); g.clip();
+  tk.forEach(t => { g.strokeStyle = t.major ? C.rule : C.rule2; g.beginPath(); g.moveTo(Math.round(t.x) + .5, 0); g.lineTo(Math.round(t.x) + .5, H); g.stroke(); });
+  // year-zero marker
+  const xz = X(0); if (xz > G && xz < G + W) { g.setLineDash([2, 3]); g.strokeStyle = C.ink3; g.beginPath(); g.moveTo(xz + .5, 0); g.lineTo(xz + .5, H); g.stroke(); g.setLineDash([]); }
+  if (!hatch) makeHatch();
+  const fontState = `500 ${narrow ? 11 : 11.5}px ${C.fLabel}`;
+  const fontCult = `italic 400 ${narrow ? 11 : 11.5}px ${C.fLabel}`;
+  g.textBaseline = "middle";
+  for (const R of layout) {
+    R.lanes.forEach((lane, li) => {
+      const y = R.y + RPAD_T + li * LANE + (LANE - BAR) / 2;
+      lane.forEach((it, k) => {
+        let x0 = X(it.s), x1 = X(Math.min(it.e, NOW));
+        if (x1 < G - 400 || x0 > G + W + 400) return;
+        const w = Math.max(2, x1 - x0 - 1.5);
+        const dim = isDim(it);
+        const sel = selected && selected.id === it.id, hov = hoverItem && hoverItem.id === it.id;
+        const col = C.fam[it.fam];
+        g.globalAlpha = dim ? 0.13 : 1;
+        if (it.culture) {
+          rr(g, x0, y, w, BAR, 2); g.fillStyle = rgba(col, C.dark ? 0.22 : 0.17); g.fill();
+          g.fillStyle = hatch; g.fill();
+        } else {
+          rr(g, x0, y, w, BAR, 3); g.fillStyle = col; g.fill();
+        }
+        if (sel || hov) { g.globalAlpha = 1; rr(g, x0 - 1.5, y - 1.5, w + 3, BAR + 3, 4); g.strokeStyle = C.ink; g.lineWidth = sel ? 2 : 1.25; g.stroke(); }
+        // labels
+        g.font = it.culture ? fontCult : fontState;
+        const tw = g.measureText(it.name).width;
+        const vx0 = Math.max(x0, G + 2), vw = Math.min(x0 + w, G + W) - vx0;
+        g.globalAlpha = dim ? 0.25 : 1;
+        if (tw + 10 <= vw) {
+          g.fillStyle = it.culture ? C.ink2 : labelInk(col);
+          g.fillText(it.name, vx0 + 5, y + BAR / 2 + .5);
+        } else if (!it.culture || !dim) {
+          const next = lane[k + 1]; const room = (next ? X(next.s) : G + W) - (x0 + w) - 8;
+          if (tw <= room && x0 + w > G && x0 + w + 4 + tw < G + W) { g.fillStyle = it.culture ? C.ink3 : C.ink2; g.fillText(it.name, x0 + w + 4, y + BAR / 2 + .5); }
+        }
+        g.globalAlpha = 1;
+      });
+    });
+  }
+  // cursor
+  const cy = pinnedYear ?? hoverYear;
+  if (cy != null) { const x = X(cy); g.strokeStyle = C.cursor; g.lineWidth = pinnedYear != null ? 1.5 : 1; g.beginPath(); g.moveTo(Math.round(x) + .5, 0); g.lineTo(Math.round(x) + .5, H); g.stroke(); }
+  g.restore();
+  // region gutter
+  g.fillStyle = C.sheet; g.fillRect(0, 0, G, H);
+  layout.forEach((R, i) => {
+    if (i % 2 === 1) { g.fillStyle = C.band; g.fillRect(0, R.y, G, R.h); }
+    g.strokeStyle = C.rule; g.beginPath(); g.moveTo(0, R.y + .5); g.lineTo(G, R.y + .5); g.stroke();
+    g.fillStyle = C.ink; g.textBaseline = "top";
+    g.font = narrow ? `600 11px ${C.fLabel}` : `${C.retro ? "700 15px" : "400 16px"} ${C.fDisp}`;
+    wrapText(g, narrow ? R.rshort : R.rname, 10, R.y + 12, G - 18, narrow ? 13 : 18);
+    g.font = `400 11px ${C.fMono}`; g.fillStyle = C.ink3;
+    if (!narrow) g.fillText(`${R.lanes.reduce((n, l) => n + l.length, 0)} entries`, 10, R.y + R.h - 22);
+  });
+  g.strokeStyle = C.rule; g.beginPath(); g.moveTo(G - .5, 0); g.lineTo(G - .5, H); g.stroke();
+}
+function wrapText(g, text, x, y, maxW, lh) {
+  const words = text.split(" "); let line = "", yy = y;
+  for (const w of words) { const t = line ? line + " " + w : w; if (g.measureText(t).width > maxW && line) { g.fillText(line, x, yy); line = w; yy += lh; } else line = t; }
+  if (line) g.fillText(line, x, yy);
+}
+
+const OV_Y = 8, OV_H = 12;
+function drawAxis() {
+  const g = ax; g.setTransform(DPR, 0, 0, DPR, 0, 0);
+  const w = G + W + 8; g.fillStyle = C.sheet; g.fillRect(0, 0, w, 62);
+  // overview strip: full range under current scale
+  const ox = G, ow = W;
+  g.fillStyle = C.band; rr(g, ox, OV_Y, ow, OV_H, 2); g.fill();
+  // density of states over time (light)
+  const bins = 160, dens = new Array(bins).fill(0);
+  for (const it of ITEMS) if (!it.culture) { const a = Math.floor(U(it.s) * bins), b = Math.min(bins - 1, Math.floor(U(Math.min(it.e, NOW)) * bins)); for (let i = Math.max(0, a); i <= b; i++) dens[i]++; }
+  const mx = Math.max(...dens);
+  g.fillStyle = rgba(C.ink3, .55);
+  dens.forEach((d, i) => { const h = d / mx * (OV_H - 2); g.fillRect(ox + i / bins * ow, OV_Y + OV_H - 1 - h, ow / bins + .5, h); });
+  const wx0 = ox + view.v0 * ow, wx1 = ox + view.v1 * ow;
+  g.strokeStyle = C.accent; g.lineWidth = 1.5; rr(g, wx0, OV_Y - 2, Math.max(4, wx1 - wx0), OV_H + 4, 3); g.stroke();
+  g.fillStyle = rgba(C.accent, .12); g.fill();
+  g.font = `400 10.5px ${C.fMono}`; g.fillStyle = C.ink3; g.textBaseline = "middle";
+  if (!narrow) { g.textAlign = "right"; g.fillText("overview", G - 10, OV_Y + OV_H / 2); g.textAlign = "left"; }
+  // ticks
+  const tk = ticks();
+  g.save(); g.beginPath(); g.rect(G, 26, W, 36); g.clip();
+  g.textBaseline = "alphabetic"; g.textAlign = "center";
+  tk.forEach(t => {
+    g.strokeStyle = t.major ? C.ink3 : C.rule; g.beginPath(); g.moveTo(Math.round(t.x) + .5, 52); g.lineTo(Math.round(t.x) + .5, 62); g.stroke();
+    g.fillStyle = t.major ? C.ink : C.ink2; g.font = `${t.major ? 500 : 400} 11px ${C.fMono}`;
+    g.fillText(fy(t.y), t.x, 46);
+  });
+  const cy = pinnedYear ?? hoverYear;
+  if (cy != null) {
+    const x = X(cy), lbl = fy(cy); g.font = `500 11.5px ${C.fMono}`;
+    const tw = g.measureText(lbl).width + 12;
+    const bx = Math.min(Math.max(x - tw / 2, G), G + W - tw);
+    g.fillStyle = C.cursor; rr(g, bx, 33, tw, 18, 3); g.fill();
+    g.fillStyle = labelInk(C.cursor); g.fillText(lbl, bx + tw / 2, 46);
+  }
+  g.restore(); g.textAlign = "left";
+  if (!narrow) { g.font = `400 10.5px ${C.fMono}`; g.fillStyle = C.ink3; g.textAlign = "right"; g.fillText(mode === "deep" ? "deep-time scale" : "even scale", G - 10, 46); g.textAlign = "left"; }
+}
+
+// ---- Cross-section panel ------------------------------------------------------
+const panel = document.getElementById("ledger");
+let baseYear = NOW;
+const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+let lastPanelKey = "";
+function renderPanel() {
+  const yr = Math.round(curYear());
+  mapSync();
+  const key = yr + "|" + (selected ? selected.id : "") + "|" + (pinnedYear != null) + "|" + query + [...famOn].join("");
+  if (key === lastPanelKey) return; lastPanelKey = key;
+  let h = "";
+  if (selected) h += entryHTML(selected);
+  const hx = h.length; let nS = 0, nC = 0, nR = 0;
+  for (const R of layout) {
+    const live = [], cults = [];
+    for (const lane of R.lanes) for (const it of lane) if (it.rawS <= yr && yr < it.e + (it.e >= NOW ? 1 : 0) && !isDim(it)) (it.culture ? cults : live).push(it);
+    if (!live.length && !cults.length) continue;
+    live.sort((a, b) => a.s - b.s); nS += live.length; nC += cults.length; nR++;
+    h += `<div class="xs-region"><h3>${esc(R.rname)}</h3><ul>` +
+      live.map(it => `<li><button type="button" data-id="${it.id}"><i style="background:var(--f-${it.fam})"></i>${esc(it.name)}<span>${esc(fy(it.rawS))}–${esc(fy(it.e))}</span></button></li>`).join("") + `</ul>` +
+      (cults.length ? `<div class="cult">${cults.map(c => esc(c.name)).join(" · ")}</div>` : "") + `</div>`;
+  }
+  const mode = pinnedYear != null ? "pinned" : hoverYear != null ? "under the cursor" : "set by the slider";
+  h = h.slice(0, hx) + `<div class="xs-head"><span class="eyebrow">The world in</span><span class="xs-year">${fy(yr)}</span><span class="xs-sum">${nS} states and ${nC} peoples across ${nR} halls · year ${mode}</span></div>` + h.slice(hx);
+  panel.innerHTML = h;
+  if (selected) drawLocator(selected);
+}
+panel.addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.id) { openEntry(ITEMS[+b.dataset.id]); document.getElementById("panel").scrollTop = 0; }
+  else if (b.dataset.act === "zoom" && selected) zoomTo(selected.s, Math.min(selected.e, NOW), true);
+  else if (b.dataset.act === "close") { selected = null; lastPanelKey = ""; renderPanel(); draw(); }
+});
+function select(it, scroll) { selected = it; lastPanelKey = ""; renderPanel(); draw(); if (scroll) scrollToItem(it); }
+function scrollToItem(it) {
+  const R = layout.find(r => r.lanes.some(l => l.includes(it))); if (!R) return;
+  const li = R.lanes.findIndex(l => l.includes(it));
+  const top = chart.getBoundingClientRect().top + window.scrollY + R.y + RPAD_T + li * LANE;
+  window.scrollTo({ top: Math.max(0, top - window.innerHeight * 0.35), behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+}
+
+// ---- View changes -------------------------------------------------------------
+function setView(v0, v1) {
+  let span = Math.max(0.0025, Math.min(1, v1 - v0));
+  v0 = Math.max(0, Math.min(1 - span, v0)); view = { v0, v1: v0 + span }; draw();
+}
+function zoomAt(px, factor) {
+  const u = view.v0 + (px - G) / W * (view.v1 - view.v0);
+  const span = (view.v1 - view.v0) * factor;
+  const t = (px - G) / W;
+  setView(u - t * span, u - t * span + span);
+}
+function zoomTo(s, e, scroll) {
+  const a = U(s), b = U(e), pad = Math.max((b - a) * 0.35, 0.004);
+  setView(a - pad, b + pad); if (scroll && selected) scrollToItem(selected);
+}
+
+// ---- Hit testing --------------------------------------------------------------
+function hit(px, py) {
+  const R = layout.find(r => py >= r.y && py < r.y + r.h); if (!R) return null;
+  const li = Math.floor((py - R.y - RPAD_T) / LANE); const lane = R.lanes[li]; if (!lane) return null;
+  for (const it of lane) { const x0 = X(it.s), x1 = Math.max(X(Math.min(it.e, NOW)), x0 + 6); if (px >= x0 - 2 && px <= x1 + 2) return it; }
+  return null;
+}
+
+// ---- Pointer ------------------------------------------------------------------
+const tip = document.getElementById("tip");
+const pointers = new Map(); let drag = null, pinch = null;
+function local(e, el) { const r = el.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+chart.addEventListener("pointerdown", e => {
+  pointers.set(e.pointerId, local(e, chart));
+  if (pointers.size === 1) { const [x] = local(e, chart); drag = { x0: x, v0: view.v0, v1: view.v1, moved: false, id: e.pointerId }; }
+  else if (pointers.size === 2) { const [a, b] = [...pointers.values()]; pinch = { d: Math.abs(a[0] - b[0]) || 1, mid: (a[0] + b[0]) / 2, v0: view.v0, v1: view.v1 }; drag = null; }
+});
+chart.addEventListener("pointermove", e => {
+  const [x, y] = local(e, chart);
+  if (pointers.has(e.pointerId)) pointers.set(e.pointerId, [x, y]);
+  if (pinch && pointers.size === 2) {
+    const [a, b] = [...pointers.values()]; const d = Math.abs(a[0] - b[0]) || 1;
+    const span = (pinch.v1 - pinch.v0) * pinch.d / d; const t = (pinch.mid - G) / W; const u = pinch.v0 + t * (pinch.v1 - pinch.v0);
+    setView(u - t * span, u - t * span + span); return;
+  }
+  if (drag && drag.id === e.pointerId) {
+    const dx = x - drag.x0;
+    if (Math.abs(dx) > 4 && !drag.moved) { drag.moved = true; chart.setPointerCapture(e.pointerId); chart.classList.add("dragging"); }
+    if (drag.moved) { const du = dx / W * (drag.v1 - drag.v0); setView(drag.v0 - du, drag.v1 - du); tip.hidden = true; return; }
+  }
+  if (e.pointerType === "mouse") hoverAt(x, y, e.clientX, e.clientY);
+});
+chart.addEventListener("pointerup", e => {
+  const [x, y] = local(e, chart);
+  if (drag && !drag.moved && pointers.size === 1) {
+    const it = x > G ? hit(x, y) : null;
+    if (it) select(it, false);
+    else if (x > G) { pinnedYear = pinnedYear != null ? null : Math.round(Yat(x)); lastPanelKey = ""; renderPanel(); draw(); }
+    if (e.pointerType !== "mouse" && x > G) { hoverYear = Math.round(Yat(x)); renderPanel(); draw(); }
+  }
+  pointers.delete(e.pointerId); if (pointers.size < 2) pinch = null; drag = null; chart.classList.remove("dragging");
+});
+chart.addEventListener("pointercancel", e => { pointers.delete(e.pointerId); drag = null; pinch = null; chart.classList.remove("dragging"); });
+chart.addEventListener("pointerleave", () => { if (!drag) { hoverYear = null; hoverItem = null; tip.hidden = true; renderPanel(); draw(); } });
+function hoverAt(x, y, cxp, cyp) {
+  if (x < G || x > G + W) { hoverYear = null; hoverItem = null; tip.hidden = true; draw(); return; }
+  hoverYear = Math.max(Y0, Math.min(NOW, Math.round(Yat(x))));
+  const it = hit(x, y); hoverItem = it && !isDim(it) ? it : null;
+  if (hoverItem) {
+    tip.innerHTML = `<b>${esc(hoverItem.name)}</b><span>${span(hoverItem)} · ${dur(hoverItem)}</span><span>${esc(FAMNAME[hoverItem.fam])}</span>`;
+    tip.hidden = false;
+    const tw = tip.offsetWidth, th = tip.offsetHeight;
+    tip.style.left = Math.min(cxp + 14, innerWidth - tw - 8) + "px"; tip.style.top = Math.max(8, cyp - th - 12) + "px";
+  } else tip.hidden = true;
+  chart.style.cursor = hoverItem ? "pointer" : "";
+  renderPanel(); draw();
+}
+chart.addEventListener("wheel", e => {
+  const [x] = local(e, chart);
+  if (e.ctrlKey || e.metaKey) { e.preventDefault(); zoomAt(Math.max(G, x), Math.exp(e.deltaY * 0.01)); }
+  else if (Math.abs(e.deltaX) > Math.abs(e.deltaY) || e.shiftKey) { e.preventDefault(); const d = e.shiftKey && !e.deltaX ? e.deltaY : e.deltaX; const du = d / W * (view.v1 - view.v0); setView(view.v0 + du, view.v1 + du); }
+}, { passive: false });
+chart.addEventListener("keydown", e => {
+  const s = view.v1 - view.v0;
+  if (e.key === "ArrowLeft") { setView(view.v0 - s * .1, view.v1 - s * .1); e.preventDefault(); }
+  else if (e.key === "ArrowRight") { setView(view.v0 + s * .1, view.v1 + s * .1); e.preventDefault(); }
+  else if (e.key === "+" || e.key === "=") zoomAt(G + W / 2, 0.7);
+  else if (e.key === "-") zoomAt(G + W / 2, 1 / 0.7);
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && bigMap) { setBig(false); return; } if (e.key === "Escape") { pinnedYear = null; selected = null; lastPanelKey = ""; renderPanel(); draw(); } });
+
+// axis: wheel zooms, drag on overview moves window, drag on ticks pans
+axis.addEventListener("wheel", e => { e.preventDefault(); const [x] = local(e, axis); if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { const du = e.deltaX / W * (view.v1 - view.v0); setView(view.v0 + du, view.v1 + du); } else zoomAt(Math.max(G, x), Math.exp(e.deltaY * 0.004)); }, { passive: false });
+let axDrag = null;
+axis.addEventListener("pointerdown", e => {
+  const [x, y] = local(e, axis); axis.setPointerCapture(e.pointerId);
+  if (y < 26) { axDrag = { ov: true }; const s = view.v1 - view.v0, u = (x - G) / W; setView(u - s / 2, u + s / 2); }
+  else axDrag = { ov: false, x0: x, v0: view.v0, v1: view.v1 };
+});
+axis.addEventListener("pointermove", e => {
+  if (!axDrag) return; const [x] = local(e, axis);
+  if (axDrag.ov) { const s = view.v1 - view.v0, u = (x - G) / W; setView(u - s / 2, u + s / 2); }
+  else { const du = (x - axDrag.x0) / W * (axDrag.v1 - axDrag.v0); setView(axDrag.v0 - du, axDrag.v1 - du); }
+});
+axis.addEventListener("pointerup", () => axDrag = null);
+
+// ---- Controls -----------------------------------------------------------------
+const ERAS = [["All", Y0, NOW], ["Bronze Age", -3100, -1100], ["Classical", -800, 600], ["Medieval", 500, 1500], ["Early modern", 1450, 1815], ["Modern", 1800, NOW]];
+const erasEl = document.getElementById("eras");
+ERAS.forEach(([n, a, b]) => { const bt = document.createElement("button"); bt.type = "button"; bt.textContent = n; bt.addEventListener("click", () => { if (n === "All") setView(0, 1); else { const ua = U(a), ub = U(b); setView(ua, ub); } }); erasEl.appendChild(bt); });
+document.getElementById("zIn").addEventListener("click", () => zoomAt(G + W / 2, 0.6));
+document.getElementById("zOut").addEventListener("click", () => zoomAt(G + W / 2, 1 / 0.6));
+function setMode(m) {
+  if (m === mode) return;
+  const a = Uinv(view.v0), b = Uinv(view.v1); mode = m;
+  view = { v0: U(a), v1: U(b) }; setView(view.v0, view.v1);
+  document.getElementById("mDeep").setAttribute("aria-pressed", m === "deep"); document.getElementById("mEven").setAttribute("aria-pressed", m === "even");
+}
+document.getElementById("mDeep").addEventListener("click", () => setMode("deep"));
+document.getElementById("mEven").addEventListener("click", () => setMode("even"));
+
+const legend = document.getElementById("legend");
+FAMS.forEach(([k, n]) => {
+  const b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.dataset.fam = k; b.setAttribute("aria-pressed", "false");
+  b.innerHTML = `<i style="background:var(--f-${k})"></i>${esc(n)}`; b.title = "Show only this family (click again to show all)";
+  b.addEventListener("click", () => {
+    const solo = famOn.size === 1 && famOn.has(k);
+    famOn.clear();
+    if (solo) FAMS.forEach(f => famOn.add(f[0])); else famOn.add(k);
+    legend.querySelectorAll(".chip").forEach(c => { const on = famOn.has(c.dataset.fam); c.setAttribute("aria-pressed", String(!allFamsOn() && on)); c.classList.toggle("dim", !on); });
+    lastPanelKey = ""; renderPanel(); draw();
+  });
+  legend.appendChild(b);
+});
+const cn = document.createElement("span"); cn.className = "note"; cn.innerHTML = `<span class="chip" style="padding:0 4px"><i class="hatch"></i>peoples &amp; cultures without a state</span>`; legend.appendChild(cn);
+
+const q = document.getElementById("q"), mi = document.getElementById("matchInfo");
+q.addEventListener("input", () => {
+  query = q.value.trim().toLowerCase(); matches = query ? ITEMS.filter(i => i.lname.includes(query)) : []; matchIdx = -1;
+  mi.textContent = query ? (matches.length ? `${matches.length} found` : "none") : "";
+  lastPanelKey = ""; renderPanel(); draw();
+});
+q.addEventListener("keydown", e => {
+  if (e.key === "Enter" && matches.length) {
+    matchIdx = (matchIdx + 1) % matches.length; const it = matches[matchIdx];
+    mi.textContent = `${matchIdx + 1} of ${matches.length}`; selected = it; zoomTo(it.s, Math.min(it.e, NOW)); scrollToItem(it); lastPanelKey = ""; renderPanel();
+  }
+});
+
+// ---- Map & globe ---------------------------------------------------------------
+const curYear = () => pinnedYear ?? hoverYear ?? baseYear;
+const MD = window.HALL_OF_REALMS_MAPDATA || JSON.parse(document.getElementById("mapdata").textContent);
+const SNAPYEARS = MD.snaps.map(s => s[0]);
+const snapCache = new Map();
+function decRing(a) { const r = []; let x = 0, y = 0; for (let i = 0; i < a.length; i += 2) { x += a[i]; y += a[i + 1]; r.push([x / 100, y / 100]); } r.push(r[0]); return r; }
+function decPolys(P) {
+  return P.map(poly => {
+    let rings = poly.map(decRing);
+    if (d3.geoArea({ type: "Polygon", coordinates: rings }) > 2 * Math.PI) rings = rings.map(r => r.slice().reverse());
+    return rings;
+  });
+}
+const LAND = { type: "MultiPolygon", coordinates: decPolys(MD.land) };
+function snapIndex(y) { let i = 0; for (let k = 0; k < SNAPYEARS.length; k++) if (SNAPYEARS[k] <= y) i = k; return i; }
+function getSnap(i) {
+  if (!snapCache.has(i)) {
+    const feats = MD.snaps[i][1].map(([n, p, fam, c, it, P]) => {
+      const f = { type: "Feature", name: MD.names[n], part: p >= 0 ? MD.names[p] : "", fam, cult: !!c, item: it, geometry: { type: "MultiPolygon", coordinates: decPolys(P) } };
+      f.bounds = d3.geoBounds(f); f.lname = f.name.toLowerCase(); return f;
+    });
+    feats.sort((a, b) => b.cult - a.cult);
+    snapCache.set(i, feats);
+  }
+  return snapCache.get(i);
+}
+const mapCv = document.getElementById("map"), mg = mapCv.getContext("2d"), mapcard = document.getElementById("mapcard");
+const GK0 = 0.78;
+let mapMode = "flat", rot = [-20, -24], gk = GK0, fk = 1, fpan = [0, 0], MW = 400, MH = 200, bigMap = false;
+let mapHover = null, mapHatch = null, mapDirty = true, lastMapKey = "", curSnap = -1;
+function proj() {
+  if (mapMode === "globe") {
+    const r = Math.min(MW, MH) / 2 - 8;
+    return d3.geoOrthographic().rotate(rot).translate([MW / 2, MH / 2]).scale(r * gk).clipAngle(90).precision(0.5);
+  }
+  const p = d3.geoEqualEarth().fitExtent([[4, 4], [MW - 4, MH - 4]], { type: "Sphere" });
+  const s = p.scale(), t = p.translate();
+  return p.scale(s * fk).translate([MW / 2 + (t[0] - MW / 2) * fk + fpan[0], MH / 2 + (t[1] - MH / 2) * fk + fpan[1]]);
+}
+function sizeMap() {
+  const w = mapCv.clientWidth || 400; MW = w;
+  if (bigMap) MH = Math.max(200, mapCv.clientHeight);
+  else { MH = Math.round(mapMode === "globe" ? Math.min(w * 0.8, 400) : w * 0.5); mapCv.style.height = MH + "px"; }
+  mapCv.width = Math.round(MW * DPR); mapCv.height = Math.round(MH * DPR);
+  mapDirty = true; mapSync();
+}
+function famDim(f) { return !famOn.has(f.fam === "XX" ? "OT" : f.fam) || (query && !f.lname.includes(query) && !(f.item >= 0 && ITEMS[f.item].lname.includes(query))); }
+function makeMapHatch() {
+  const c = document.createElement("canvas"); c.width = c.height = Math.round(5 * DPR);
+  const g = c.getContext("2d"); g.scale(DPR, DPR); g.strokeStyle = C.dark ? "rgba(255,255,255,.22)" : "rgba(0,0,0,.16)"; g.lineWidth = 0.8;
+  g.beginPath(); g.moveTo(0, 5); g.lineTo(5, 0); g.moveTo(-1, 1); g.lineTo(1, -1); g.moveTo(4, 6); g.lineTo(6, 4); g.stroke();
+  mapHatch = mg.createPattern(c, "repeat");
+}
+function snapLabel(i, y) {
+  const sy = SNAPYEARS[i];
+  const what = sy >= NOW ? "present-day borders (2026)" : `borders as of ${fy(sy)}`;
+  return `<b>${fy(Math.round(y))}</b> · ${what}${Math.round(y) !== sy && sy < NOW ? " (latest map before this year)" : ""}`;
+}
+function mapSync() {
+  const y = curYear(), i = snapIndex(y);
+  const hid = hoverItem ? hoverItem.id : -1, sid = selected ? selected.id : -1;
+  const key = [i, hid, sid, mapHover ? mapHover.name : "", query, [...famOn].join(""), mapMode, MW, MH].join("|");
+  document.getElementById("snapLabel").innerHTML = snapLabel(i, y);
+  const yo = document.getElementById("yrOut"); yo.textContent = fy(y);
+  const sl = document.getElementById("yr"); if (+sl.value !== Math.round(y) && document.activeElement !== sl) sl.value = Math.round(y);
+  if (i !== curSnap) { curSnap = i; mapDirty = true; }
+  if (!mapDirty && key === lastMapKey) return;
+  lastMapKey = key; mapDirty = false;
+  if (!mapFrame) mapFrame = requestAnimationFrame(() => { mapFrame = 0; drawMap(); });
+}
+let mapFrame = 0;
+function drawMap() {
+  const g = mg; g.setTransform(DPR, 0, 0, DPR, 0, 0);
+  g.fillStyle = C.sheet; g.fillRect(0, 0, MW, MH);
+  if (!C.sea) return;
+  const p = proj(), path = d3.geoPath(p, g), feats = getSnap(curSnap);
+  if (!mapHatch) makeMapHatch();
+  const globe = mapMode === "globe";
+  // sphere
+  g.beginPath(); path({ type: "Sphere" });
+  if (globe) {
+    const r = p.scale(), cx0 = MW / 2, cy0 = MH / 2;
+    const grad = g.createRadialGradient(cx0 - r * 0.35, cy0 - r * 0.4, r * 0.1, cx0, cy0, r);
+    grad.addColorStop(0, C.sea); grad.addColorStop(1, C.dark ? "#081012" : "#c7d5d8"); g.fillStyle = grad;
+  } else g.fillStyle = C.sea;
+  g.fill();
+  g.beginPath(); path(d3.geoGraticule10()); g.strokeStyle = rgba(C.ink, 0.07); g.lineWidth = 0.6; g.stroke();
+  g.beginPath(); path(LAND); g.fillStyle = C.land; g.fill();
+  const hid = hoverItem ? hoverItem.id : -1, sid = selected ? selected.id : -1;
+  const lw = Math.max(0.35, Math.min(0.9, 0.5 * (globe ? gk : fk)));
+  for (const f of feats) {
+    const dim = famDim(f);
+    const col = f.fam === "XX" ? C.unk : C.fam[f.fam];
+    g.beginPath(); path(f);
+    g.globalAlpha = dim ? 0.18 : (sid >= 0 && f.item !== sid ? 0.7 : 1);
+    if (f.cult) { g.fillStyle = rgba(col, C.dark ? 0.32 : 0.3); g.fill(); g.fillStyle = mapHatch; g.fill(); }
+    else { g.fillStyle = col; g.fill(); g.strokeStyle = C.sheet; g.lineWidth = lw; g.stroke(); }
+  }
+  g.globalAlpha = 1;
+  for (const f of feats) {
+    const on = (f.item >= 0 && (f.item === sid || f.item === hid)) || f === mapHover;
+    if (!on) continue;
+    g.beginPath(); path(f); g.strokeStyle = C.ink; g.lineWidth = f.item === sid ? 2 : 1.4; g.stroke();
+  }
+  g.beginPath(); path({ type: "Sphere" }); g.strokeStyle = C.rule; g.lineWidth = 1; g.stroke();
+  // labels
+  const minA = bigMap ? 700 : 1800, placed = [];
+  const cand = [];
+  for (const f of feats) { if (famDim(f)) continue; const a = path.area(f); if (a < minA) continue; cand.push([a, f]); }
+  cand.sort((a, b) => b[0] - a[0]);
+  g.textAlign = "center"; g.textBaseline = "middle"; g.lineJoin = "round";
+  for (const [a, f] of cand.slice(0, 160)) {
+    const c = path.centroid(f); if (!isFinite(c[0])) continue;
+    const fs = Math.max(9, Math.min(bigMap ? 16 : 13, Math.sqrt(a) / 7));
+    g.font = `${f.cult ? "italic 400" : "600"} ${fs}px ${C.fLabel}`;
+    const tw = g.measureText(f.name).width;
+    if (tw > Math.sqrt(a) * 1.9) continue;
+    const box = [c[0] - tw / 2 - 2, c[1] - fs / 2 - 1, c[0] + tw / 2 + 2, c[1] + fs / 2 + 1];
+    if (box[0] < 2 || box[2] > MW - 2 || box[1] < 2 || box[3] > MH - 2) continue;
+    if (placed.some(b => !(box[2] < b[0] || box[0] > b[2] || box[3] < b[1] || box[1] > b[3]))) continue;
+    placed.push(box);
+    g.strokeStyle = rgba(C.sheet, 0.85); g.lineWidth = 3; g.strokeText(f.name, c[0], c[1]);
+    g.fillStyle = f.cult ? C.ink2 : C.ink; g.fillText(f.name, c[0], c[1]);
+  }
+  g.textAlign = "left";
+}
+function mapHit(mx, my) {
+  const p = proj(); const ll = p.invert([mx, my]); if (!ll || !isFinite(ll[0])) return null;
+  if (mapMode === "globe" && d3.geoDistance(ll, [-rot[0], -rot[1]]) > Math.PI / 2) return null;
+  const feats = getSnap(curSnap);
+  let best = null;
+  for (const f of feats) {
+    const [[x0, y0], [x1, y1]] = f.bounds;
+    if (ll[1] < y0 - 0.5 || ll[1] > y1 + 0.5) continue;
+    if (x0 <= x1 ? (ll[0] < x0 - 0.5 || ll[0] > x1 + 0.5) : (ll[0] < x0 - 0.5 && ll[0] > x1 + 0.5)) continue;
+    if (d3.geoContains(f, ll)) { if (!f.cult) return f; best = best || f; }
+  }
+  return best;
+}
+let mDrag = null;
+mapCv.addEventListener("pointerdown", e => { const [x, y] = local(e, mapCv); mDrag = { x, y, rot: rot.slice(), pan: fpan.slice(), moved: false }; mapCv.setPointerCapture(e.pointerId); });
+mapCv.addEventListener("pointermove", e => {
+  const [x, y] = local(e, mapCv);
+  if (mDrag) {
+    const dx = x - mDrag.x, dy = y - mDrag.y;
+    if (Math.abs(dx) + Math.abs(dy) > 3) { mDrag.moved = true; mapCv.classList.add("dragging"); }
+    if (mDrag.moved) {
+      if (mapMode === "globe") { const k = 0.32 / gk; rot = [mDrag.rot[0] + dx * k, Math.max(-85, Math.min(85, mDrag.rot[1] - dy * k))]; }
+      else if (fk > 1) fpan = [mDrag.pan[0] + dx, mDrag.pan[1] + dy];
+      tip.hidden = true; mapDirty = true; mapSync(); return;
+    }
+  }
+  if (e.pointerType !== "mouse") return;
+  const f = mapHit(x, y);
+  if (f !== mapHover) {
+    mapHover = f;
+    const it = f && f.item >= 0 ? ITEMS[f.item] : null;
+    hoverItem = it; draw();
+  }
+  if (f) {
+    const it = f.item >= 0 ? ITEMS[f.item] : null;
+    tip.innerHTML = `<b>${esc(f.name)}</b>${f.part ? `<span>part of ${esc(f.part)}</span>` : ""}<span>${f.fam === "XX" ? "unclassified" : esc(FAMNAME[f.fam])}${f.cult ? " · people or culture" : ""}</span>${it && it.name !== f.name ? `<span>timeline: ${esc(it.name)}</span>` : ""}`;
+    tip.hidden = false; const tw = tip.offsetWidth, th = tip.offsetHeight;
+    tip.style.left = Math.min(e.clientX + 14, innerWidth - tw - 8) + "px"; tip.style.top = Math.max(8, e.clientY - th - 12) + "px";
+    mapCv.style.cursor = f.item >= 0 ? "pointer" : "";
+  } else { tip.hidden = true; mapCv.style.cursor = ""; }
+  mapSync();
+});
+mapCv.addEventListener("pointerup", e => {
+  const [x, y] = local(e, mapCv);
+  if (mDrag && !mDrag.moved) { const f = mapHit(x, y); if (f && f.item >= 0) { const it = ITEMS[f.item]; select(it, !bigMap); if (!(U(it.s) >= view.v0 && U(Math.min(it.e, NOW)) <= view.v1)) zoomTo(it.s, Math.min(it.e, NOW)); } }
+  mDrag = null; mapCv.classList.remove("dragging");
+});
+mapCv.addEventListener("pointerleave", () => { if (mapHover) { mapHover = null; hoverItem = null; tip.hidden = true; draw(); mapSync(); } });
+mapCv.addEventListener("wheel", e => {
+  e.preventDefault(); const [x, y] = local(e, mapCv); const fct = Math.exp(-e.deltaY * 0.0022);
+  if (mapMode === "globe") gk = Math.max(0.6, Math.min(9, gk * fct));
+  else {
+    const nk = Math.max(1, Math.min(12, fk * fct)); const b = (x - MW / 2 - fpan[0]) / fk, by = (y - MH / 2 - fpan[1]) / fk;
+    fpan = nk === 1 ? [0, 0] : [fpan[0] + (fk - nk) * b, fpan[1] + (fk - nk) * by]; fk = nk;
+  }
+  mapDirty = true; mapSync();
+}, { passive: false });
+function focusMap(it) {
+  if (mapMode !== "globe" || !it) return;
+  const fs = getSnap(curSnap).filter(f => f.item === it.id); if (!fs.length) return;
+  const big = fs.reduce((a, b) => d3.geoArea(a) > d3.geoArea(b) ? a : b);
+  const c = d3.geoCentroid(big), from = rot.slice(), to = [-c[0], Math.max(-70, Math.min(70, -c[1]))];
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { rot = to; mapDirty = true; mapSync(); return; }
+  const ip = d3.interpolate(from, to), t0 = performance.now();
+  (function step(t) { const k = Math.min(1, (t - t0) / 650); rot = ip(d3.easeCubicInOut(k)); mapDirty = true; mapSync(); if (k < 1) requestAnimationFrame(step); })(t0);
+}
+const _select = select;
+select = function (it, scroll) { _select(it, scroll); focusMap(it); const a = document.getElementById("panel"); if (a && a.scrollTop > 0) a.scrollTop = 0; };
+function setMapMode(m) {
+  if (m === "globe" && mapMode !== "globe") gk = GK0;
+  mapMode = m; document.getElementById("vFlat").setAttribute("aria-pressed", m === "flat"); document.getElementById("vGlobe").setAttribute("aria-pressed", m === "globe");
+  sizeMap(); if (selected) focusMap(selected);
+}
+document.getElementById("vFlat").addEventListener("click", () => setMapMode("flat"));
+document.getElementById("vGlobe").addEventListener("click", () => setMapMode("globe"));
+function setBig(on) {
+  bigMap = on; mapcard.classList.toggle("big", on); document.body.classList.toggle("mapbig", on); document.getElementById("vBig").setAttribute("aria-pressed", on);
+  document.getElementById("vBig").textContent = on ? "Close" : "Enlarge";
+  if (!on) mapCv.style.height = ""; else mapCv.style.height = "";
+  requestAnimationFrame(sizeMap);
+}
+document.getElementById("vBig").addEventListener("click", () => setBig(!bigMap));
+const yrIn = document.getElementById("yr");
+yrIn.addEventListener("input", () => { pinnedYear = +yrIn.value; lastPanelKey = ""; renderPanel(); draw(); });
+let playTimer = null;
+const playBtn = document.getElementById("play");
+function stopPlay() { clearInterval(playTimer); playTimer = null; playBtn.textContent = "Play"; }
+playBtn.addEventListener("click", () => {
+  if (playTimer) return stopPlay();
+  let y = curYear(); if (y >= NOW) y = Y0;
+  pinnedYear = Math.round(y); lastPanelKey = ""; renderPanel(); draw();
+  playBtn.textContent = "Pause";
+  playTimer = setInterval(() => {
+    const nxt = SNAPYEARS.find(s => s > pinnedYear);
+    if (nxt == null) return stopPlay();
+    pinnedYear = nxt; hoverYear = null; lastPanelKey = ""; renderPanel(); draw();
+  }, 1100);
+});
+new ResizeObserver(() => sizeMap()).observe(mapcard);
+
+
+// ---- Encyclopedia entries -------------------------------------------------------
+const REGNAME = Object.fromEntries(REGIONS.map(r => [r[0], r[1]]));
+const FAMPHRASE = { IE: "an Indo-European language", AA: "an Afro-Asiatic language", TM: "a Turkic, Mongolic or Tungusic language", NC: "a Niger-Congo or Nilo-Saharan language", AU: "an Austronesian, Austroasiatic or Tai language", AM: "an Indigenous American language", DR: "a Dravidian language", ST: "a Sino-Tibetan language", OT: "a language outside the large families, or one still unclassified" };
+const listJoin = a => a.length < 2 ? (a[0] || "") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1];
+const xref = it => `<button type="button" class="xref" data-id="${it.id}">${esc(it.name)}</button>`;
+function contemporaries(it) {
+  const d0 = Math.min(it.e, NOW) - it.rawS, out = [];
+  for (const o of ITEMS) {
+    if (o === it || o.culture || it.prev.has(o) || it.next.has(o) || !o.regs.some(r => it.regs.includes(r))) continue;
+    const ov = Math.min(it.e, o.e, NOW) - Math.max(it.rawS, o.rawS);
+    if (ov > 0.5 * Math.min(d0, Math.min(o.e, NOW) - o.rawS)) out.push([ov, o]);
+  }
+  return out.sort((a, b) => b[0] - a[0]).slice(0, 8).map(x => x[1]);
+}
+function summary(it) {
+  const regs = listJoin(it.regs.map(r => REGNAME[r]));
+  const ongoing = it.e >= NOW;
+  let t = it.culture
+    ? `A people or archaeological culture of ${regs}, traced here from ${fy(it.rawS)}${ongoing ? " to the present" : " to " + fy(it.e)}, and associated with ${FAMPHRASE[it.fam]}.`
+    : `A state of ${regs}${ongoing ? `, in existence since ${fy(it.rawS)}` : ` that lasted ${dur(it)}, from ${fy(it.rawS)} to ${fy(it.e)}`}. Its ruling group spoke ${FAMPHRASE[it.fam]}.`;
+  const p = [...it.prev], n = [...it.next];
+  if (p.length) t += ` It followed ${listJoin(p.map(x => x.name))}.`;
+  if (n.length) t += ` ${n.length > 1 ? "Its successors here are" : "It was followed by"} ${listJoin(n.map(x => x.name))}.`;
+  return t;
+}
+function entryHTML(it) {
+  const p = [...it.prev], n = [...it.next], cs = contemporaries(it);
+  const ext = MD.ext[it.id];
+  const rows = [
+    ["Period", `<span class="num">${esc(span(it))}</span>`],
+    ["Duration", `<span class="num">${it.e >= NOW ? esc(dur(it)) + " and counting" : esc(dur(it))}</span>`],
+    ["Kind", it.culture ? "People or archaeological culture" : "State"],
+    [it.culture ? "Language family" : "Rulers' language", `<span class="sw" style="background:var(--f-${it.fam})"></span>${esc(FAMNAME[it.fam])}`],
+    [it.regs.length > 1 ? "Halls" : "Hall", esc(it.regs.map(r => REGNAME[r]).join(", "))],
+    p.length ? ["Preceded by", p.map(xref).join(", ")] : null,
+    n.length ? ["Succeeded by", n.map(xref).join(", ")] : null,
+  ].filter(Boolean);
+  return `<article class="entry" aria-label="Entry: ${esc(it.name)}">
+    <div class="eyebrow"><span>Encyclopedia entry</span><button type="button" data-act="close" aria-label="Close entry">Close ×</button></div>
+    <h2>${esc(it.name)}</h2>
+    <p class="dek">${esc(span(it))} · ${it.culture ? "people or culture" : "state"} · ${esc(it.regs.map(r => REGNAME[r]).join(", "))}</p>
+    <figure class="infobox" style="margin:0">
+      ${ext != null ? `<canvas class="loc" id="loc" aria-label="Map of ${esc(it.name)} at its greatest mapped extent"></canvas><figcaption>Greatest extent among the atlas maps: ${esc(fy(SNAPYEARS[ext]))}${SNAPYEARS[ext] >= NOW ? " (present-day borders)" : ""}</figcaption>` : ""}
+      <table><tbody>${rows.map(([k, v]) => `<tr><th scope="row">${k}</th><td>${v}</td></tr>`).join("")}</tbody></table>
+    </figure>
+    ${it.note ? `<p class="body">${esc(it.note)}</p>` : ""}
+    <p class="body">${esc(summary(it))}</p>
+    ${cs.length ? `<h3>Contemporaries in the same halls</h3><p class="contemps">${cs.map(xref).join(" · ")}</p>` : ""}
+    <div class="actions"><button type="button" data-act="zoom">Show its span on the timeline</button><a href="https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(it.name)}" target="_blank" rel="noopener">Read more on Wikipedia ↗</a></div>
+  </article>`;
+}
+function drawLocator(it) {
+  const cv = document.getElementById("loc"); const si = MD.ext[it.id]; if (!cv || si == null) return;
+  const w = cv.clientWidth || 380, h = cv.clientHeight || 170;
+  cv.width = Math.round(w * DPR); cv.height = Math.round(h * DPR);
+  const g = cv.getContext("2d"); g.setTransform(DPR, 0, 0, DPR, 0, 0);
+  const feats = getSnap(si), mine = feats.filter(f => f.item === it.id); if (!mine.length) return;
+  const fc = { type: "FeatureCollection", features: mine }, c = d3.geoCentroid(fc);
+  const world = d3.geoEqualEarth().rotate([-c[0], 0]).fitExtent([[6, 6], [w - 6, h - 6]], { type: "Sphere" });
+  const p = d3.geoEqualEarth().rotate([-c[0], 0]).fitExtent([[18, 16], [w - 18, h - 16]], fc);
+  const cap = world.scale() * 6;
+  if (p.scale() > cap) { p.scale(cap); const t = p.translate(), q = p(c); p.translate([t[0] + w / 2 - q[0], t[1] + h / 2 - q[1]]); }
+  if (p.scale() < world.scale()) { p.scale(world.scale()).translate(world.translate()); }
+  const path = d3.geoPath(p, g);
+  g.fillStyle = C.sea; g.fillRect(0, 0, w, h);
+  g.beginPath(); path(d3.geoGraticule10()); g.strokeStyle = rgba(C.ink, 0.06); g.lineWidth = 0.6; g.stroke();
+  g.beginPath(); path(LAND); g.fillStyle = C.land; g.fill();
+  g.beginPath(); for (const f of feats) if (f.item !== it.id && !f.cult) path(f); g.strokeStyle = rgba(C.ink, 0.18); g.lineWidth = 0.5; g.stroke();
+  g.beginPath(); for (const f of mine) path(f); g.fillStyle = C.fam[it.fam]; g.fill(); g.strokeStyle = C.ink; g.lineWidth = 1.1; g.stroke();
+}
+function openEntry(it) {
+  select(it, true);
+  if (!(U(it.s) >= view.v0 && U(Math.min(it.e, NOW)) <= view.v1)) zoomTo(it.s, Math.min(it.e, NOW));
+}
+// ---- Index --------------------------------------------------------------------
+function renderIndex() {
+  const pre = /^(Kingdom|Crown|Empire|Republic|Sultanate|Khanate|Grand Duchy|Grand Principality|Emirate|Viceroyalty|Federal Republic|Duchy|Principality|Tsardom|Caliphate|Confederation|Union|Islamic Emirate|Islamic Republic) of (the )?(.+)$/;
+  const rows = ITEMS.map(it => { const m = it.name.match(pre); const label = m ? `${m[3]}, ${m[1]} of${m[2] ? " the" : ""}` : it.name; return { it, label, key: label.normalize("NFD").replace(/[̀-ͯ'ʻ’]/g, "").replace(/[Đđ]/g, "d").toLowerCase() }; })
+    .sort((a, b) => a.key.localeCompare(b.key));
+  const groups = new Map();
+  for (const r of rows) { const L = r.key[0].toUpperCase(); if (!groups.has(L)) groups.set(L, []); groups.get(L).push(r); }
+  document.getElementById("letters").innerHTML = [...groups.keys()].map(L => `<a href="#idx-${L}">${L}</a>`).join("");
+  document.getElementById("indexCols").innerHTML = [...groups].map(([L, rs]) => `<h3 id="idx-${L}">${L}</h3><ul>${rs.map(r => `<li><button type="button" data-id="${r.it.id}"><i style="background:var(--f-${r.it.fam})"></i>${r.it.culture ? `<em>${esc(r.label)}</em>` : esc(r.label)}<span>${esc(fy(r.it.rawS))}–${esc(fy(r.it.e))}</span></button></li>`).join("")}</ul>`).join("");
+}
+document.getElementById("indexCols").addEventListener("click", e => { const b = e.target.closest("button[data-id]"); if (b) openEntry(ITEMS[+b.dataset.id]); });
+
+// ---- Theme & boot -------------------------------------------------------------
+function retheme() { readColors(); hatch = null; mapHatch = null; draw(); mapDirty = true; mapSync(); if (selected) drawLocator(selected); }
+function setSkin(k) {
+  if (!["light", "dark", "retro"].includes(k)) k = "retro";
+  document.documentElement.dataset.skin = k;
+  document.querySelectorAll("button[data-skin]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.skin === k)));
+  try { localStorage.setItem("hall-of-realms-skin", k); } catch (e) {}
+  retheme(); lastPanelKey = ""; renderPanel();
+  if (document.fonts) document.fonts.ready.then(() => { draw(); mapDirty = true; mapSync(); });
+}
+document.querySelectorAll("button[data-skin]").forEach(b => b.addEventListener("click", () => setSkin(b.dataset.skin)));
+{ let k = "retro"; try { k = localStorage.getItem("hall-of-realms-skin") || "retro"; } catch (e) {}
+  const hs = new URLSearchParams(location.hash.slice(1)).get("skin"); if (hs) k = hs;
+  document.documentElement.dataset.skin = k;
+  document.querySelectorAll("button[data-skin]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.skin === k))); }
+new ResizeObserver(() => resize()).observe(chart.parentElement);
+readColors();
+// open on a readable window: the last 3,100 years
+setView(U(-1200), 1);
+resize(); sizeMap(); renderIndex();
+// deep links: #y=1200&view=globe&big=1
+(function () {
+  const h = new URLSearchParams(location.hash.slice(1));
+  if (h.get("view") === "globe") setMapMode("globe");
+  if (h.get("y")) { pinnedYear = Math.max(Y0, Math.min(NOW, +h.get("y"))); }
+  if (h.get("q")) { q.value = h.get("q"); q.dispatchEvent(new Event("input")); }
+  if (h.get("big") === "1") setBig(true);
+  if (h.get("top")) setTimeout(() => scrollTo(0, 0), 900);
+  if (h.get("sel")) { const it = ITEMS.find(i => i.name === h.get("sel")); if (it) openEntry(it); }
+})();
+renderPanel();
+document.fonts && document.fonts.ready.then(() => { draw(); });
+</script>
