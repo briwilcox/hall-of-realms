@@ -2,9 +2,9 @@
 
 An interactive atlas of 695 states, empires and peoples from 3100 BCE to 2026, live at [brianmwilcox.com/hall-of-realms](https://www.brianmwilcox.com/hall-of-realms/).
 
-Each region of the world is a hall. Each row in a hall follows one line of succession, and a bar's color shows the language family of the group that ruled. A chosen year redraws that year's borders on a flat map or a globe and lists everything standing then. Each entry opens an encyclopedia article with its dates, its rulers' language, its predecessors, successors and contemporaries, and a locator map of its greatest mapped extent.
+The world splits into twelve regional halls, and every row in a hall follows one line of succession. A bar's color shows the language family of the group that ruled. Picking a year redraws that year's borders on a flat map or a globe and lists everything standing then. Every entry opens an article with its dates, its rulers' language, its predecessors, successors and contemporaries, and a locator map of its largest mapped extent.
 
-The timeline zooms from five millennia down to single years, and successions come from a curated list rather than from which row a bar happens to sit in; a chosen entry draws lines to its predecessors and successors. On a phone the page becomes four tabs (Timeline, Map, Index and About), articles open in a sheet that a downward swipe dismisses, and the timeline and map answer to swipes, flicks and pinches. The page has three looks: Light (the default) and Dark, which match brianmwilcox.com and follow its theme setting, and Retro, styled after a 1990s CD-ROM encyclopedia.
+The timeline zooms from five millennia down to single years. A list of 382 succession links in the source decides who followed whom, so a chosen entry draws lines to its predecessors and successors wherever their bars sit. On a phone the page splits into four tabs (Timeline, Map, Index and About), articles open in a sheet that a downward swipe closes, and the timeline and map pan and zoom by touch. Light (the default) and Dark match brianmwilcox.com and follow its theme setting; a third look, Retro, is styled after a 1990s CD-ROM encyclopedia.
 
 ## Usage
 
