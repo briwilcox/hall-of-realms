@@ -15,6 +15,11 @@ from paths import BUILD, DIST, SRC_HTML
 
 MARKER = "/*MAPDATA*/"
 DATA_TAG = f'<script id="mapdata" type="application/json">{MARKER}</script>'
+SOURCE_ARCHIVE = "hall-of-realms-source.tar.gz"
+SITE_FOOTER = (
+    f'<p>Hall of Realms is free software under the GPL-3.0. <a href="{SOURCE_ARCHIVE}">Download the complete source</a> '
+    "(page, build pipeline and border-processing code) to rebuild or modify it.</p>"
+)
 
 
 def main() -> None:
@@ -46,6 +51,7 @@ def main() -> None:
     (site / "mapdata.js").write_text(f"window.HALL_OF_REALMS_MAPDATA = {data};\n", encoding="utf-8")
     loader = '<script defer src="mapdata.js"></script>\n<script defer src="app.js"></script>'
     page = src[: app.start()] + loader + src[app.end():]
+    page = page.replace("<!--SITE-FOOTER-->", SITE_FOOTER)
     page = page.replace(DATA_TAG, "").replace(
         '<script src="https://cdnjs.cloudflare.com/', '<script defer src="https://cdnjs.cloudflare.com/'
     )

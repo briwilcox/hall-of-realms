@@ -18,6 +18,8 @@ page: build/mapdata.json
 	cd $(P) && $(PY) build.py
 site: build/mapdata.json
 	cd $(P) && $(PY) build.py --split
+	git archive --format=tar.gz --prefix=hall-of-realms/ -o dist/site/hall-of-realms-source.tar.gz HEAD
+	@git diff --quiet HEAD -- . || echo "warning: uncommitted changes are not in the source archive"
 typecheck:
 	mypy --strict $(P)
 clean:
