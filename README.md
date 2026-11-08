@@ -4,13 +4,13 @@ An interactive atlas of 695 states, empires and peoples from 3100 BCE to 2026, l
 
 Each region of the world is a hall. Each row in a hall follows one line of succession, and a bar's color shows the language family of the group that ruled. A chosen year redraws that year's borders on a flat map or a globe and lists everything standing then. Each entry opens an encyclopedia article with its dates, its rulers' language, its predecessors, successors and contemporaries, and a locator map of its greatest mapped extent.
 
-The timeline zooms from five millennia down to single years, and successions come from a curated list rather than from which row a bar happens to sit in. The page has three looks: Light (the default) and Dark, which match brianmwilcox.com and follow its theme setting, and Retro, styled after a 1990s CD-ROM encyclopedia.
+The timeline zooms from five millennia down to single years, and successions come from a curated list rather than from which row a bar happens to sit in; a chosen entry draws lines to its predecessors and successors. On a phone the page becomes four tabs (Timeline, Map, Index and About), articles open in a sheet that a downward swipe dismisses, and the timeline and map answer to swipes, flicks and pinches. The page has three looks: Light (the default) and Dark, which match brianmwilcox.com and follow its theme setting, and Retro, styled after a 1990s CD-ROM encyclopedia.
 
 ## Usage
 
 The built page is static HTML with no server. `dist/hall-of-realms.html` opens straight from disk, and `dist/site/` runs on any static host.
 
-Hash parameters open the page in a given state:
+Hash parameters open the page in a given state, and the address keeps itself current as entries open and years are pinned, so a copied link reopens the same view:
 
 | Parameter | Effect |
 |---|---|
@@ -19,6 +19,7 @@ Hash parameters open the page in a given state:
 | `q=khanate` | filters the timeline by a search term |
 | `view=globe` | starts on the globe |
 | `big=1` | starts with the map enlarged |
+| `tab=map` | on a phone, opens the `map`, `index` or `about` tab |
 | `skin=light` | picks `light`, `dark` or `retro` |
 
 ### Building

@@ -44,7 +44,7 @@ body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:
   padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:28px 48px}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
 .hall{max-width:1600px;margin:0 auto}
-header{display:grid;gap:14px;margin-bottom:18px}
+header{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-bottom:18px}
 .overline,.eyebrow{font-family:var(--body);font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.2em;color:var(--accent)}
 h1{font-family:var(--display);font-weight:400;font-size:clamp(38px,6vw,76px);letter-spacing:.14em;line-height:1;margin:0;text-wrap:balance}
 .inscription{display:grid;gap:10px;justify-items:start;padding-bottom:14px;border-bottom:1px solid var(--accent);box-shadow:0 4px 0 -3px var(--accent)}
@@ -65,16 +65,27 @@ h1{font-family:var(--display);font-weight:400;font-size:clamp(38px,6vw,76px);let
 .directory .search input::placeholder{color:color-mix(in srgb,var(--plaque-ink) 55%,transparent)}
 .directory #matchInfo{color:color-mix(in srgb,var(--plaque-ink) 65%,transparent)}
 .controls{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.prefs{display:contents}
 .group{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
 .group-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.16em;color:var(--ink-3);margin-right:4px;font-weight:600}
 button,.search input{font:inherit;font-size:13px;color:var(--ink);background:var(--sheet);border:1px solid var(--rule);border-radius:2px;padding:4px 9px;cursor:pointer}
+button{transition:background-color .15s,border-color .15s,color .15s,box-shadow .15s,transform .08s;-webkit-tap-highlight-color:transparent}
+button,a,input,.chip{touch-action:manipulation}
 button:hover{border-color:var(--ink-3)}
+button:active{transform:translateY(1px)}
 button[aria-pressed="true"]{background:var(--ink);color:var(--sheet);border-color:var(--ink)}
 button:focus-visible,input:focus-visible,canvas:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .search input{cursor:text;width:230px;max-width:60vw}
-.search{display:flex;gap:6px;align-items:center}
+.search{display:flex;gap:6px;align-items:center;position:relative}
+.sugg{position:absolute;left:0;top:calc(100% + 6px);z-index:35;width:min(430px,calc(100vw - 32px));margin:0;padding:4px;list-style:none;background:var(--sheet);color:var(--ink);border:1px solid var(--rule);border-radius:4px;box-shadow:0 14px 36px rgba(0,0,0,.2);max-height:min(60vh,430px);overflow:auto;animation:tipin .14s ease-out}
+.sugg li{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:3px;cursor:pointer;font-size:14px}
+.sugg li[aria-selected="true"],.sugg li:hover{background:var(--band)}
+.sugg i{width:10px;height:10px;border-radius:2px;flex:none}
+.sugg .n{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sugg mark{background:none;color:inherit;font-weight:700;text-decoration:underline 2px var(--accent);text-underline-offset:3px}
+.sugg .d{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-3);white-space:nowrap;font-variant-numeric:tabular-nums}
 #matchInfo{font-family:var(--mono);font-size:12px;color:var(--ink-3);min-width:6ch}
-.key{display:grid;gap:6px}
+.key{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
 .legend{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center}
 .chip{display:inline-flex;align-items:center;gap:6px;padding:3px 8px 3px 6px;font-size:12.5px}
 .chip i{width:12px;height:12px;border-radius:1px;display:inline-block;flex:none}
@@ -94,12 +105,20 @@ canvas{display:block;width:100%}
 #chart.dragging{cursor:grabbing}
 .hint{font-size:12px;color:var(--ink-3);padding:6px 10px;border-top:1px solid var(--rule-2)}
 aside{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);max-height:calc(100vh - 24px);overflow:auto;background:var(--sheet);border:1px solid var(--rule);border-radius:2px}
-#ledger{padding:14px 16px 20px}
+#ledger{padding:0}
+#entrypane{display:none}
+html.has-entry #entrypane{display:block}
+#entrypane:focus{outline:none}
+.sheet-top{display:none}
+#entrybody{padding:14px 16px 0}
+#yearlist{padding:16px 16px 20px}
 .mapcard{position:sticky;top:0;z-index:2;background:var(--sheet);border-bottom:1px solid var(--rule);padding:10px 12px 10px;display:grid;gap:7px}
 .maphead{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .maphead .snap{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);flex:1 1 140px;min-width:0;line-height:1.3}
 .maphead .snap b{color:var(--ink);font-weight:500}
 .maphead button{font-size:12px;padding:3px 8px}
+.mapbar button{min-width:32px;padding:3px 8px}
+.mapbar .step{font-size:16px;line-height:1;padding:3px 7px}
 #map{display:block;width:100%;touch-action:none;cursor:grab;border-radius:1px}
 #map.dragging{cursor:grabbing}
 .mapbar{display:flex;gap:8px;align-items:center}
@@ -112,7 +131,7 @@ aside{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);max-height:c
 body.mapbig aside{z-index:50}
 .mapcard.big .maphead .snap{font-size:13px}
 /* encyclopedia entry */
-.entry{display:grid;gap:10px;padding-bottom:16px;margin-bottom:16px;border-bottom:3px double var(--rule)}
+.entry{display:grid;gap:10px;padding-bottom:16px;border-bottom:3px double var(--rule);animation:rise .3s cubic-bezier(.2,.8,.2,1)}
 .entry .eyebrow{display:flex;justify-content:space-between;gap:8px}
 .entry .eyebrow button{all:unset;cursor:pointer;color:var(--ink-3);font-size:11px;letter-spacing:.12em}
 .entry .eyebrow button:hover{color:var(--ink)}
@@ -135,8 +154,10 @@ body.mapbig aside{z-index:50}
 .entry .actions{display:flex;gap:6px;flex-wrap:wrap}
 .entry .actions a{font-size:13px;color:var(--ink);border:1px solid var(--rule);border-radius:2px;padding:4px 9px;text-decoration:none;background:var(--sheet)}
 .entry .actions a:hover{border-color:var(--ink-3)}
+.entry .actions{align-items:center}
 /* world in year */
-.xs-head{display:grid;gap:2px;border-bottom:1px solid var(--accent);padding-bottom:8px;margin-bottom:6px}
+.xs-head{display:grid;gap:2px;border-bottom:1px solid var(--accent);padding-bottom:8px;margin-bottom:6px;position:relative}
+.xs-head .unpin{position:absolute;right:0;top:0;font-size:12px;padding:3px 9px}
 .xs-year{font-family:var(--display);font-size:30px;line-height:1.05;letter-spacing:.04em}
 .xs-sum{font-family:var(--prose);font-style:italic;font-size:14px;color:var(--ink-2)}
 .xs-region{margin-top:12px}
@@ -150,6 +171,14 @@ body.mapbig aside{z-index:50}
 .tip{position:fixed;pointer-events:none;z-index:60;background:var(--plaque);color:var(--plaque-ink);padding:7px 10px;border-radius:2px;font-size:12.5px;max-width:290px;box-shadow:0 6px 18px rgba(0,0,0,.22)}
 .tip b{font-family:var(--display);font-weight:400;font-size:15px;letter-spacing:.03em;display:block}
 .tip span{font-family:var(--mono);font-size:11.5px;opacity:.82;display:block}
+.tip:not([hidden]){animation:tipin .12s ease-out}
+@keyframes tipin{from{opacity:0;transform:translateY(3px)}}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.96)}}
+@keyframes viewin{from{opacity:0}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.t-only,.narrow-only{display:none}
+@media (hover:none){.t-only{display:inline}.m-only{display:none}}
 /* index */
 .index{margin-top:28px;background:var(--sheet);border:1px solid var(--rule);border-radius:2px;padding:18px 20px 24px}
 .index-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 20px;border-bottom:1px solid var(--accent);padding-bottom:10px;margin-bottom:12px}
@@ -161,6 +190,7 @@ body.mapbig aside{z-index:50}
 .cols{columns:4 230px;column-gap:28px}
 .cols h3{font-family:var(--display);font-weight:400;font-size:22px;color:var(--accent);margin:10px 0 4px;break-after:avoid;border-bottom:1px solid var(--rule-2)}
 .cols h3:first-child{margin-top:0}
+.cols h3{scroll-margin-top:12px}
 .cols ul{list-style:none;margin:0;padding:0}
 .cols li{break-inside:avoid}
 .cols li button{all:unset;cursor:pointer;display:flex;gap:8px;align-items:baseline;width:100%;font-family:var(--prose);font-size:14px;line-height:1.45;padding:0 2px}
@@ -172,14 +202,6 @@ footer{margin:20px auto 0;font-family:var(--prose);font-size:13.5px;color:var(--
 footer h2{font-family:var(--body);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.2em;color:var(--accent);margin:0}
 footer p{margin:0;max-width:110ch}
 footer a{color:var(--accent)}
-@media (max-width:900px){
-  .wrap{grid-template-columns:minmax(0,1fr)}
-  aside{position:fixed;left:0;right:0;bottom:0;top:auto;max-height:52vh;border-radius:6px 6px 0 0;z-index:15;
-    padding:0 max(4px, env(safe-area-inset-right,0px)) env(safe-area-inset-bottom,0px) max(4px, env(safe-area-inset-left,0px));box-shadow:0 -6px 20px rgba(0,0,0,.15)}
-  body{padding-bottom:calc(54vh + 20px)}
-  .xs-year{font-size:22px}
-  .entry h2{font-size:23px}
-}
 
 [data-skin="retro"] body{font-size:13px}
 [data-skin="retro"] header{background:var(--chrome);box-shadow:var(--out);padding:3px 3px 12px;gap:10px}
@@ -246,6 +268,11 @@ footer a{color:var(--accent)}
 [data-skin="retro"] aside::-webkit-scrollbar-track{background:#dcdcdc}
 [data-skin="retro"] aside::-webkit-scrollbar-thumb{background:#c0c0c0;box-shadow:var(--out)}
 [data-skin="retro"] :focus-visible{outline:1px dotted #000;outline-offset:-4px}
+[data-skin="retro"] .sugg{border:1px solid #000;border-radius:0;box-shadow:2px 2px 0 rgba(0,0,0,.35);padding:0;font-family:var(--body)}
+[data-skin="retro"] .sugg li{border-radius:0}
+[data-skin="retro"] .sugg li[aria-selected="true"],[data-skin="retro"] .sugg li:hover{background:#000080;color:#fff}
+[data-skin="retro"] .sugg li[aria-selected="true"] .d,[data-skin="retro"] .sugg li:hover .d{color:#dfe7ff}
+[data-skin="retro"] .sugg mark{text-decoration-color:currentColor}
 
 /* Light and Dark follow brianmwilcox.com: Playfair Display headings, DM Sans text, JetBrains Mono labels. */
 :root:not([data-skin="retro"]) h1{font-weight:900;letter-spacing:-.015em;line-height:1.02}
@@ -260,7 +287,131 @@ footer a{color:var(--accent)}
 [data-skin="retro"] .crumbs,[data-skin="retro"] .crumbs [aria-current]{color:#fff;font-family:var(--body)}
 [data-skin="retro"] .crumbs a{color:#ffff9e;border-bottom-color:#ffff9e}
 
-@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+/* Phones and small tablets: one view at a time behind a bottom tab bar, and articles in a sheet that slides up. */
+.tabbar,.fab,.scrim{display:none}
+@media (max-width:900px){
+  .narrow-only{display:inline}
+  .wide-only{display:none}
+  body{padding-block:12px calc(84px + env(safe-area-inset-bottom,0px))}
+  .wrap{display:block}
+  aside,#ledger{display:contents}
+  .crumbs{margin:0 0 10px;font-size:11px}
+  header{gap:10px;margin-bottom:12px}
+  .inscription{gap:6px;padding-bottom:10px}
+  h1{font-size:clamp(32px,9.5vw,46px)}
+  .overline{font-size:10px;letter-spacing:.12em}
+  .facts{font-size:11px;gap:2px 14px}
+  .lede{font-size:17px}
+  .directory{padding:8px;gap:8px}
+  .search{flex:1 1 100%}
+  .search input{flex:1;min-width:0;width:auto;max-width:none;font-size:16px;padding:9px 12px}
+  .sugg{width:auto;right:0;max-height:52vh}
+  .sugg li{padding:10px 9px;font-size:15px}
+  #eras,.legend{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain;
+    -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);padding-right:24px}
+  #eras::-webkit-scrollbar,.legend::-webkit-scrollbar{display:none}
+  #eras{flex:1 1 100%}
+  #eras > *,.legend > *{flex:none}
+  .directory button,.legend .chip,.maphead button,.mapbar button,.entry .actions :is(a,button),.xs-head .unpin{min-height:38px}
+  .directory button{padding:6px 12px;font-size:14px}
+  .legend .chip{font-size:13px;padding:4px 10px 4px 8px}
+  .entry .actions a{display:inline-flex;align-items:center}
+  .chartbox{margin-left:calc(-1 * max(16px, env(safe-area-inset-left,0px)));margin-right:calc(-1 * max(16px, env(safe-area-inset-right,0px)));border-inline:0;border-radius:0}
+  .casehead{display:none}
+  .hint{padding:10px 16px;font-size:13px}
+  .mapcard{margin-left:calc(-1 * max(16px, env(safe-area-inset-left,0px)));margin-right:calc(-1 * max(16px, env(safe-area-inset-right,0px)));
+    padding:10px max(16px, env(safe-area-inset-right,0px)) 12px max(16px, env(safe-area-inset-left,0px));position:static;border-top:1px solid var(--rule);gap:9px}
+  .mapcard.big{position:fixed;margin:0;padding:12px}
+  .maphead button{padding:5px 12px;font-size:13px}
+  .mapbar{gap:6px}
+  .mapbar button{min-width:40px;font-size:14px}
+  .mapbar input[type=range]{height:34px}
+  .maplegend{font-size:12.5px}
+  #yearlist{padding:14px 0 8px}
+  .xs-year{font-size:26px}
+  .xs-region h3{font-size:16px}
+  .xs-region li button{padding:8px 4px;font-size:15px}
+  .xs-region li span{font-size:11.5px}
+  .index{margin:0;padding:0 16px 20px}
+  .index-head{padding-top:16px}
+  .letters{position:sticky;top:env(safe-area-inset-top,0px);z-index:3;background:var(--sheet);flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -16px 8px;padding:6px 12px;border-bottom:1px solid var(--rule)}
+  .letters::-webkit-scrollbar{display:none}
+  .letters a{flex:none;min-width:34px;text-align:center;padding:8px 4px;font-size:16px}
+  .cols h3{scroll-margin-top:64px}
+  .cols li button{padding:8px 2px;font-size:15px}
+  footer{margin-top:16px}
+
+  /* which parts each tab shows; a page with no tab chosen yet shows the timeline */
+  :is(:root:not([data-view]),:root[data-view="timeline"]) :is(.walltext,.prefs,.zoomgrp,.mapcard,#yearlist,.index,footer),
+  :root[data-view="map"] :is(.crumbs,header,.chartbox,.index,footer),
+  :root[data-view="index"] :is(.crumbs,header,.chartbox,.mapcard,#yearlist,footer),
+  :root[data-view="about"] :is(.directory > :not(.prefs),.key,.chartbox,.mapcard,#yearlist,.index){display:none}
+  .prefs{display:flex;flex-wrap:wrap;gap:12px 20px}
+  .hall.viewin{animation:viewin .2s ease-out}
+
+  .tabbar{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:30;
+    padding:3px max(8px, env(safe-area-inset-right,0px)) env(safe-area-inset-bottom,0px) max(8px, env(safe-area-inset-left,0px));
+    background:color-mix(in srgb,var(--sheet) 84%,transparent);-webkit-backdrop-filter:saturate(1.6) blur(18px);backdrop-filter:saturate(1.6) blur(18px);border-top:1px solid var(--rule)}
+  .tabbar button{all:unset;display:grid;justify-items:center;align-content:center;gap:2px;min-height:50px;font-family:var(--body);font-size:10.5px;font-weight:600;letter-spacing:.02em;color:var(--ink-3);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color .15s}
+  .tabbar svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s cubic-bezier(.2,.8,.2,1)}
+  .tabbar button[aria-current="page"]{color:var(--accent)}
+  .tabbar button[aria-current="page"] svg{transform:translateY(-1px) scale(1.08)}
+  .tabbar button:active svg{transform:scale(.92)}
+  .tabbar button:focus-visible{outline:2px solid var(--accent);outline-offset:-5px;border-radius:10px}
+
+  .fab{display:flex;position:fixed;z-index:29;left:max(12px, env(safe-area-inset-left,0px));right:max(12px, env(safe-area-inset-right,0px));
+    bottom:calc(66px + env(safe-area-inset-bottom,0px));gap:8px;align-items:center;justify-content:flex-end;pointer-events:none}
+  .fab > *{pointer-events:auto}
+  .fab > :not([hidden]){animation:pop .24s cubic-bezier(.2,.8,.2,1)}
+  :root:not([data-view="timeline"]):is([data-view]) .zoomers{display:none}
+  .zoomers{display:flex;flex:none;border-radius:12px;background:var(--sheet);box-shadow:0 6px 20px rgba(0,0,0,.18),0 0 0 1px var(--rule);overflow:hidden}
+  .zoomers button{border:0;border-radius:0;width:48px;height:44px;font-size:21px;line-height:1;background:transparent;color:var(--ink)}
+  .zoomers button + button{border-left:1px solid var(--rule)}
+  .chipbtn{display:flex;align-items:center;gap:8px;margin-right:auto;min-height:44px;padding:0 15px;border:0;border-radius:12px;background:var(--plaque);color:var(--plaque-ink);box-shadow:0 6px 20px rgba(0,0,0,.24);font-size:14px}
+  .chipbtn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .chipbtn b{font-family:var(--mono);font-weight:500}
+  .mini{flex:1 1 auto;min-width:0;display:flex;align-items:stretch;background:var(--sheet);border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.2),0 0 0 1px var(--rule);overflow:hidden}
+  .mini-open{all:unset;flex:1;min-width:0;display:flex;gap:11px;align-items:center;padding:8px 6px 8px 12px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .mini-open i{width:6px;align-self:stretch;border-radius:3px;flex:none}
+  .mini-open span{min-width:0;display:grid}
+  .mini-open b{font-family:var(--display);font-size:16px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mini-open small{font-family:var(--mono);font-size:11px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mini-open svg{width:20px;height:20px;flex:none;margin-left:auto;fill:none;stroke:var(--ink-3);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  #miniClose{flex:none;border:0;border-left:1px solid var(--rule);border-radius:0;width:46px;font-size:19px;background:transparent;color:var(--ink-2)}
+
+  .scrim{display:block;position:fixed;inset:0;z-index:44;background:rgba(12,10,8,.45);opacity:0;pointer-events:none;transition:opacity .3s}
+  html.has-entry .scrim{opacity:1;pointer-events:auto}
+  html.has-entry{overflow:hidden}
+  #entrypane{display:block;position:fixed;left:0;right:0;bottom:0;z-index:45;max-height:calc(100vh - 56px);max-height:calc(100dvh - env(safe-area-inset-top,0px) - 34px);
+    overflow-y:auto;overscroll-behavior:contain;background:var(--sheet);border-radius:16px 16px 0 0;box-shadow:0 -12px 44px rgba(0,0,0,.3);
+    padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateY(calc(100% + 48px));visibility:hidden;
+    transition:transform .38s cubic-bezier(.2,.86,.24,1),visibility 0s linear .38s}
+  html.has-entry #entrypane{transform:none;visibility:visible;transition:transform .38s cubic-bezier(.2,.86,.24,1)}
+  #entrypane.dragging{transition:none}
+  .sheet-top{display:flex;justify-content:center;position:sticky;top:0;z-index:2;background:var(--sheet);padding:9px 0 7px;cursor:grab}
+  .grab{width:40px;height:5px;border-radius:3px;background:var(--rule)}
+  #entrybody{padding:0 max(18px, env(safe-area-inset-right,0px)) 0 max(18px, env(safe-area-inset-left,0px))}
+  #entrypane .entry{border-bottom:0;padding-bottom:4px}
+  #entrypane .entry h2{font-size:28px}
+  #entrypane .infobox .loc{height:190px}
+
+  [data-skin="retro"] .tabbar{background:var(--chrome);-webkit-backdrop-filter:none;backdrop-filter:none;border-top:1px solid #dfdfdf;box-shadow:inset 0 1px #fff;gap:4px;padding-top:4px}
+  [data-skin="retro"] .tabbar button{background:var(--chrome);color:#000;font-family:var(--body);font-size:11px;box-shadow:var(--out);min-height:46px;margin-bottom:4px}
+  [data-skin="retro"] .tabbar button[aria-current="page"]{box-shadow:var(--in);background:#d6d6d6;color:#000}
+  [data-skin="retro"] .tabbar button[aria-current="page"] svg{transform:none}
+  [data-skin="retro"] :is(.zoomers,.mini,.chipbtn){border-radius:0;background:var(--chrome);color:#000;box-shadow:var(--out),2px 2px 0 rgba(0,0,0,.3)}
+  [data-skin="retro"] .zoomers button,[data-skin="retro"] #miniClose{border-color:#808080;background:transparent;box-shadow:none}
+  [data-skin="retro"] .mini-open b{font-family:var(--body)}
+  [data-skin="retro"] .mini-open small{color:#000}
+  [data-skin="retro"] #entrypane{background:var(--chrome);border-radius:0;box-shadow:var(--out),0 -8px 30px rgba(0,0,0,.35);padding-inline:3px}
+  [data-skin="retro"] .sheet-top{background:var(--chrome)}
+  [data-skin="retro"] .grab{width:56px;height:7px;border-radius:0;background:repeating-linear-gradient(180deg,#fff 0 1px,#808080 1px 2px,transparent 2px 3px)}
+  [data-skin="retro"] #entrybody{background:var(--sheet);box-shadow:var(--in);padding:14px 16px 12px}
+  [data-skin="retro"] .chartbox,[data-skin="retro"] .mapcard{margin-inline:0}
+  [data-skin="retro"] #yearlist{background:var(--sheet);box-shadow:var(--in);padding:12px 14px;margin-top:8px}
+}
+
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 </style>
 
 <div class="hall">
@@ -272,34 +423,37 @@ footer a{color:var(--accent)}
     <div class="facts"><span><b id="count"></b>entries</span><span><b>12</b>halls</span><span><b>49</b>border maps</span><span><b>5,126</b>years</span></div>
   </div>
   <div class="walltext">
-    <p class="lede">The atlas sets five thousand years of states and peoples side by side. Each region of the world gets a hall, and each row in a hall follows one line of succession. A bar's color shows the language its rulers spoke. Choosing a year redraws the borders on the map at right and lists everything standing then; selecting anything opens its encyclopedia entry.</p>
+    <p class="lede">The atlas sets five thousand years of states and peoples side by side. Each region of the world gets a hall, and each row in a hall follows one line of succession. A bar's color shows the language its rulers spoke. Choosing a year redraws the borders on the map<span class="wide-only"> at right</span><span class="narrow-only"> in the Map tab</span> and lists everything standing then; selecting anything opens its encyclopedia entry.</p>
     <div class="visit"><h2>Using the exhibit</h2><ul>
-      <li>Hovering over the timeline shows the world in that year, and a click on empty space pins it.</li>
-      <li>A click on a bar, a territory or an index entry opens its article.</li>
-      <li>Dragging pans the timeline. Pinching, or scrolling over the time axis, zooms it.</li>
-      <li>Dragging the globe turns it, and Play runs the borders forward through time.</li>
+      <li><span class="m-only">Hovering over the timeline shows the world in that year, and a click on empty space pins it.</span><span class="t-only">A tap on empty timeline space pins that year and lists everything standing then.</span></li>
+      <li><span class="m-only">A click</span><span class="t-only">A tap</span> on a bar, a territory or an index entry opens its article, and lines on the timeline link it to its predecessors and successors.</li>
+      <li><span class="m-only">Dragging pans the timeline, which coasts on after a quick flick. Pinching, or scrolling over the time axis, zooms it.</span><span class="t-only">Swiping sideways pans the timeline, which coasts on after a quick flick, and pinching zooms it.</span></li>
+      <li>Typing in the search box lists matching entries as the letters arrive.</li>
+      <li>Dragging the globe turns it. Play runs the borders forward through time, and the ‹ and › buttons step through the border maps one at a time.</li>
     </ul></div>
   </div>
   <div class="directory controls">
-    <div class="search"><input id="q" type="search" placeholder="Search: Maurya, Inca, Song…" aria-label="Find a state or culture"><span id="matchInfo"></span></div>
+    <div class="search"><input id="q" type="search" placeholder="Search: Maurya, Inca, Song…" aria-label="Find a state or culture" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugg" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go"><span id="matchInfo"></span><ul class="sugg" id="sugg" role="listbox" aria-label="Matching entries" hidden></ul></div>
     <div class="group" id="eras" role="group" aria-label="Jump to an era"><span class="group-label">Era</span></div>
+    <div class="prefs">
     <div class="group" role="group" aria-label="Time scale"><span class="group-label">Scale</span>
       <button id="mDeep" aria-pressed="true" title="More room for recent centuries">Deep time</button>
       <button id="mEven" aria-pressed="false" title="Every century the same width">Even</button>
     </div>
     <div class="group" role="group" aria-label="Theme"><span class="group-label">Theme</span><button type="button" data-skin="light" aria-pressed="true">Light</button><button type="button" data-skin="dark" aria-pressed="false">Dark</button><button type="button" data-skin="retro" aria-pressed="false" title="Mid-90s CD-ROM encyclopedia look">Retro</button></div>
-    <div class="group" role="group" aria-label="Zoom"><span class="group-label">Zoom</span><button id="zIn" aria-label="Zoom in">+</button><button id="zOut" aria-label="Zoom out">−</button></div>
+    </div>
+    <div class="group zoomgrp" role="group" aria-label="Zoom"><span class="group-label">Zoom</span><button id="zIn" aria-label="Zoom in">+</button><button id="zOut" aria-label="Zoom out">−</button></div>
   </div>
-  <div class="key"><span class="group-label">Key · language family of the ruling group (click to isolate)</span>
+  <div class="key"><span class="group-label">Key · language family of the ruling group; <span class="m-only">a click</span><span class="t-only">a tap</span> on one shows only that family</span>
   <div class="legend" id="legend" role="group" aria-label="Language families"></div></div>
 </header>
 
 <div class="wrap">
   <div class="chartbox">
     <div class="casehead"><h2>Timeline of the Halls</h2><span>Each row follows one line of succession; the dotted line marks 1 CE.</span></div>
-    <div class="axiswrap"><canvas id="axis" aria-label="Time axis and overview. Scroll or drag to change the visible years."></canvas></div>
+    <div class="axiswrap"><canvas id="axis" aria-label="Time axis and overview. Scrolling or dragging here changes the visible years."></canvas></div>
     <canvas id="chart" tabindex="0" aria-label="World history timeline. Arrow keys pan, plus and minus zoom."></canvas>
-    <div class="hint">A click on a bar opens its article, and a click on empty space pins the year (Esc releases it). On a trackpad, pinching zooms and a sideways swipe pans.</div>
+    <div class="hint"><span class="m-only">A click on a bar opens its article, and a click on empty space pins the year (Esc releases it). On a trackpad, pinching zooms and a sideways swipe pans.</span><span class="t-only">A tap on a bar opens its article, and a tap on empty space pins that year. Swiping sideways moves through time, and pinching zooms.</span> Lines link the chosen entry to its predecessors and successors.</div>
   </div>
   <aside id="panel">
     <section class="mapcard" id="mapcard" aria-label="Map of the chosen year">
@@ -308,11 +462,14 @@ footer a{color:var(--accent)}
         <div class="group" role="group" aria-label="Map style"><button id="vFlat" type="button" aria-pressed="true">Map</button><button id="vGlobe" type="button" aria-pressed="false">Globe</button></div>
         <button id="vBig" type="button" aria-pressed="false" title="Enlarge the map">Enlarge</button>
       </div>
-      <canvas id="map" aria-label="Map of states and cultures in the chosen year. Drag to rotate the globe; scroll to zoom."></canvas>
-      <div class="mapbar"><button id="play" type="button">Play</button><input id="yr" type="range" min="-3100" max="2026" step="1" value="2026" aria-label="Year"><span class="yr" id="yrOut"></span></div>
-      <div class="maplegend">Hovering over a territory shows its name, and a click finds it on the timeline. Scrolling zooms the map; dragging turns the globe.</div>
+      <canvas id="map" aria-label="Map of states and cultures in the chosen year. Dragging turns the globe, and scrolling or pinching zooms."></canvas>
+      <div class="mapbar"><button id="snapPrev" class="step" type="button" aria-label="Previous border map" title="Previous border map">‹</button><button id="play" type="button">Play</button><button id="snapNext" class="step" type="button" aria-label="Next border map" title="Next border map">›</button><input id="yr" type="range" min="0" max="1000" step="1" value="1000" aria-label="Year"><span class="yr" id="yrOut"></span></div>
+      <div class="maplegend"><span class="m-only">Hovering over a territory shows its name, and a click opens its article. Scrolling zooms the map; dragging turns the globe.</span><span class="t-only">A tap on a territory opens its article or shows its name. Dragging turns the globe, and pinching zooms.</span></div>
     </section>
-    <div id="ledger" aria-live="polite"></div>
+    <div id="ledger">
+      <div id="entrypane" tabindex="-1" aria-label="Encyclopedia entry"><div class="sheet-top" aria-hidden="true"><span class="grab"></span></div><div id="entrybody"></div></div>
+      <div id="yearlist"></div>
+    </div>
   </aside>
 </div>
 <section class="index" aria-labelledby="idxTitle">
@@ -327,6 +484,19 @@ footer a{color:var(--accent)}
   <p>Hall of Realms is free software under the GPL-3.0. The source, the data pipeline and a guide to sending corrections are on <a href="https://github.com/briwilcox/hall-of-realms">GitHub</a>.</p>
 </footer>
 </div>
+<div class="scrim" id="scrim"></div>
+<div class="fab" id="fab">
+  <div class="mini" id="mini" hidden><button type="button" class="mini-open" id="miniOpen" aria-label="Open the entry again"><i></i><span><b></b><small></small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg></button><button type="button" id="miniClose" aria-label="Clear the selection">×</button></div>
+  <button type="button" class="chipbtn" id="yearChip" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg><span><b></b> on the map</span></button>
+  <div class="zoomers"><button type="button" id="fzOut" aria-label="Zoom out">−</button><button type="button" id="fzIn" aria-label="Zoom in">+</button></div>
+</div>
+<nav class="tabbar" id="tabbar" aria-label="Sections">
+  <button type="button" data-view="timeline" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h9M7 12h14M3 18h12"/></svg>Timeline</button>
+  <button type="button" data-view="map" aria-current="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg>Map</button>
+  <button type="button" data-view="index" aria-current="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h2M4 12h2M4 19h2M9 5h11M9 12h11M9 19h11"/></svg>Index</button>
+  <button type="button" data-view="about" aria-current="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.6v.2"/></svg>About</button>
+</nav>
+<div class="sr" id="sr" aria-live="polite"></div>
 <div class="tip" id="tip" hidden></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
@@ -1289,9 +1459,12 @@ let view = { v0: 0, v1: 1 };
 // ---- Layout -------------------------------------------------------------------
 const chart = document.getElementById("chart"), axis = document.getElementById("axis");
 const cx = chart.getContext("2d"), ax = axis.getContext("2d");
-const LANE = 19, BAR = 15, RPAD_T = 10, RPAD_B = 10;
+const coarse = matchMedia("(pointer: coarse)").matches;
+// Touch screens get taller rows so a fingertip can land on a bar.
+const LANE = coarse ? 22 : 19, BAR = coarse ? 17 : 15, RPAD_T = 10, RPAD_B = 10;
 let G = 150, W = 800, H = 0, DPR = 1, narrow = false;
 let layout = []; // [{reg, y, h, lanes:[[items]]}]
+const rowOf = new Map(); // entry id -> hall id -> top of its bar in that hall
 
 function packLanes(items) {
   const lanes = []; // {end, items}
@@ -1312,6 +1485,7 @@ function buildLayout() {
     const lanes = states.concat(cults);
     const h = RPAD_T + lanes.length * LANE + RPAD_B;
     layout.push({ rid, rname, rshort, y, h, lanes, nStates: states.length });
+    lanes.forEach((lane, li) => lane.forEach(it => { if (!rowOf.has(it.id)) rowOf.set(it.id, new Map()); rowOf.get(it.id).set(rid, y + RPAD_T + li * LANE + (LANE - BAR) / 2); }));
     y += h;
   }
   H = y;
@@ -1320,7 +1494,7 @@ buildLayout();
 
 function resize() {
   DPR = window.devicePixelRatio || 1;
-  const w = chart.parentElement.clientWidth;
+  const w = chart.parentElement.clientWidth; if (!w) return;
   narrow = w < 640; G = narrow ? 74 : 150;
   W = w - G - 8;
   chart.style.height = H + "px";
@@ -1429,6 +1603,7 @@ function drawChart() {
           rr(g, x0, y, w, BAR, 3); g.fillStyle = col; g.fill();
         }
         if (sel || hov) { g.globalAlpha = 1; rr(g, x0 - 1.5, y - 1.5, w + 3, BAR + 3, 4); g.strokeStyle = C.ink; g.lineWidth = sel ? 2 : 1.25; g.stroke(); }
+        else if (selected && (selected.prev.has(it) || selected.next.has(it))) { g.globalAlpha = 1; rr(g, x0 - 1, y - 1, w + 2, BAR + 2, 3.5); g.strokeStyle = rgba(C.ink, .5); g.lineWidth = 1; g.stroke(); }
         // labels
         g.font = it.culture ? fontCult : fontState;
         const tw = g.measureText(it.name).width;
@@ -1445,6 +1620,8 @@ function drawChart() {
       });
     });
   }
+  if (selected) drawLinks(g, selected, 0.7);
+  if (hoverItem && hoverItem !== selected) drawLinks(g, hoverItem, 0.36);
   // cursor
   const cy = pinnedYear ?? hoverYear;
   if (cy != null) { const x = X(cy); g.strokeStyle = C.cursor; g.lineWidth = pinnedYear != null ? 1.5 : 1; g.beginPath(); g.moveTo(Math.round(x) + .5, 0); g.lineTo(Math.round(x) + .5, H); g.stroke(); }
@@ -1461,6 +1638,22 @@ function drawChart() {
     if (!narrow) g.fillText(`${R.lanes.reduce((n, l) => n + l.length, 0)} entries`, 10, R.y + R.h - 22);
   });
   g.strokeStyle = C.rule; g.beginPath(); g.moveTo(G - .5, 0); g.lineTo(G - .5, H); g.stroke();
+}
+// Curves from each predecessor's end to this entry's start, and from its end to each successor, within a hall.
+function drawLinks(g, it, a) {
+  const rows = rowOf.get(it.id); if (!rows) return;
+  g.save(); g.strokeStyle = rgba(C.ink, a); g.fillStyle = rgba(C.ink, a); g.lineWidth = 1.25;
+  const link = (xa, ya, xb, yb) => {
+    if (Math.max(xa, xb) < G || Math.min(xa, xb) > G + W) return;
+    const d = Math.max(14, Math.abs(xb - xa) / 2);
+    g.beginPath(); g.moveTo(xa, ya); g.bezierCurveTo(xa + d, ya, xb - d, yb, xb, yb); g.stroke();
+    g.beginPath(); g.arc(xa, ya, 2.2, 0, 2 * Math.PI); g.arc(xb, yb, 2.2, 0, 2 * Math.PI); g.fill();
+  };
+  for (const [rid, y] of rows) {
+    for (const p of it.prev) { const yp = rowOf.get(p.id)?.get(rid); if (yp != null && yp !== y) link(X(Math.min(p.e, NOW)), yp + BAR / 2, X(it.s), y + BAR / 2); }
+    for (const n of it.next) { const yn = rowOf.get(n.id)?.get(rid); if (yn != null && yn !== y) link(X(Math.min(it.e, NOW)), y + BAR / 2, X(n.s), yn + BAR / 2); }
+  }
+  g.restore();
 }
 function wrapText(g, text, x, y, maxW, lh) {
   const words = text.split(" "); let line = "", yy = y;
@@ -1508,18 +1701,33 @@ function drawAxis() {
 }
 
 // ---- Cross-section panel ------------------------------------------------------
-const panel = document.getElementById("ledger");
-let baseYear = NOW;
+const ledger = document.getElementById("ledger"), yearList = document.getElementById("yearlist");
+const entryPane = document.getElementById("entrypane"), entryBody = document.getElementById("entrybody"), srEl = document.getElementById("sr");
+const compactMQ = matchMedia("(max-width: 900px)");
+const compact = () => compactMQ.matches;
+const reduceMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+let baseYear = NOW, sheetOpen = false, lastEntryId = -1, sheetShownAt = 0;
 const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 let lastPanelKey = "";
+// The entry re-renders only when the selection changes; the year list follows the cursor.
+function renderEntry() {
+  const c = compact(), show = !!selected && (!c || sheetOpen);
+  if (show && !document.documentElement.classList.contains("has-entry")) sheetShownAt = performance.now();
+  document.documentElement.classList.toggle("has-entry", show);
+  if (c) { entryPane.setAttribute("role", "dialog"); entryPane.setAttribute("aria-modal", "true"); }
+  else { entryPane.removeAttribute("role"); entryPane.removeAttribute("aria-modal"); }
+  const id = selected ? selected.id : -1;
+  if (id === lastEntryId) return;
+  lastEntryId = id;
+  if (selected) { entryBody.innerHTML = entryHTML(selected); entryPane.scrollTop = 0; drawLocator(selected); }
+  else if (!c) entryBody.innerHTML = ""; // on a phone the old text stays put while the sheet slides away
+}
 function renderPanel() {
   const yr = Math.round(curYear());
-  mapSync();
-  const key = yr + "|" + (selected ? selected.id : "") + "|" + (pinnedYear != null) + "|" + query + [...famOn].join("");
+  mapSync(); renderEntry(); updateFab(); syncHash();
+  const key = yr + "|" + (pinnedYear != null) + "|" + query + [...famOn].join("");
   if (key === lastPanelKey) return; lastPanelKey = key;
-  let h = "";
-  if (selected) h += entryHTML(selected);
-  const hx = h.length; let nS = 0, nC = 0, nR = 0;
+  let h = "", nS = 0, nC = 0, nR = 0;
   for (const R of layout) {
     const live = [], cults = [];
     for (const lane of R.lanes) for (const it of lane) if (it.rawS <= yr && yr < it.e + (it.e >= NOW ? 1 : 0) && !isDim(it)) (it.culture ? cults : live).push(it);
@@ -1530,17 +1738,40 @@ function renderPanel() {
       (cults.length ? `<div class="cult">${cults.map(c => esc(c.name)).join(" · ")}</div>` : "") + `</div>`;
   }
   const mode = pinnedYear != null ? "pinned" : hoverYear != null ? "under the cursor" : "set by the slider";
-  h = h.slice(0, hx) + `<div class="xs-head"><span class="eyebrow">The world in</span><span class="xs-year">${fy(yr)}</span><span class="xs-sum">${nS} states and ${nC} peoples across ${nR} halls · year ${mode}</span></div>` + h.slice(hx);
-  panel.innerHTML = h;
-  if (selected) drawLocator(selected);
+  const pl = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+  const filt = [query ? `names matching “${esc(query)}”` : "", allFamsOn() ? "" : pl(famOn.size, "language family", "language families") + " shown"].filter(Boolean).join(", ");
+  yearList.innerHTML = `<div class="xs-head"><span class="eyebrow">The world in</span><span class="xs-year">${fy(yr)}</span><span class="xs-sum">${pl(nS, "state", "states")} and ${pl(nC, "people", "peoples")} across ${pl(nR, "hall", "halls")} · year ${mode}${filt ? ` · ${filt}` : ""}</span>${pinnedYear != null ? `<button type="button" class="unpin" data-act="unpin">Unpin</button>` : ""}</div>` + h;
 }
-panel.addEventListener("click", e => {
+ledger.addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return;
-  if (b.dataset.id) { openEntry(ITEMS[+b.dataset.id]); document.getElementById("panel").scrollTop = 0; }
-  else if (b.dataset.act === "zoom" && selected) zoomTo(selected.s, Math.min(selected.e, NOW), true);
-  else if (b.dataset.act === "close") { selected = null; lastPanelKey = ""; renderPanel(); draw(); }
+  if (b.dataset.id) openEntry(ITEMS[+b.dataset.id]);
+  else if (b.dataset.act === "zoom" && selected) { const it = selected; if (compact()) { sheetOpen = false; if (tab !== "timeline") setTab("timeline"); renderPanel(); } zoomTo(it.s, Math.min(it.e, NOW), true); }
+  else if (b.dataset.act === "map" && selected) {
+    const si = MD.ext[selected.id]; if (si != null) pinnedYear = Math.min(SNAPYEARS[si], NOW);
+    if (compact()) { sheetOpen = false; setTab("map"); }
+    stopPlay(); lastPanelKey = ""; renderPanel(); draw(); focusMap(selected);
+  }
+  else if (b.dataset.act === "close") closeEntry();
+  else if (b.dataset.act === "unpin") { pinnedYear = null; lastPanelKey = ""; renderPanel(); draw(); }
 });
-function select(it, scroll) { selected = it; lastPanelKey = ""; renderPanel(); draw(); if (scroll) scrollToItem(it); }
+// Hovering a name in the year list lights up its bar and its territory.
+yearList.addEventListener("pointerover", e => {
+  if (e.pointerType !== "mouse") return;
+  const b = e.target.closest("button[data-id]"), it = b ? ITEMS[+b.dataset.id] : null;
+  if (it !== hoverItem) { hoverItem = it; draw(); mapSync(); }
+});
+yearList.addEventListener("pointerleave", () => { if (hoverItem) { hoverItem = null; draw(); mapSync(); } });
+function select(it, scroll) {
+  selected = it; sheetOpen = true; lastPanelKey = ""; renderPanel(); draw();
+  srEl.textContent = "Entry: " + it.name;
+  if (scroll && !compact()) scrollToItem(it);
+  focusMap(it);
+  const a = document.getElementById("panel");
+  if (compact()) entryPane.focus({ preventScroll: true });
+  else if (a.scrollTop > 0) a.scrollTo({ top: 0, behavior: reduceMotion() ? "auto" : "smooth" });
+}
+function closeEntry() { selected = null; sheetOpen = false; lastPanelKey = ""; renderPanel(); draw(); }
+function hideSheet() { sheetOpen = false; renderEntry(); updateFab(); }
 function scrollToItem(it) {
   const R = layout.find(r => r.lanes.some(l => l.includes(it))); if (!R) return;
   const li = R.lanes.findIndex(l => l.includes(it));
@@ -1549,27 +1780,54 @@ function scrollToItem(it) {
 }
 
 // ---- View changes -------------------------------------------------------------
-function setView(v0, v1) {
-  let span = Math.max(0.0025, Math.min(1, v1 - v0));
-  v0 = Math.max(0, Math.min(1 - span, v0)); view = { v0, v1: v0 + span }; draw();
+const clampView = (v0, v1) => { const s = Math.max(0.0025, Math.min(1, v1 - v0)); v0 = Math.max(0, Math.min(1 - s, v0)); return { v0, v1: v0 + s }; };
+function setView(v0, v1) { view = clampView(v0, v1); draw(); }
+const easeIO = k => k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+let viewAnim = 0, animTarget = null, glide = 0, eraOn = null;
+function stopMotion() { if (viewAnim) cancelAnimationFrame(viewAnim); if (glide) cancelAnimationFrame(glide); viewAnim = glide = 0; animTarget = null; }
+function userMoved() { stopMotion(); clearEra(); }
+// Eases from the current window to a new one. The centre moves linearly and the span changes geometrically, so a zoom reads the same at every scale.
+function animateView(v0, v1, ms = 520) {
+  const to = clampView(v0, v1); stopMotion();
+  if (reduceMotion()) { setView(to.v0, to.v1); return; }
+  animTarget = to;
+  const s0 = view.v1 - view.v0, s1 = to.v1 - to.v0, c0 = view.v0 + s0 / 2, c1 = to.v0 + s1 / 2, t0 = performance.now();
+  const step = t => {
+    const k = Math.min(1, (t - t0) / ms), e = easeIO(k), sp = s0 * Math.pow(s1 / s0, e), c = c0 + (c1 - c0) * e;
+    if (k < 1) { setView(c - sp / 2, c + sp / 2); viewAnim = requestAnimationFrame(step); }
+    else { setView(to.v0, to.v1); viewAnim = 0; animTarget = null; }
+  };
+  viewAnim = requestAnimationFrame(step);
 }
-function zoomAt(px, factor) {
-  const u = view.v0 + (px - G) / W * (view.v1 - view.v0);
-  const span = (view.v1 - view.v0) * factor;
-  const t = (px - G) / W;
-  setView(u - t * span, u - t * span + span);
+// After a flick the timeline coasts and slows, as a list does on a phone.
+function glideFrom(v) { // v: pixels per millisecond at release
+  if (reduceMotion() || Math.abs(v) < 0.15) return;
+  let last = performance.now();
+  const step = t => {
+    const dt = Math.min(34, t - last); last = t;
+    const before = view.v0, du = -v * dt / W * (view.v1 - view.v0);
+    setView(view.v0 + du, view.v1 + du); v *= Math.pow(0.9965, dt);
+    glide = Math.abs(v) > 0.02 && view.v0 !== before ? requestAnimationFrame(step) : 0;
+  };
+  glide = requestAnimationFrame(step);
+}
+function zoomAt(px, factor, anim) {
+  const base = anim && animTarget ? animTarget : view;
+  const u = base.v0 + (px - G) / W * (base.v1 - base.v0), span = (base.v1 - base.v0) * factor, t = (px - G) / W;
+  if (anim) animateView(u - t * span, u - t * span + span, 360); else setView(u - t * span, u - t * span + span);
 }
 function zoomTo(s, e, scroll) {
   const a = U(s), b = U(e), pad = Math.max((b - a) * 0.35, 0.004);
-  setView(a - pad, b + pad); if (scroll && selected) scrollToItem(selected);
+  clearEra(); animateView(a - pad, b + pad); if (scroll && selected) scrollToItem(selected);
 }
 
 // ---- Hit testing --------------------------------------------------------------
-function hit(px, py) {
+function hit(px, py, tol = coarse ? 8 : 2) {
   const R = layout.find(r => py >= r.y && py < r.y + r.h); if (!R) return null;
   const li = Math.floor((py - R.y - RPAD_T) / LANE); const lane = R.lanes[li]; if (!lane) return null;
-  for (const it of lane) { const x0 = X(it.s), x1 = Math.max(X(Math.min(it.e, NOW)), x0 + 6); if (px >= x0 - 2 && px <= x1 + 2) return it; }
-  return null;
+  let best = null, bd = Infinity;
+  for (const it of lane) { const x0 = X(it.s), x1 = Math.max(X(Math.min(it.e, NOW)), x0 + 6), d = px < x0 ? x0 - px : px > x1 ? px - x1 : 0; if (d <= tol && d < bd) { bd = d; best = it; } }
+  return best;
 }
 
 // ---- Pointer ------------------------------------------------------------------
@@ -1577,9 +1835,10 @@ const tip = document.getElementById("tip");
 const pointers = new Map(); let drag = null, pinch = null;
 function local(e, el) { const r = el.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
 chart.addEventListener("pointerdown", e => {
+  stopMotion();
   pointers.set(e.pointerId, local(e, chart));
-  if (pointers.size === 1) { const [x] = local(e, chart); drag = { x0: x, v0: view.v0, v1: view.v1, moved: false, id: e.pointerId }; }
-  else if (pointers.size === 2) { const [a, b] = [...pointers.values()]; pinch = { d: Math.abs(a[0] - b[0]) || 1, mid: (a[0] + b[0]) / 2, v0: view.v0, v1: view.v1 }; drag = null; }
+  if (pointers.size === 1) { const [x] = local(e, chart); drag = { x0: x, v0: view.v0, v1: view.v1, moved: false, id: e.pointerId, trail: [[e.timeStamp, x]] }; }
+  else if (pointers.size === 2) { userMoved(); const [a, b] = [...pointers.values()]; pinch = { d: Math.abs(a[0] - b[0]) || 1, mid: (a[0] + b[0]) / 2, v0: view.v0, v1: view.v1 }; drag = null; }
 });
 chart.addEventListener("pointermove", e => {
   const [x, y] = local(e, chart);
@@ -1591,8 +1850,11 @@ chart.addEventListener("pointermove", e => {
   }
   if (drag && drag.id === e.pointerId) {
     const dx = x - drag.x0;
-    if (Math.abs(dx) > 4 && !drag.moved) { drag.moved = true; chart.setPointerCapture(e.pointerId); chart.classList.add("dragging"); }
-    if (drag.moved) { const du = dx / W * (drag.v1 - drag.v0); setView(drag.v0 - du, drag.v1 - du); tip.hidden = true; return; }
+    if (Math.abs(dx) > 4 && !drag.moved) { drag.moved = true; userMoved(); chart.setPointerCapture(e.pointerId); chart.classList.add("dragging"); }
+    if (drag.moved) {
+      drag.trail.push([e.timeStamp, x]); if (drag.trail.length > 8) drag.trail.shift();
+      const du = dx / W * (drag.v1 - drag.v0); setView(drag.v0 - du, drag.v1 - du); tip.hidden = true; return;
+    }
   }
   if (e.pointerType === "mouse") hoverAt(x, y, e.clientX, e.clientY);
 });
@@ -1601,13 +1863,20 @@ chart.addEventListener("pointerup", e => {
   if (drag && !drag.moved && pointers.size === 1) {
     const it = x > G ? hit(x, y) : null;
     if (it) select(it, false);
-    else if (x > G) { pinnedYear = pinnedYear != null ? null : Math.round(Yat(x)); lastPanelKey = ""; renderPanel(); draw(); }
-    if (e.pointerType !== "mouse" && x > G) { hoverYear = Math.round(Yat(x)); renderPanel(); draw(); }
+    else if (x > G) {
+      // a mouse click toggles the pin; a tap moves it, since a touch screen has no hover to preview years
+      const yr = Math.max(Y0, Math.min(NOW, Math.round(Yat(x))));
+      pinnedYear = e.pointerType === "mouse" && pinnedYear != null ? null : yr;
+      stopPlay(); lastPanelKey = ""; renderPanel(); draw();
+    }
+  } else if (drag && drag.moved && drag.id === e.pointerId) {
+    const recent = drag.trail.filter(p => e.timeStamp - p[0] < 100);
+    if (recent.length > 1) { const dt = e.timeStamp - recent[0][0]; if (dt > 8) glideFrom((x - recent[0][1]) / dt); }
   }
   pointers.delete(e.pointerId); if (pointers.size < 2) pinch = null; drag = null; chart.classList.remove("dragging");
 });
 chart.addEventListener("pointercancel", e => { pointers.delete(e.pointerId); drag = null; pinch = null; chart.classList.remove("dragging"); });
-chart.addEventListener("pointerleave", () => { if (!drag) { hoverYear = null; hoverItem = null; tip.hidden = true; renderPanel(); draw(); } });
+chart.addEventListener("pointerleave", e => { if (e.pointerType === "mouse" && !drag) { hoverYear = null; hoverItem = null; tip.hidden = true; renderPanel(); draw(); } });
 function hoverAt(x, y, cxp, cyp) {
   if (x < G || x > G + W) { hoverYear = null; hoverItem = null; tip.hidden = true; draw(); return; }
   hoverYear = Math.max(Y0, Math.min(NOW, Math.round(Yat(x))));
@@ -1623,28 +1892,34 @@ function hoverAt(x, y, cxp, cyp) {
 }
 chart.addEventListener("wheel", e => {
   const [x] = local(e, chart);
-  if (e.ctrlKey || e.metaKey) { e.preventDefault(); zoomAt(Math.max(G, x), Math.exp(e.deltaY * 0.01)); }
-  else if (Math.abs(e.deltaX) > Math.abs(e.deltaY) || e.shiftKey) { e.preventDefault(); const d = e.shiftKey && !e.deltaX ? e.deltaY : e.deltaX; const du = d / W * (view.v1 - view.v0); setView(view.v0 + du, view.v1 + du); }
+  if (e.ctrlKey || e.metaKey) { e.preventDefault(); userMoved(); zoomAt(Math.max(G, x), Math.exp(e.deltaY * 0.01)); }
+  else if (Math.abs(e.deltaX) > Math.abs(e.deltaY) || e.shiftKey) { e.preventDefault(); userMoved(); const d = e.shiftKey && !e.deltaX ? e.deltaY : e.deltaX; const du = d / W * (view.v1 - view.v0); setView(view.v0 + du, view.v1 + du); }
 }, { passive: false });
 chart.addEventListener("keydown", e => {
-  const s = view.v1 - view.v0;
-  if (e.key === "ArrowLeft") { setView(view.v0 - s * .1, view.v1 - s * .1); e.preventDefault(); }
-  else if (e.key === "ArrowRight") { setView(view.v0 + s * .1, view.v1 + s * .1); e.preventDefault(); }
-  else if (e.key === "+" || e.key === "=") zoomAt(G + W / 2, 0.7);
-  else if (e.key === "-") zoomAt(G + W / 2, 1 / 0.7);
+  const b = animTarget || view, s = b.v1 - b.v0;
+  if (e.key === "ArrowLeft" || e.key === "ArrowRight") { clearEra(); const d = e.key === "ArrowLeft" ? -s * .12 : s * .12; animateView(b.v0 + d, b.v1 + d, 220); e.preventDefault(); }
+  else if (e.key === "+" || e.key === "=") { clearEra(); zoomAt(G + W / 2, 0.7, true); }
+  else if (e.key === "-") { clearEra(); zoomAt(G + W / 2, 1 / 0.7, true); }
 });
-document.addEventListener("keydown", e => { if (e.key === "Escape" && bigMap) { setBig(false); return; } if (e.key === "Escape") { pinnedYear = null; selected = null; lastPanelKey = ""; renderPanel(); draw(); } });
+// Escape peels back one layer at a time: suggestions, the enlarged map, the entry, then the pinned year.
+document.addEventListener("keydown", e => {
+  if (e.key !== "Escape") return;
+  if (!sugg.hidden) { hideSugg(); return; }
+  if (bigMap) { setBig(false); return; }
+  if (selected) { closeEntry(); return; }
+  if (pinnedYear != null) { pinnedYear = null; lastPanelKey = ""; renderPanel(); draw(); }
+});
 
 // axis: wheel zooms, drag on overview moves window, drag on ticks pans
-axis.addEventListener("wheel", e => { e.preventDefault(); const [x] = local(e, axis); if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { const du = e.deltaX / W * (view.v1 - view.v0); setView(view.v0 + du, view.v1 + du); } else zoomAt(Math.max(G, x), Math.exp(e.deltaY * 0.004)); }, { passive: false });
+axis.addEventListener("wheel", e => { e.preventDefault(); userMoved(); const [x] = local(e, axis); if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { const du = e.deltaX / W * (view.v1 - view.v0); setView(view.v0 + du, view.v1 + du); } else zoomAt(Math.max(G, x), Math.exp(e.deltaY * 0.004)); }, { passive: false });
 let axDrag = null;
 axis.addEventListener("pointerdown", e => {
-  const [x, y] = local(e, axis); axis.setPointerCapture(e.pointerId);
-  if (y < 26) { axDrag = { ov: true }; const s = view.v1 - view.v0, u = (x - G) / W; setView(u - s / 2, u + s / 2); }
+  const [x, y] = local(e, axis); axis.setPointerCapture(e.pointerId); userMoved();
+  if (y < 26) { axDrag = { ov: true }; const s = view.v1 - view.v0, u = (x - G) / W; animateView(u - s / 2, u + s / 2, 260); }
   else axDrag = { ov: false, x0: x, v0: view.v0, v1: view.v1 };
 });
 axis.addEventListener("pointermove", e => {
-  if (!axDrag) return; const [x] = local(e, axis);
+  if (!axDrag) return; const [x] = local(e, axis); stopMotion();
   if (axDrag.ov) { const s = view.v1 - view.v0, u = (x - G) / W; setView(u - s / 2, u + s / 2); }
   else { const du = (x - axDrag.x0) / W * (axDrag.v1 - axDrag.v0); setView(axDrag.v0 - du, axDrag.v1 - du); }
 });
@@ -1653,13 +1928,19 @@ axis.addEventListener("pointerup", () => axDrag = null);
 // ---- Controls -----------------------------------------------------------------
 const ERAS = [["All", Y0, NOW], ["Bronze Age", -3100, -1100], ["Classical", -800, 600], ["Medieval", 500, 1500], ["Early modern", 1450, 1815], ["Modern", 1800, NOW]];
 const erasEl = document.getElementById("eras");
-ERAS.forEach(([n, a, b]) => { const bt = document.createElement("button"); bt.type = "button"; bt.textContent = n; bt.addEventListener("click", () => { if (n === "All") setView(0, 1); else { const ua = U(a), ub = U(b); setView(ua, ub); } }); erasEl.appendChild(bt); });
-document.getElementById("zIn").addEventListener("click", () => zoomAt(G + W / 2, 0.6));
-document.getElementById("zOut").addEventListener("click", () => zoomAt(G + W / 2, 1 / 0.6));
+function markEra() { erasEl.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.textContent === eraOn))); }
+function clearEra() { if (eraOn) { eraOn = null; markEra(); } }
+ERAS.forEach(([n, a, b]) => {
+  const bt = document.createElement("button"); bt.type = "button"; bt.textContent = n; bt.setAttribute("aria-pressed", "false");
+  bt.addEventListener("click", () => { animateView(n === "All" ? 0 : U(a), n === "All" ? 1 : U(b), 640); eraOn = n; markEra(); bt.scrollIntoView({ block: "nearest", inline: "nearest", behavior: reduceMotion() ? "auto" : "smooth" }); });
+  erasEl.appendChild(bt);
+});
+document.getElementById("zIn").addEventListener("click", () => { clearEra(); zoomAt(G + W / 2, 0.6, true); });
+document.getElementById("zOut").addEventListener("click", () => { clearEra(); zoomAt(G + W / 2, 1 / 0.6, true); });
 function setMode(m) {
   if (m === mode) return;
   const a = Uinv(view.v0), b = Uinv(view.v1); mode = m;
-  view = { v0: U(a), v1: U(b) }; setView(view.v0, view.v1);
+  stopMotion(); view = { v0: U(a), v1: U(b) }; setView(view.v0, view.v1); mapSync();
   document.getElementById("mDeep").setAttribute("aria-pressed", m === "deep"); document.getElementById("mEven").setAttribute("aria-pressed", m === "even");
 }
 document.getElementById("mDeep").addEventListener("click", () => setMode("deep"));
@@ -1680,18 +1961,51 @@ FAMS.forEach(([k, n]) => {
 });
 const cn = document.createElement("span"); cn.className = "note"; cn.innerHTML = `<span class="chip" style="padding:0 4px"><i class="hatch"></i>peoples &amp; cultures without a state</span>`; legend.appendChild(cn);
 
-const q = document.getElementById("q"), mi = document.getElementById("matchInfo");
-q.addEventListener("input", () => {
-  query = q.value.trim().toLowerCase(); matches = query ? ITEMS.filter(i => i.lname.includes(query)) : []; matchIdx = -1;
-  mi.textContent = query ? (matches.length ? `${matches.length} found` : "none") : "";
-  lastPanelKey = ""; renderPanel(); draw();
-});
-q.addEventListener("keydown", e => {
-  if (e.key === "Enter" && matches.length) {
-    matchIdx = (matchIdx + 1) % matches.length; const it = matches[matchIdx];
-    mi.textContent = `${matchIdx + 1} of ${matches.length}`; selected = it; zoomTo(it.s, Math.min(it.e, NOW)); scrollToItem(it); lastPanelKey = ""; renderPanel();
+const q = document.getElementById("q"), mi = document.getElementById("matchInfo"), sugg = document.getElementById("sugg");
+let suggItems = [], suggIdx = -1;
+// Names that start with the query come first, then a match at the start of a word, then anywhere; longer-lived entries break ties.
+function rankMatches(t) {
+  const out = [];
+  for (const it of ITEMS) {
+    const p = it.lname.indexOf(t); if (p < 0) continue;
+    out.push([p === 0 ? 0 : /[\s(\-'’]/.test(it.lname[p - 1]) ? 1 : 2, it.rawS - Math.min(it.e, NOW), it]);
   }
+  return out.sort((a, b) => a[0] - b[0] || a[1] - b[1]).map(r => r[2]);
+}
+function markMatch(name) {
+  const p = name.toLowerCase().indexOf(query); if (!query || p < 0) return esc(name);
+  return esc(name.slice(0, p)) + "<mark>" + esc(name.slice(p, p + query.length)) + "</mark>" + esc(name.slice(p + query.length));
+}
+function showSugg() {
+  suggItems = query ? rankMatches(query).slice(0, 8) : []; suggIdx = -1;
+  sugg.innerHTML = suggItems.map((it, i) => `<li role="option" id="sg${i}" data-id="${it.id}" aria-selected="false"><i style="background:var(--f-${it.fam})"></i><span class="n">${markMatch(it.name)}</span><span class="d">${esc(fy(it.rawS))}–${esc(fy(it.e))}</span></li>`).join("");
+  sugg.hidden = !suggItems.length || document.activeElement !== q;
+  q.setAttribute("aria-expanded", String(!sugg.hidden)); q.removeAttribute("aria-activedescendant");
+}
+function hideSugg() { sugg.hidden = true; suggIdx = -1; q.setAttribute("aria-expanded", "false"); q.removeAttribute("aria-activedescendant"); }
+function moveSugg(d) {
+  if (!suggItems.length) return;
+  sugg.hidden = false; q.setAttribute("aria-expanded", "true");
+  suggIdx = (suggIdx + d + suggItems.length) % suggItems.length;
+  [...sugg.children].forEach((li, i) => li.setAttribute("aria-selected", String(i === suggIdx)));
+  q.setAttribute("aria-activedescendant", "sg" + suggIdx); sugg.children[suggIdx].scrollIntoView({ block: "nearest" });
+}
+function pickSugg(it) { hideSugg(); if (compact()) q.blur(); openEntry(it); }
+q.addEventListener("input", () => {
+  query = q.value.trim().toLowerCase(); matches = query ? ITEMS.filter(i => i.lname.includes(query)) : [];
+  mi.textContent = query ? (matches.length ? `${matches.length} found` : "none") : "";
+  showSugg(); lastPanelKey = ""; renderPanel(); draw();
 });
+q.addEventListener("focus", () => { if (query) showSugg(); });
+q.addEventListener("blur", () => setTimeout(hideSugg, 160));
+q.addEventListener("keydown", e => {
+  if (e.key === "ArrowDown") { e.preventDefault(); moveSugg(1); }
+  else if (e.key === "ArrowUp") { e.preventDefault(); moveSugg(-1); }
+  else if (e.key === "Enter" && suggItems.length) { e.preventDefault(); pickSugg(suggItems[Math.max(0, suggIdx)]); }
+  else if (e.key === "Escape" && !sugg.hidden) { e.preventDefault(); e.stopPropagation(); hideSugg(); }
+});
+sugg.addEventListener("mousedown", e => e.preventDefault());
+sugg.addEventListener("click", e => { const li = e.target.closest("li[data-id]"); if (li) pickSugg(ITEMS[+li.dataset.id]); });
 
 // ---- Map & globe ---------------------------------------------------------------
 const curYear = () => pinnedYear ?? hoverYear ?? baseYear;
@@ -1723,6 +2037,7 @@ const mapCv = document.getElementById("map"), mg = mapCv.getContext("2d"), mapca
 const GK0 = 0.78;
 let mapMode = "flat", rot = [-20, -24], gk = GK0, fk = 1, fpan = [0, 0], MW = 400, MH = 200, bigMap = false;
 let mapHover = null, mapHatch = null, mapDirty = true, lastMapKey = "", curSnap = -1;
+let yrSliding = false, fadeCv = null, fadeT0 = 0, spin = 0;
 function proj() {
   if (mapMode === "globe") {
     const r = Math.min(MW, MH) / 2 - 8;
@@ -1733,7 +2048,7 @@ function proj() {
   return p.scale(s * fk).translate([MW / 2 + (t[0] - MW / 2) * fk + fpan[0], MH / 2 + (t[1] - MH / 2) * fk + fpan[1]]);
 }
 function sizeMap() {
-  const w = mapCv.clientWidth || 400; MW = w;
+  const w = mapCv.clientWidth; if (!w) return; MW = w;
   if (bigMap) MH = Math.max(200, mapCv.clientHeight);
   else { MH = Math.round(mapMode === "globe" ? Math.min(w * 0.8, 400) : w * 0.5); mapCv.style.height = MH + "px"; }
   mapCv.width = Math.round(MW * DPR); mapCv.height = Math.round(MH * DPR);
@@ -1757,13 +2072,22 @@ function mapSync() {
   const key = [i, hid, sid, mapHover ? mapHover.name : "", query, [...famOn].join(""), mapMode, MW, MH].join("|");
   document.getElementById("snapLabel").innerHTML = snapLabel(i, y);
   const yo = document.getElementById("yrOut"); yo.textContent = fy(y);
-  const sl = document.getElementById("yr"); if (+sl.value !== Math.round(y) && document.activeElement !== sl) sl.value = Math.round(y);
-  if (i !== curSnap) { curSnap = i; mapDirty = true; }
+  const sl = document.getElementById("yr"), sv = Math.round(U(Math.max(Y0, Math.min(NOW, y))) * 1000);
+  if (+sl.value !== sv && !yrSliding) sl.value = sv;
+  sl.setAttribute("aria-valuetext", fy(y));
+  if (i !== curSnap) { if (curSnap >= 0) startFade(); curSnap = i; mapDirty = true; }
   if (!mapDirty && key === lastMapKey) return;
   lastMapKey = key; mapDirty = false;
-  if (!mapFrame) mapFrame = requestAnimationFrame(() => { mapFrame = 0; drawMap(); });
+  requestMapDraw();
 }
 let mapFrame = 0;
+function requestMapDraw() { if (!mapFrame) mapFrame = requestAnimationFrame(() => { mapFrame = 0; drawMap(); }); }
+// A change of border map fades the old borders out over the new ones.
+function startFade() {
+  if (reduceMotion() || !mapCv.width || !mapCv.clientWidth || (mDrag && mDrag.moved)) return;
+  if (!fadeCv) fadeCv = document.createElement("canvas");
+  fadeCv.width = mapCv.width; fadeCv.height = mapCv.height; fadeCv.getContext("2d").drawImage(mapCv, 0, 0); fadeT0 = performance.now();
+}
 function drawMap() {
   const g = mg; g.setTransform(DPR, 0, 0, DPR, 0, 0);
   g.fillStyle = C.sheet; g.fillRect(0, 0, MW, MH);
@@ -1818,6 +2142,11 @@ function drawMap() {
     g.fillStyle = f.cult ? C.ink2 : C.ink; g.fillText(f.name, c[0], c[1]);
   }
   g.textAlign = "left";
+  if (fadeT0) {
+    const k = (performance.now() - fadeT0) / 420;
+    if (k >= 1 || fadeCv.width !== mapCv.width || fadeCv.height !== mapCv.height) fadeT0 = 0;
+    else { g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1 - easeIO(k); g.drawImage(fadeCv, 0, 0); g.globalAlpha = 1; requestMapDraw(); }
+  }
 }
 function mapHit(mx, my) {
   const p = proj(); const ll = p.invert([mx, my]); if (!ll || !isFinite(ll[0])) return null;
@@ -1832,30 +2161,43 @@ function mapHit(mx, my) {
   }
   return best;
 }
-let mDrag = null;
-mapCv.addEventListener("pointerdown", e => { const [x, y] = local(e, mapCv); mDrag = { x, y, rot: rot.slice(), pan: fpan.slice(), moved: false }; mapCv.setPointerCapture(e.pointerId); });
+let mDrag = null, mPinch = null, tipTimer = 0;
+const mPtrs = new Map();
+function territoryTip(f) {
+  const it = f.item >= 0 ? ITEMS[f.item] : null;
+  return `<b>${esc(f.name)}</b>${f.part ? `<span>part of ${esc(f.part)}</span>` : ""}<span>${f.fam === "XX" ? "unclassified" : esc(FAMNAME[f.fam])}${f.cult ? " · people or culture" : ""}</span>${it && it.name !== f.name ? `<span>timeline: ${esc(it.name)}</span>` : ""}`;
+}
+function midPinch() { const [a, b] = [...mPtrs.values()]; return [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2, Math.hypot(a[0] - b[0], a[1] - b[1]) || 1]; }
+mapCv.addEventListener("pointerdown", e => {
+  const [x, y] = local(e, mapCv); mPtrs.set(e.pointerId, [x, y]); mapCv.setPointerCapture(e.pointerId);
+  if (spin) { cancelAnimationFrame(spin); spin = 0; }
+  if (mPtrs.size === 2) { const [mx, my, d] = midPinch(); mPinch = { d, gk, fk, b: [(mx - MW / 2 - fpan[0]) / fk, (my - MH / 2 - fpan[1]) / fk] }; mDrag = null; }
+  else if (mPtrs.size === 1) mDrag = { x, y, rot: rot.slice(), pan: fpan.slice(), moved: false, trail: [[e.timeStamp, x, y]] };
+});
 mapCv.addEventListener("pointermove", e => {
   const [x, y] = local(e, mapCv);
+  if (mPtrs.has(e.pointerId)) mPtrs.set(e.pointerId, [x, y]);
+  if (mPinch && mPtrs.size === 2) {
+    const [mx, my, d] = midPinch(), k = d / mPinch.d;
+    if (mapMode === "globe") gk = Math.max(0.6, Math.min(9, mPinch.gk * k));
+    else { fk = Math.max(1, Math.min(12, mPinch.fk * k)); fpan = fk === 1 ? [0, 0] : [mx - MW / 2 - mPinch.b[0] * fk, my - MH / 2 - mPinch.b[1] * fk]; }
+    fadeT0 = 0; tip.hidden = true; mapDirty = true; mapSync(); return;
+  }
   if (mDrag) {
     const dx = x - mDrag.x, dy = y - mDrag.y;
     if (Math.abs(dx) + Math.abs(dy) > 3) { mDrag.moved = true; mapCv.classList.add("dragging"); }
     if (mDrag.moved) {
+      mDrag.trail.push([e.timeStamp, x, y]); if (mDrag.trail.length > 8) mDrag.trail.shift();
       if (mapMode === "globe") { const k = 0.32 / gk; rot = [mDrag.rot[0] + dx * k, Math.max(-85, Math.min(85, mDrag.rot[1] - dy * k))]; }
       else if (fk > 1) fpan = [mDrag.pan[0] + dx, mDrag.pan[1] + dy];
-      tip.hidden = true; mapDirty = true; mapSync(); return;
+      fadeT0 = 0; tip.hidden = true; mapDirty = true; mapSync(); return;
     }
   }
   if (e.pointerType !== "mouse") return;
   const f = mapHit(x, y);
-  if (f !== mapHover) {
-    mapHover = f;
-    const it = f && f.item >= 0 ? ITEMS[f.item] : null;
-    hoverItem = it; draw();
-  }
+  if (f !== mapHover) { mapHover = f; hoverItem = f && f.item >= 0 ? ITEMS[f.item] : null; draw(); }
   if (f) {
-    const it = f.item >= 0 ? ITEMS[f.item] : null;
-    tip.innerHTML = `<b>${esc(f.name)}</b>${f.part ? `<span>part of ${esc(f.part)}</span>` : ""}<span>${f.fam === "XX" ? "unclassified" : esc(FAMNAME[f.fam])}${f.cult ? " · people or culture" : ""}</span>${it && it.name !== f.name ? `<span>timeline: ${esc(it.name)}</span>` : ""}`;
-    tip.hidden = false; const tw = tip.offsetWidth, th = tip.offsetHeight;
+    tip.innerHTML = territoryTip(f); tip.hidden = false; const tw = tip.offsetWidth, th = tip.offsetHeight;
     tip.style.left = Math.min(e.clientX + 14, innerWidth - tw - 8) + "px"; tip.style.top = Math.max(8, e.clientY - th - 12) + "px";
     mapCv.style.cursor = f.item >= 0 ? "pointer" : "";
   } else { tip.hidden = true; mapCv.style.cursor = ""; }
@@ -1863,10 +2205,40 @@ mapCv.addEventListener("pointermove", e => {
 });
 mapCv.addEventListener("pointerup", e => {
   const [x, y] = local(e, mapCv);
-  if (mDrag && !mDrag.moved) { const f = mapHit(x, y); if (f && f.item >= 0) { const it = ITEMS[f.item]; select(it, !bigMap); if (!(U(it.s) >= view.v0 && U(Math.min(it.e, NOW)) <= view.v1)) zoomTo(it.s, Math.min(it.e, NOW)); } }
+  mPtrs.delete(e.pointerId);
+  if (mPinch) {
+    if (mPtrs.size < 2) mPinch = null;
+    if (mPtrs.size === 1) { const [p] = [...mPtrs.values()]; mDrag = { x: p[0], y: p[1], rot: rot.slice(), pan: fpan.slice(), moved: true, trail: [] }; }
+    return;
+  }
+  if (mDrag && !mDrag.moved) {
+    const f = mapHit(x, y);
+    if (f && f.item >= 0) { const it = ITEMS[f.item]; select(it, !bigMap); if (!(U(it.s) >= view.v0 && U(Math.min(it.e, NOW)) <= view.v1)) zoomTo(it.s, Math.min(it.e, NOW)); }
+    else if (f && e.pointerType !== "mouse") {
+      // a territory with no timeline entry: show its name where the finger landed
+      tip.innerHTML = territoryTip(f); tip.hidden = false; const tw = tip.offsetWidth, th = tip.offsetHeight;
+      tip.style.left = Math.max(8, Math.min(e.clientX - tw / 2, innerWidth - tw - 8)) + "px"; tip.style.top = Math.max(8, e.clientY - th - 18) + "px";
+      clearTimeout(tipTimer); tipTimer = setTimeout(() => { tip.hidden = true; }, 2200);
+    }
+  } else if (mDrag && mDrag.moved && mapMode === "globe") {
+    const tr = mDrag.trail.filter(p => e.timeStamp - p[0] < 100);
+    if (tr.length > 1) { const dt = e.timeStamp - tr[0][0]; if (dt > 8) spinFrom((x - tr[0][1]) / dt, (y - tr[0][2]) / dt); }
+  }
   mDrag = null; mapCv.classList.remove("dragging");
 });
-mapCv.addEventListener("pointerleave", () => { if (mapHover) { mapHover = null; hoverItem = null; tip.hidden = true; draw(); mapSync(); } });
+mapCv.addEventListener("pointercancel", e => { mPtrs.delete(e.pointerId); mPinch = null; mDrag = null; mapCv.classList.remove("dragging"); });
+mapCv.addEventListener("pointerleave", e => { if (e.pointerType === "mouse" && mapHover) { mapHover = null; hoverItem = null; tip.hidden = true; draw(); mapSync(); } });
+// A flung globe keeps turning and slows to a stop.
+function spinFrom(vx, vy) { // pixels per millisecond
+  if (reduceMotion() || Math.hypot(vx, vy) < 0.12) return;
+  let last = performance.now();
+  const step = t => {
+    const dt = Math.min(34, t - last), k = 0.32 / gk, fr = Math.pow(0.9955, dt); last = t;
+    rot = [rot[0] + vx * dt * k, Math.max(-85, Math.min(85, rot[1] - vy * dt * k))]; vx *= fr; vy *= fr;
+    mapDirty = true; mapSync(); spin = Math.hypot(vx, vy) > 0.01 ? requestAnimationFrame(step) : 0;
+  };
+  spin = requestAnimationFrame(step);
+}
 mapCv.addEventListener("wheel", e => {
   e.preventDefault(); const [x, y] = local(e, mapCv); const fct = Math.exp(-e.deltaY * 0.0022);
   if (mapMode === "globe") gk = Math.max(0.6, Math.min(9, gk * fct));
@@ -1878,6 +2250,7 @@ mapCv.addEventListener("wheel", e => {
 }, { passive: false });
 function focusMap(it) {
   if (mapMode !== "globe" || !it) return;
+  if (spin) { cancelAnimationFrame(spin); spin = 0; }
   const fs = getSnap(curSnap).filter(f => f.item === it.id); if (!fs.length) return;
   const big = fs.reduce((a, b) => d3.geoArea(a) > d3.geoArea(b) ? a : b);
   const c = d3.geoCentroid(big), from = rot.slice(), to = [-c[0], Math.max(-70, Math.min(70, -c[1]))];
@@ -1885,12 +2258,10 @@ function focusMap(it) {
   const ip = d3.interpolate(from, to), t0 = performance.now();
   (function step(t) { const k = Math.min(1, (t - t0) / 650); rot = ip(d3.easeCubicInOut(k)); mapDirty = true; mapSync(); if (k < 1) requestAnimationFrame(step); })(t0);
 }
-const _select = select;
-select = function (it, scroll) { _select(it, scroll); focusMap(it); const a = document.getElementById("panel"); if (a && a.scrollTop > 0) a.scrollTop = 0; };
 function setMapMode(m) {
   if (m === "globe" && mapMode !== "globe") gk = GK0;
   mapMode = m; document.getElementById("vFlat").setAttribute("aria-pressed", m === "flat"); document.getElementById("vGlobe").setAttribute("aria-pressed", m === "globe");
-  sizeMap(); if (selected) focusMap(selected);
+  sizeMap(); if (selected) focusMap(selected); syncHash();
 }
 document.getElementById("vFlat").addEventListener("click", () => setMapMode("flat"));
 document.getElementById("vGlobe").addEventListener("click", () => setMapMode("globe"));
@@ -1902,15 +2273,28 @@ function setBig(on) {
 }
 document.getElementById("vBig").addEventListener("click", () => setBig(!bigMap));
 const yrIn = document.getElementById("yr");
-yrIn.addEventListener("input", () => { pinnedYear = +yrIn.value; lastPanelKey = ""; renderPanel(); draw(); });
+// The slider runs on the timeline's own scale, so recent centuries get as much travel as they get width.
+const yrFrom = v => Math.max(Y0, Math.min(NOW, Math.round(Uinv(v / 1000))));
+yrIn.addEventListener("pointerdown", () => { yrSliding = true; stopPlay(); });
+addEventListener("pointerup", () => { yrSliding = false; });
+yrIn.addEventListener("input", () => { pinnedYear = yrFrom(+yrIn.value); hoverYear = null; lastPanelKey = ""; renderPanel(); draw(); });
+yrIn.addEventListener("change", () => { yrSliding = false; mapSync(); });
 let playTimer = null;
 const playBtn = document.getElementById("play");
-function stopPlay() { clearInterval(playTimer); playTimer = null; playBtn.textContent = "Play"; }
+function stopPlay() { if (!playTimer) return; clearInterval(playTimer); playTimer = null; playBtn.textContent = "Play"; playBtn.setAttribute("aria-pressed", "false"); }
+// The step buttons move one border map at a time.
+function stepSnap(d) {
+  stopPlay();
+  const i = snapIndex(Math.round(curYear())) + d; if (i < 0 || i >= SNAPYEARS.length) return;
+  pinnedYear = Math.min(SNAPYEARS[i], NOW); hoverYear = null; lastPanelKey = ""; renderPanel(); draw();
+}
+document.getElementById("snapPrev").addEventListener("click", () => stepSnap(-1));
+document.getElementById("snapNext").addEventListener("click", () => stepSnap(1));
 playBtn.addEventListener("click", () => {
   if (playTimer) return stopPlay();
   let y = curYear(); if (y >= NOW) y = Y0;
   pinnedYear = Math.round(y); lastPanelKey = ""; renderPanel(); draw();
-  playBtn.textContent = "Pause";
+  playBtn.textContent = "Pause"; playBtn.setAttribute("aria-pressed", "true");
   playTimer = setInterval(() => {
     const nxt = SNAPYEARS.find(s => s > pinnedYear);
     if (nxt == null) return stopPlay();
@@ -1968,7 +2352,7 @@ function entryHTML(it) {
     ${it.note ? `<p class="body">${esc(it.note)}</p>` : ""}
     <p class="body">${esc(summary(it))}</p>
     ${cs.length ? `<h3>Contemporaries in the same halls</h3><p class="contemps">${cs.map(xref).join(" · ")}</p>` : ""}
-    <div class="actions"><button type="button" data-act="zoom">Show its span on the timeline</button><a href="https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(it.name)}" target="_blank" rel="noopener">Read more on Wikipedia ↗</a></div>
+    <div class="actions"><button type="button" data-act="zoom">Show its span on the timeline</button>${ext != null ? `<button type="button" data-act="map">Map of ${esc(fy(SNAPYEARS[ext]))}</button>` : ""}<a href="https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(it.name)}" target="_blank" rel="noopener">Read more on Wikipedia ↗</a></div>
   </article>`;
 }
 function drawLocator(it) {
@@ -2005,6 +2389,80 @@ function renderIndex() {
   document.getElementById("indexCols").innerHTML = [...groups].map(([L, rs]) => `<h3 id="idx-${L}">${L}</h3><ul>${rs.map(r => `<li><button type="button" data-id="${r.it.id}"><i style="background:var(--f-${r.it.fam})"></i>${r.it.culture ? `<em>${esc(r.label)}</em>` : esc(r.label)}<span>${esc(fy(r.it.rawS))}–${esc(fy(r.it.e))}</span></button></li>`).join("")}</ul>`).join("");
 }
 document.getElementById("indexCols").addEventListener("click", e => { const b = e.target.closest("button[data-id]"); if (b) openEntry(ITEMS[+b.dataset.id]); });
+document.getElementById("letters").addEventListener("click", e => {
+  const a = e.target.closest("a[href^='#idx-']"); if (!a) return; e.preventDefault();
+  const el = document.getElementById(a.getAttribute("href").slice(1)); if (el) el.scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block: "start" });
+});
+
+// ---- Phone layout: tabs, the entry sheet, floating controls, shareable links -----
+const root = document.documentElement, hallEl = document.querySelector(".hall");
+const tabbar = document.getElementById("tabbar"), mini = document.getElementById("mini"), yearChip = document.getElementById("yearChip");
+let tab = "timeline"; const tabY = {};
+root.dataset.view = tab;
+function setTab(t) {
+  if (!["timeline", "map", "index", "about"].includes(t)) t = "timeline";
+  if (t === tab) { if (compact()) scrollTo({ top: 0, behavior: reduceMotion() ? "auto" : "smooth" }); return; }
+  tabY[tab] = scrollY; tab = t; root.dataset.view = t;
+  tabbar.querySelectorAll("button").forEach(b => b.setAttribute("aria-current", b.dataset.view === t ? "page" : "false"));
+  hideSugg(); tip.hidden = true;
+  if (compact()) { scrollTo(0, tabY[t] || 0); hallEl.classList.remove("viewin"); void hallEl.offsetWidth; hallEl.classList.add("viewin"); }
+  if (t === "map") sizeMap(); else if (t === "timeline") resize();
+  updateFab(); syncHash();
+}
+tabbar.addEventListener("click", e => { const b = e.target.closest("button[data-view]"); if (b) setTab(b.dataset.view); });
+function updateFab() {
+  const c = compact(), showMini = c && !!selected && !sheetOpen && tab !== "about";
+  mini.hidden = !showMini;
+  if (showMini) { mini.querySelector("i").style.background = `var(--f-${selected.fam})`; mini.querySelector("b").textContent = selected.name; mini.querySelector("small").textContent = span(selected); }
+  const showYear = c && !showMini && tab === "timeline" && pinnedYear != null;
+  yearChip.hidden = !showYear; if (showYear) yearChip.querySelector("b").textContent = fy(pinnedYear);
+}
+document.getElementById("miniOpen").addEventListener("click", () => { if (!selected) return; sheetOpen = true; renderEntry(); updateFab(); entryPane.focus({ preventScroll: true }); });
+document.getElementById("miniClose").addEventListener("click", closeEntry);
+// the tap that opened the sheet also fires a click a moment later, which lands on the scrim; that one is ignored
+document.getElementById("scrim").addEventListener("click", () => { if (performance.now() - sheetShownAt > 450) hideSheet(); });
+yearChip.addEventListener("click", () => setTab("map"));
+document.getElementById("fzIn").addEventListener("click", () => { clearEra(); zoomAt(G + W / 2, 0.6, true); });
+document.getElementById("fzOut").addEventListener("click", () => { clearEra(); zoomAt(G + W / 2, 1 / 0.6, true); });
+// The sheet follows a finger down from its handle, or from anywhere once its text is scrolled to the top.
+let sd = null;
+entryPane.addEventListener("touchstart", e => {
+  sd = e.touches.length === 1 && compact() ? { y: e.touches[0].clientY, t: e.timeStamp, grab: !!e.target.closest(".sheet-top"), top: entryPane.scrollTop, active: false, dy: 0 } : null;
+}, { passive: true });
+entryPane.addEventListener("touchmove", e => {
+  if (!sd) return;
+  const dy = e.touches[0].clientY - sd.y;
+  if (!sd.active) {
+    if (dy > 4 && (sd.grab || (sd.top <= 0 && entryPane.scrollTop <= 0))) { sd.active = true; entryPane.classList.add("dragging"); }
+    else if (Math.abs(dy) > 4) { sd = null; return; }
+    else return;
+  }
+  e.preventDefault(); sd.dy = Math.max(0, dy); entryPane.style.transform = `translateY(${sd.dy}px)`;
+}, { passive: false });
+function endSheetDrag(e) {
+  const s = sd; sd = null; if (!s || !s.active) return;
+  entryPane.classList.remove("dragging"); entryPane.style.transform = "";
+  if (s.dy > 120 || (s.dy > 40 && s.dy / Math.max(1, e.timeStamp - s.t) > 0.5)) hideSheet();
+}
+entryPane.addEventListener("touchend", endSheetDrag);
+entryPane.addEventListener("touchcancel", endSheetDrag);
+compactMQ.addEventListener("change", () => { lastEntryId = -1; renderEntry(); updateFab(); hideSugg(); requestAnimationFrame(() => { resize(); sizeMap(); }); syncHash(); });
+// The address keeps the open entry, pinned year, globe and tab, so a copied link reopens the same view.
+let lastHash = null, hashTimer = 0;
+function syncHash() {
+  clearTimeout(hashTimer);
+  hashTimer = setTimeout(() => {
+    const h = new URLSearchParams(location.hash.slice(1));
+    ["sel", "y", "view", "tab", "big", "top"].forEach(k => h.delete(k));
+    if (selected) h.set("sel", selected.name);
+    if (pinnedYear != null) h.set("y", String(Math.round(pinnedYear)));
+    if (mapMode === "globe") h.set("view", "globe");
+    if (compact() && tab !== "timeline") h.set("tab", tab);
+    const str = h.toString().replace(/\+/g, "%20");
+    if (str === lastHash) return; lastHash = str;
+    try { history.replaceState(history.state, "", str ? "#" + str : location.pathname + location.search); } catch (e) {}
+  }, 300);
+}
 
 // ---- Theme & boot -------------------------------------------------------------
 function retheme() { readColors(); hatch = null; mapHatch = null; draw(); mapDirty = true; mapSync(); if (selected) drawLocator(selected); }
@@ -2032,6 +2490,8 @@ resize(); sizeMap(); renderIndex();
   if (h.get("view") === "globe") setMapMode("globe");
   if (h.get("y")) { pinnedYear = Math.max(Y0, Math.min(NOW, +h.get("y"))); }
   if (h.get("q")) { q.value = h.get("q"); q.dispatchEvent(new Event("input")); }
+  const t = h.get("tab") || (h.get("big") === "1" ? "map" : "");
+  if (t && compact()) setTab(t);
   if (h.get("big") === "1") setBig(true);
   if (h.get("top")) setTimeout(() => scrollTo(0, 0), 900);
   if (h.get("sel")) { const it = ITEMS.find(i => i.name === h.get("sel")); if (it) openEntry(it); }
