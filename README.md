@@ -2,7 +2,7 @@
 
 An interactive atlas of 695 states, empires and peoples from 3100 BCE to 2026. Each region of the world is a hall, each row in a hall follows one line of succession, and each bar is colored by the language family of the group that ruled. Choosing a year redraws that year's borders on a flat map or a globe and lists everything standing then. Selecting anything opens an encyclopedia entry with its dates, rulers' language, predecessors, successors, contemporaries and a locator map of its greatest mapped extent.
 
-The page ships in three looks: Retro (the default, a 1990s CD-ROM encyclopedia), Light and Dark.
+The page ships in three looks: Light (the default) and Dark, styled after brianmwilcox.com, and Retro, a 1990s CD-ROM encyclopedia. Light and Dark follow the site's own theme choice when the atlas has none saved.
 
 ## Why it exists
 

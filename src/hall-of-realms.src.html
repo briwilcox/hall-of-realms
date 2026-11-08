@@ -3,27 +3,27 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: an exhibit hall. Inscribed title and wall text up top; the long case (timeline) on the left with each region as a hall bay; a reading stand at right holding the atlas and the entry for whatever you pick; an encyclopedia index closes the hall. */
 :root{
-  --paper:#e4e6e1; --sheet:#f6f6f2; --ink:#191c1a; --ink-2:#4a504c; --ink-3:#767d78;
-  --rule:#cdd1ca; --rule-2:#e3e6e0; --band:#edefea; --accent:#86601c; --accent-2:#5d4313; --cursor:#9b2c1f;
-  --plaque:#22201b; --plaque-ink:#efe9da;
-  --sea:#d8e0de; --land:#e2e5df; --unk:#c6cbc4;
+  --paper:#f5f3ef; --sheet:#ffffff; --ink:#1c1a17; --ink-2:#4a4540; --ink-3:#7a7369;
+  --rule:#e2ddd6; --rule-2:#f0ede8; --band:#f0ede8; --accent:#c2520a; --accent-2:#9a4108; --cursor:#b3261e;
+  --plaque:#1c1a17; --plaque-ink:#f5f3ef;
+  --sea:#e4e0d8; --land:#f3f0ea; --unk:#d3cdc3;
   --f-IE:#2a78d6; --f-AA:#eb6834; --f-TM:#1baf7a; --f-NC:#eda100; --f-AU:#e87ba4; --f-AM:#008300; --f-DR:#6250d6; --f-ST:#e34948; --f-OT:#8a9396;
-  --display:"Marcellus SC", "Trajan Pro", "Times New Roman", serif;
-  --prose:"Newsreader", "Iowan Old Style", Georgia, serif;
-  --body:"IBM Plex Sans Condensed", "Arial Narrow", "Helvetica Neue", sans-serif;
-  --mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
-  --cv-label:"IBM Plex Sans Condensed", "Arial Narrow", sans-serif; --cv-display:"Marcellus SC", Georgia, serif; --cv-mono:"IBM Plex Mono", monospace;
+  --display:"Playfair Display", Georgia, serif;
+  --prose:"DM Sans", system-ui, sans-serif;
+  --body:"DM Sans", system-ui, sans-serif;
+  --mono:"JetBrains Mono", "Courier New", monospace;
+  --cv-label:"DM Sans", system-ui, sans-serif; --cv-display:"Playfair Display", Georgia, serif; --cv-mono:"JetBrains Mono", monospace;
 }
 :root[data-skin="dark"]{
     color-scheme:dark;
-    --paper:#0d1210; --sheet:#141a17; --ink:#e8e9e3; --ink-2:#aeb4ad; --ink-3:#7e867f;
-    --rule:#2b332f; --rule-2:#202824; --band:#18201c; --accent:#d2aa5f; --accent-2:#e6c88a; --cursor:#ff8a73;
-    --plaque:#2a261d; --plaque-ink:#efe6cf;
-    --sea:#0d1817; --land:#232b27; --unk:#3a433e;
+    --paper:#1a1714; --sheet:#221f1b; --ink:#ede8e0; --ink-2:#a39a91; --ink-3:#7f766c;
+    --rule:#3a3530; --rule-2:#2c2820; --band:#2c2820; --accent:#d4632e; --accent-2:#e8875a; --cursor:#ff8a73;
+    --plaque:#2c2820; --plaque-ink:#ede8e0;
+    --sea:#141210; --land:#2c2820; --unk:#3d3832;
     --f-IE:#3987e5; --f-AA:#d95926; --f-TM:#199e70; --f-NC:#c98500; --f-AU:#d55181; --f-AM:#008300; --f-DR:#9085e9; --f-ST:#e66767; --f-OT:#6f797c;
 }
 /* Retro skin: a mid-90s CD-ROM encyclopedia. Teal desktop, silver beveled windows, navy title bars, white reading panes, system fonts. */
@@ -247,10 +247,24 @@ footer a{color:var(--accent)}
 [data-skin="retro"] aside::-webkit-scrollbar-thumb{background:#c0c0c0;box-shadow:var(--out)}
 [data-skin="retro"] :focus-visible{outline:1px dotted #000;outline-offset:-4px}
 
+/* Light and Dark follow brianmwilcox.com: Playfair Display headings, DM Sans text, JetBrains Mono labels. */
+:root:not([data-skin="retro"]) h1{font-weight:900;letter-spacing:-.015em;line-height:1.02}
+:root:not([data-skin="retro"]) :is(.casehead h2,.entry h2,.xs-year,.xs-region h3,.index-head h2,.cols h3){font-weight:700;letter-spacing:-.005em}
+:root:not([data-skin="retro"]) :is(.tip b,.letters a){font-weight:700;letter-spacing:0}
+:root:not([data-skin="retro"]) .lede::first-letter{font-weight:900}
+:root:not([data-skin="retro"]) :is(.overline,.eyebrow,.visit h2){font-family:var(--mono);font-weight:500;letter-spacing:.16em}
+.crumbs{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;margin:0 0 18px;font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--ink-3)}
+.crumbs a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--rule)}
+.crumbs a:hover,.crumbs a:focus-visible{color:var(--accent);border-bottom-color:var(--accent)}
+.crumbs [aria-current]{color:var(--ink)}
+[data-skin="retro"] .crumbs,[data-skin="retro"] .crumbs [aria-current]{color:#fff;font-family:var(--body)}
+[data-skin="retro"] .crumbs a{color:#ffff9e;border-bottom-color:#ffff9e}
+
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 </style>
 
 <div class="hall">
+<!--SITE-NAV-->
 <header>
   <div class="inscription">
     <span class="overline">An atlas of states and peoples · 3100 BCE to 2026</span>
@@ -273,7 +287,7 @@ footer a{color:var(--accent)}
       <button id="mDeep" aria-pressed="true" title="More room for recent centuries">Deep time</button>
       <button id="mEven" aria-pressed="false" title="Every century the same width">Even</button>
     </div>
-    <div class="group" role="group" aria-label="Theme"><span class="group-label">Theme</span><button type="button" data-skin="light" aria-pressed="false">Light</button><button type="button" data-skin="dark" aria-pressed="false">Dark</button><button type="button" data-skin="retro" aria-pressed="true" title="Mid-90s CD-ROM encyclopedia look">Retro</button></div>
+    <div class="group" role="group" aria-label="Theme"><span class="group-label">Theme</span><button type="button" data-skin="light" aria-pressed="true">Light</button><button type="button" data-skin="dark" aria-pressed="false">Dark</button><button type="button" data-skin="retro" aria-pressed="false" title="Mid-90s CD-ROM encyclopedia look">Retro</button></div>
     <div class="group" role="group" aria-label="Zoom"><span class="group-label">Zoom</span><button id="zIn" aria-label="Zoom in">+</button><button id="zOut" aria-label="Zoom out">−</button></div>
   </div>
   <div class="key"><span class="group-label">Key · language family of the ruling group (click to isolate)</span>
@@ -1995,15 +2009,15 @@ document.getElementById("indexCols").addEventListener("click", e => { const b = 
 // ---- Theme & boot -------------------------------------------------------------
 function retheme() { readColors(); hatch = null; mapHatch = null; draw(); mapDirty = true; mapSync(); if (selected) drawLocator(selected); }
 function setSkin(k) {
-  if (!["light", "dark", "retro"].includes(k)) k = "retro";
+  if (!["light", "dark", "retro"].includes(k)) k = "light";
   document.documentElement.dataset.skin = k;
   document.querySelectorAll("button[data-skin]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.skin === k)));
-  try { localStorage.setItem("hall-of-realms-skin", k); } catch (e) {}
+  try { localStorage.setItem("hall-of-realms-skin", k); if (k !== "retro") localStorage.setItem("zth-theme", k); } catch (e) {}
   retheme(); lastPanelKey = ""; renderPanel();
   if (document.fonts) document.fonts.ready.then(() => { draw(); mapDirty = true; mapSync(); });
 }
 document.querySelectorAll("button[data-skin]").forEach(b => b.addEventListener("click", () => setSkin(b.dataset.skin)));
-{ let k = "retro"; try { k = localStorage.getItem("hall-of-realms-skin") || "retro"; } catch (e) {}
+{ let k = "light"; try { const site = localStorage.getItem("zth-theme"); k = localStorage.getItem("hall-of-realms-skin") || (site === "dark" ? "dark" : "light"); } catch (e) {}
   const hs = new URLSearchParams(location.hash.slice(1)).get("skin"); if (hs) k = hs;
   document.documentElement.dataset.skin = k;
   document.querySelectorAll("button[data-skin]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.skin === k))); }
