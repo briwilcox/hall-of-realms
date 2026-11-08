@@ -48,8 +48,8 @@ header{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-bottom:1
 .overline,.eyebrow{font-family:var(--body);font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.2em;color:var(--accent)}
 h1{font-family:var(--display);font-weight:400;font-size:clamp(38px,6vw,76px);letter-spacing:.14em;line-height:1;margin:0;text-wrap:balance}
 .inscription{display:grid;gap:10px;justify-items:start;padding-bottom:14px;border-bottom:1px solid var(--accent);box-shadow:0 4px 0 -3px var(--accent)}
-.facts{display:flex;flex-wrap:wrap;gap:4px 22px;font-family:var(--body);font-size:12.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-2)}
-.facts b{font-family:var(--mono);font-weight:500;letter-spacing:0;color:var(--ink);font-variant-numeric:tabular-nums;margin-right:5px}
+.deck{margin:0;font-family:var(--body);font-size:15.5px;line-height:1.45;color:var(--ink-2);max-width:48ch;text-wrap:pretty}
+.deck span{color:var(--ink);font-variant-numeric:tabular-nums}
 .walltext{display:grid;grid-template-columns:minmax(0,62ch) minmax(0,40ch);gap:12px 48px;align-items:start}
 .lede{margin:0;font-family:var(--prose);font-size:18px;line-height:1.55;color:var(--ink)}
 .lede::first-letter{font-family:var(--display);font-size:3.1em;float:left;line-height:.82;margin:.06em .08em 0 0;color:var(--accent)}
@@ -211,7 +211,7 @@ footer a{color:var(--accent)}
 [data-skin="retro"] .inscription{background:var(--sheet);box-shadow:var(--in);border:0;padding:16px 14px 12px}
 [data-skin="retro"] h1{font-family:var(--display);font-weight:700;letter-spacing:.005em;color:var(--accent)}
 [data-skin="retro"] .overline,[data-skin="retro"] .eyebrow,[data-skin="retro"] .visit h2{color:var(--accent);letter-spacing:.08em}
-[data-skin="retro"] .facts{letter-spacing:.04em;color:var(--ink)}
+[data-skin="retro"] .deck{color:var(--ink)}
 [data-skin="retro"] .walltext{background:var(--sheet);box-shadow:var(--in);padding:14px}
 [data-skin="retro"] .lede{font-size:17px}
 [data-skin="retro"] .lede::first-letter{font-family:var(--display);font-weight:700;color:var(--accent)}
@@ -300,7 +300,7 @@ footer a{color:var(--accent)}
   .inscription{gap:6px;padding-bottom:10px}
   h1{font-size:clamp(32px,9.5vw,46px)}
   .overline{font-size:10px;letter-spacing:.12em}
-  .facts{font-size:11px;gap:2px 14px}
+  .deck{font-size:14px}
   .lede{font-size:17px}
   .directory{padding:8px;gap:8px}
   .search{flex:1 1 100%}
@@ -418,12 +418,12 @@ footer a{color:var(--accent)}
 <!--SITE-NAV-->
 <header>
   <div class="inscription">
-    <span class="overline">An atlas of states and peoples · 3100 BCE to 2026</span>
+    <span class="overline">An atlas of world history</span>
     <h1>Hall of Realms</h1>
-    <div class="facts"><span><b id="count"></b>entries</span><span><b>12</b>halls</span><span><b>49</b>border maps</span><span><b>5,126</b>years</span></div>
+    <p class="deck"><span id="count">695</span> states and peoples across <span id="yrs">5,125</span> years, from Early Dynastic Egypt in 3100 BCE to the present.</p>
   </div>
   <div class="walltext">
-    <p class="lede">The atlas sets five thousand years of states and peoples side by side. Each region of the world gets a hall, and each row in a hall follows one line of succession. A bar's color shows the language its rulers spoke. Choosing a year redraws the borders on the map<span class="wide-only"> at right</span><span class="narrow-only"> in the Map tab</span> and lists everything standing then; selecting anything opens its encyclopedia entry.</p>
+    <p class="lede">Each region of the world gets a hall, and each row in a hall follows one line of succession. A bar's color shows the language its rulers spoke. Choosing a year redraws the borders on the map<span class="wide-only"> at right</span><span class="narrow-only"> in the Map tab</span> and lists everything standing then; selecting anything opens its encyclopedia entry.</p>
     <div class="visit"><h2>Using the exhibit</h2><ul>
       <li><span class="m-only">Hovering over the timeline shows the world in that year, and a click on empty space pins it.</span><span class="t-only">A tap on empty timeline space pins that year and lists everything standing then.</span></li>
       <li><span class="m-only">A click</span><span class="t-only">A tap</span> on a bar, a territory or an index entry opens its article, and lines on the timeline link it to its predecessors and successors.</li>
@@ -433,8 +433,8 @@ footer a{color:var(--accent)}
     </ul></div>
   </div>
   <div class="directory controls">
-    <div class="search"><input id="q" type="search" placeholder="Search: Maurya, Inca, Song…" aria-label="Find a state or culture" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugg" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go"><span id="matchInfo"></span><ul class="sugg" id="sugg" role="listbox" aria-label="Matching entries" hidden></ul></div>
-    <div class="group" id="eras" role="group" aria-label="Jump to an era"><span class="group-label">Era</span></div>
+    <div class="search"><input id="q" type="search" placeholder="Search: Maurya, Inca, Song…" aria-label="Name of a state or people" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugg" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go"><span id="matchInfo"></span><ul class="sugg" id="sugg" role="listbox" aria-label="Matching entries" hidden></ul></div>
+    <div class="group" id="eras" role="group" aria-label="Eras"><span class="group-label">Era</span></div>
     <div class="prefs">
     <div class="group" role="group" aria-label="Time scale"><span class="group-label">Scale</span>
       <button id="mDeep" aria-pressed="true" title="More room for recent centuries">Deep time</button>
@@ -444,7 +444,7 @@ footer a{color:var(--accent)}
     </div>
     <div class="group zoomgrp" role="group" aria-label="Zoom"><span class="group-label">Zoom</span><button id="zIn" aria-label="Zoom in">+</button><button id="zOut" aria-label="Zoom out">−</button></div>
   </div>
-  <div class="key"><span class="group-label">Key · language family of the ruling group; <span class="m-only">a click</span><span class="t-only">a tap</span> on one shows only that family</span>
+  <div class="key"><span class="group-label">Key · language family of the ruling group; <span class="m-only">a click</span><span class="t-only">a tap</span> on one shows only that family, and a second one shows them all</span>
   <div class="legend" id="legend" role="group" aria-label="Language families"></div></div>
 </header>
 
@@ -460,7 +460,7 @@ footer a{color:var(--accent)}
       <div class="maphead">
         <span class="snap" id="snapLabel"></span>
         <div class="group" role="group" aria-label="Map style"><button id="vFlat" type="button" aria-pressed="true">Map</button><button id="vGlobe" type="button" aria-pressed="false">Globe</button></div>
-        <button id="vBig" type="button" aria-pressed="false" title="Enlarge the map">Enlarge</button>
+        <button id="vBig" type="button" aria-pressed="false">Enlarge</button>
       </div>
       <canvas id="map" aria-label="Map of states and cultures in the chosen year. Dragging turns the globe, and scrolling or pinching zooms."></canvas>
       <div class="mapbar"><button id="snapPrev" class="step" type="button" aria-label="Previous border map" title="Previous border map">‹</button><button id="play" type="button">Play</button><button id="snapNext" class="step" type="button" aria-label="Next border map" title="Next border map">›</button><input id="yr" type="range" min="0" max="1000" step="1" value="1000" aria-label="Year"><span class="yr" id="yrOut"></span></div>
@@ -1444,6 +1444,7 @@ RAW.trim().split("\n").forEach(line => {
   ITEMS.push({ id: ITEMS.length, name, s: Math.max(+s, Y0), e: +e, rawS: +s, fam, regs: regs.split(" "), culture: flag === "c", note: note || "", lname: name.toLowerCase(), prev: new Set(), next: new Set() });
 });
 document.getElementById("count").textContent = ITEMS.length;
+document.getElementById("yrs").textContent = (NOW - Y0 - (Y0 < 0 && NOW > 0 ? 1 : 0)).toLocaleString("en-US");
 { const byName = new Map(ITEMS.map(i => [i.name, i]));
   CHAINS.trim().split("\n").forEach(l => { const ns = l.split(" > ").map(x => byName.get(x.trim())); for (let k = 1; k < ns.length; k++) if (ns[k - 1] && ns[k]) { ns[k - 1].next.add(ns[k]); ns[k].prev.add(ns[k - 1]); } }); }
 
@@ -1949,7 +1950,7 @@ document.getElementById("mEven").addEventListener("click", () => setMode("even")
 const legend = document.getElementById("legend");
 FAMS.forEach(([k, n]) => {
   const b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.dataset.fam = k; b.setAttribute("aria-pressed", "false");
-  b.innerHTML = `<i style="background:var(--f-${k})"></i>${esc(n)}`; b.title = "Show only this family (click again to show all)";
+  b.innerHTML = `<i style="background:var(--f-${k})"></i>${esc(n)}`;
   b.addEventListener("click", () => {
     const solo = famOn.size === 1 && famOn.has(k);
     famOn.clear();
@@ -2352,7 +2353,7 @@ function entryHTML(it) {
     ${it.note ? `<p class="body">${esc(it.note)}</p>` : ""}
     <p class="body">${esc(summary(it))}</p>
     ${cs.length ? `<h3>Contemporaries in the same halls</h3><p class="contemps">${cs.map(xref).join(" · ")}</p>` : ""}
-    <div class="actions"><button type="button" data-act="zoom">Show its span on the timeline</button>${ext != null ? `<button type="button" data-act="map">Map of ${esc(fy(SNAPYEARS[ext]))}</button>` : ""}<a href="https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(it.name)}" target="_blank" rel="noopener">Read more on Wikipedia ↗</a></div>
+    <div class="actions"><button type="button" data-act="zoom">Span on the timeline</button>${ext != null ? `<button type="button" data-act="map">Map of ${esc(fy(SNAPYEARS[ext]))}</button>` : ""}<a href="https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(it.name)}" target="_blank" rel="noopener">Wikipedia article ↗</a></div>
   </article>`;
 }
 function drawLocator(it) {
