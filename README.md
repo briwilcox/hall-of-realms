@@ -1,68 +1,66 @@
 # Hall of Realms
 
-An interactive atlas of 695 states, empires and peoples from 3100 BCE to 2026. Each region of the world is a hall, each row in a hall follows one line of succession, and each bar is colored by the language family of the group that ruled. Choosing a year redraws that year's borders on a flat map or a globe and lists everything standing then. Selecting anything opens an encyclopedia entry with its dates, rulers' language, predecessors, successors, contemporaries and a locator map of its greatest mapped extent.
+An interactive atlas of 695 states, empires and peoples from 3100 BCE to 2026, live at [brianmwilcox.com/hall-of-realms](https://www.brianmwilcox.com/hall-of-realms/).
 
-The page ships in three looks: Light (the default) and Dark, styled after brianmwilcox.com, and Retro, a 1990s CD-ROM encyclopedia. Light and Dark follow the site's own theme choice when the atlas has none saved.
+Each region of the world is a hall. Each row in a hall follows one line of succession, and a bar's color shows the language family of the group that ruled. A chosen year redraws that year's borders on a flat map or a globe and lists everything standing then. Each entry opens an encyclopedia article with its dates, its rulers' language, its predecessors, successors and contemporaries, and a locator map of its greatest mapped extent.
 
-## Why it exists
-
-Printed world-history charts show who ruled where, decade by decade, but they stop at one size and one moment of publication. This version zooms from five millennia down to single years, ties every bar to the map, follows successions explicitly instead of by row position, and runs to the present day.
+The timeline zooms from five millennia down to single years, and successions come from a curated list rather than from which row a bar happens to sit in. The page has three looks: Light (the default) and Dark, which match brianmwilcox.com and follow its theme setting, and Retro, styled after a 1990s CD-ROM encyclopedia.
 
 ## Usage
 
-The built page is one static HTML file with no server. Open `dist/hall-of-realms.html` in a browser, or host `dist/site/` on any static host.
+The built page is static HTML with no server. `dist/hall-of-realms.html` opens straight from disk, and `dist/site/` runs on any static host.
 
-Links can open the page in a given state with hash parameters:
+Hash parameters open the page in a given state:
 
 | Parameter | Effect |
 |---|---|
-| `y=1250` | pin the year (negative for BCE) |
-| `sel=Roman%20Empire` | open the entry with that exact name |
-| `q=khanate` | filter the timeline by a search term |
-| `view=globe` | start on the globe |
-| `big=1` | start with the map enlarged |
-| `skin=light` | `retro`, `light` or `dark` |
+| `y=1250` | pins the year (negative for BCE) |
+| `sel=Roman%20Empire` | opens the entry with that exact name |
+| `q=khanate` | filters the timeline by a search term |
+| `view=globe` | starts on the globe |
+| `big=1` | starts with the map enlarged |
+| `skin=light` | picks `light`, `dark` or `retro` |
 
 ### Building
 
-Requires Python 3.10 or later and no third-party packages. `mypy` is needed only for `make typecheck`.
+The pipeline needs Python 3.10 or later and no third-party packages; `make typecheck` also needs mypy.
 
 ```bash
-make fetch      # download the border sources into .cache/sources (about 60 MB, pinned versions)
-make check      # validate the entry table and succession chains
-make page       # build dist/hall-of-realms.html (single file, map data inline)
-make site       # build dist/site/ (index.html, app.js, mapdata.js; data loads after the page text)
-make typecheck  # mypy --strict over the pipeline
+make fetch      # downloads the border sources into .cache/sources (about 60 MB, pinned versions)
+make check      # validates the entry table and succession chains
+make page       # builds dist/hall-of-realms.html (one file, map data inline)
+make site       # builds dist/site/ (index.html, app.js, mapdata.js; the data loads after the text)
+make typecheck  # runs mypy --strict over the pipeline
 ```
 
-`make page` runs every step it needs, including the download, the border simplification and the classification.
+`make page` runs every earlier step it depends on, the download included.
 
-### Editing the content
+### Content
 
 Everything a reader sees lives in `src/hall-of-realms.src.html`:
 
-- `RAW` holds one entry per line: `name|start|end|family|regions|c|note`. `c` marks a people or culture rather than a state; `regions` is a space-separated list of hall codes; `note` is optional.
-- `CHAINS` holds successions, one chain per line: `A > B > C` means B followed A and C followed B.
-- `FAMS` and `REGIONS` define the language families and halls.
+- `RAW` holds one entry per line as `name|start|end|family|regions|c|note`. A `c` marks a people or culture rather than a state, `regions` is a space-separated list of hall codes, and `note` is optional.
+- `CHAINS` holds successions, one chain per line. `A > B > C` means B followed A and C followed B.
+- `FAMS` and `REGIONS` define the language families and the halls.
 
-`data/manual.json` maps border-file territory names to entries (`alias`) or straight to a family (`family`) when the automatic matching gets one wrong. `build/unclassified.json` lists territories still grey after a build, largest first.
+`data/manual.json` maps territory names from the border files to entries (`alias`) or directly to a family (`family`) where the automatic matching gets one wrong. After a build, `build/unclassified.json` lists the territories still grey, largest first.
 
-Corrections are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md).
+[CONTRIBUTING.md](CONTRIBUTING.md) covers corrections.
 
 ## Known limits
 
 - Dates are conventional ranges from standard reference chronologies. Early dates are approximate, and many polities began and ended gradually.
 - Color shows the ruling group's language, which often differs from the language of the people they ruled.
 - The border data has 48 historical snapshots plus present-day borders. The map shows the latest snapshot at or before the chosen year, so between snapshots it lags events.
-- Territories are matched to entries and families by name, alias tables and keyword rules. About 1.2% of border detail stays grey as unclassified, and some matches will be wrong.
+- Territories are matched to entries and families by name, alias tables and keyword rules. About 1.2% of border detail stays grey, and some matches are wrong.
 
 ## License
 
-GPL-3.0; see [LICENSE](LICENSE). The historical border data is derived from a GPL-3.0 work, and the project carries the same license as a whole. Third-party sources and their terms are in [NOTICE.md](NOTICE.md).
+GPL-3.0 ([LICENSE](LICENSE)). The historical borders derive from André Ourednik's GPL-3.0 [historical-basemaps](https://github.com/aourednik/historical-basemaps), so the project carries the same license as a whole. [NOTICE.md](NOTICE.md) lists every third-party source and its terms.
 
 ## How it works
 
-The page is a single HTML document. Canvas draws the timeline and axis; d3 draws the map, the globe and the locator maps. A Python pipeline turns the public border datasets into a compact, classified data block that the build step embeds in the page or writes beside it.
+The page is one HTML document. Canvas draws the timeline and axis, and [d3](https://d3js.org/) draws the map, the globe and the locator maps. A Python pipeline turns the public border datasets into a compact, classified data block, which the build step either embeds in the page or writes beside it.
 
 ```mermaid
 flowchart LR
@@ -88,11 +86,9 @@ flowchart LR
   BU --> SITE["dist/site/"]
 ```
 
-Steps in order:
-
-1. `fetch.py` downloads the snapshots at a pinned commit and the world-atlas files at a pinned version, retrying truncated downloads and skipping files already cached.
+1. `fetch.py` downloads the snapshots at a pinned commit and the [world-atlas](https://github.com/topojson/world-atlas) files at a pinned version. It retries truncated downloads and skips files already cached.
 2. `borders.py` simplifies each ring with Douglas-Peucker at 0.07 degrees, winds exteriors clockwise for d3, drops slivers, and stores coordinates as delta-encoded integers in hundredths of a degree.
-3. `classify.py` reads the entries straight from the page source, so the map and the timeline cannot drift apart. Each territory tries, in order: an alias, an entry alive within 60 years of the snapshot (exact name, then core words), the polity it belongs to, the manual family table, a colonial suffix such as "(UK)", keyword rules, and a continent fallback. It also records, for each entry, the snapshot where it covers the most area, which becomes the locator map in the article.
+3. `classify.py` reads the entries straight from the page source, so the map and the timeline cannot drift apart. Each territory tries an alias first, then an entry alive within 60 years of the snapshot (exact name, then core words), the polity it belongs to, the manual family table, a colonial suffix such as "(UK)", keyword rules and a continent fallback. For each entry it also records the snapshot where the entry covers the most area; that snapshot becomes the article's locator map.
 4. `build.py` writes the single-file page, or with `--split` a static folder whose scripts load deferred.
 
-In the browser, the timeline uses a deep-time scale (`-(2100 - year)^0.55`) that gives recent centuries more room, packs each hall's rows by best fit, and repaints on a canvas sized to the device's pixel ratio. A polygon whose area comes out larger than a hemisphere is reversed at load, which guards against winding mistakes in the source data.
+In the browser the timeline uses a deep-time scale, `-(2100 - year)^0.55`, which gives recent centuries more room. Rows in each hall are packed by best fit, and the canvas matches the device's pixel ratio. Any polygon whose area comes out larger than a hemisphere is reversed at load, which corrects winding mistakes in the source data.

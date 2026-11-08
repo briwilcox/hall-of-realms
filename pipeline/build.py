@@ -15,7 +15,6 @@ from paths import BUILD, DIST, SRC_HTML
 
 MARKER = "/*MAPDATA*/"
 DATA_TAG = f'<script id="mapdata" type="application/json">{MARKER}</script>'
-SOURCE_ARCHIVE = "hall-of-realms-source.tar.gz"
 SITE_URL = "https://www.brianmwilcox.com/hall-of-realms/"
 # The artifact host wraps the page in this skeleton; a standalone site build has to supply it.
 SKELETON_HEAD = (
@@ -25,13 +24,11 @@ SKELETON_HEAD = (
     "<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}"
     "body{margin:0;font:14px/1.4 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>\n"
 )
+# A hint for the artifact host only; the site build drops it.
+HOST_META = '<meta name="claude:viewport-fit-sides" content="cover">\n'
 SITE_NAV = (
     '<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Brian Wilcox</a><span aria-hidden="true">/</span>'
     '<a href="/#projects">Projects</a><span aria-hidden="true">/</span><span aria-current="page">Hall of Realms</span></nav>'
-)
-SITE_FOOTER = (
-    f'<p>Hall of Realms is free software under the GPL-3.0. <a href="{SOURCE_ARCHIVE}">Download the complete source</a> '
-    "(page, build pipeline and border-processing code) to rebuild or modify it.</p>"
 )
 
 
@@ -64,7 +61,7 @@ def main() -> None:
     (site / "mapdata.js").write_text(f"window.HALL_OF_REALMS_MAPDATA = {data};\n", encoding="utf-8")
     loader = '<script defer src="mapdata.js"></script>\n<script defer src="app.js"></script>'
     page = src[: app.start()] + loader + src[app.end():]
-    page = page.replace("<!--SITE-FOOTER-->", SITE_FOOTER).replace("<!--SITE-NAV-->", SITE_NAV)
+    page = page.replace("<!--SITE-NAV-->", SITE_NAV).replace(HOST_META, "")
     page = page.replace(DATA_TAG, "").replace(
         '<script src="https://cdnjs.cloudflare.com/', '<script defer src="https://cdnjs.cloudflare.com/'
     )

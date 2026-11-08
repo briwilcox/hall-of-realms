@@ -1,31 +1,32 @@
 # Corrections and additions
 
-Most fixes are a one-line change in `src/hall-of-realms.src.html` or `data/manual.json`.
+Most fixes are a one-line change to `src/hall-of-realms.src.html` or `data/manual.json`. Issues are welcome too, especially with a source attached.
 
-## Wrong dates, family or hall
+## Dates, family or hall
 
-Edit the entry's line in the `RAW` block (`name|start|end|family|regions|c|note`). Years are integers, negative for BCE. Family is the language family of the ruling group, not of the population. Give a reference work or other source for the change in the pull request.
+Each entry is one line of the `RAW` block: `name|start|end|family|regions|c|note`. Years are integers, negative for BCE. The family is the language family of the ruling group, which can differ from the population's. A pull request that changes a date or family names its source: a reference work, a scholarly article or an encyclopedia entry.
 
-## Missing or wrong succession
+## Successions
 
-Edit the `CHAINS` block. Every name must match an entry exactly. `make check` reports names that do not match and successors that end before their predecessor begins.
+The `CHAINS` block holds successions, and every name in it has to match an entry exactly. `make check` reports names that match nothing and successors that end before their predecessor begins.
 
-## A territory on the map is grey or the wrong color
+## A grey or miscolored territory
 
-1. Run `make classify` and look up the territory's name in `build/unclassified.json` (grey ones) or `build/names.json` (all of them).
-2. If the territory is one of the timeline's entries under another name, add `"Border name": "Entry name"` to `alias` in `data/manual.json`.
-3. Otherwise add `"Border name": "XX"` to `family`, where `XX` is a family code from `FAMS` in the page source.
+`make classify` writes `build/unclassified.json` (grey territories) and `build/names.json` (every territory name). The fix goes in `data/manual.json`:
 
-Wrong borders themselves come from historical-basemaps; report those upstream at https://github.com/aourednik/historical-basemaps.
+- a territory that is one of the timeline's entries under another name gets an `alias` line, `"Border name": "Entry name"`;
+- any other territory gets a `family` line, `"Border name": "XX"`, where `XX` is a family code from `FAMS` in the page source.
 
-## Before opening a pull request
+The borders themselves come from historical-basemaps, and errors in them belong [upstream](https://github.com/aourednik/historical-basemaps/issues).
+
+## Checks before a pull request
 
 ```bash
 make check
 make page
-make typecheck   # only if you changed the pipeline
+make typecheck   # only after pipeline changes
 ```
 
-Open `dist/hall-of-realms.html` and look at the entry or year you changed.
+After the build, `dist/hall-of-realms.html` shows the changed entry or year.
 
 Contributions are accepted under the project's GPL-3.0 license.
