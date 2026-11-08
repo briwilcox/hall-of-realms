@@ -10,17 +10,21 @@ The timeline zooms from five millennia down to single years, and successions com
 
 The built page is static HTML with no server. `dist/hall-of-realms.html` opens straight from disk, and `dist/site/` runs on any static host.
 
-Hash parameters open the page in a given state, and the address keeps itself current as entries open and years are pinned, so a copied link reopens the same view:
+The address keeps the whole view current (open entry, pinned year, era or visible years, language filter, search, scale, map style, phone tab and theme), so a copied link reopens what its sender saw. Each article also has a Copy link button, which becomes Share on a phone. Pasting a different link into an open tab switches the page to that view. The parameters:
 
 | Parameter | Effect |
 |---|---|
+| `sel=Roman%20Empire` | opens that entry; capitals don't matter, underscores stand for spaces, and a partial name such as `sel=khiva` opens the best search match |
 | `y=1250` | pins the year (negative for BCE) |
-| `sel=Roman%20Empire` | opens the entry with that exact name |
+| `era=classical` | shows an era: `all`, `bronze-age`, `classical`, `medieval`, `early-modern` or `modern` |
+| `t=-500,1500` | shows those years on the timeline (negative for BCE); ignored when `era` is set |
+| `fam=turkic,dravidian` | shows only those language families: `indo-european`, `afro-asiatic`, `turkic`, `niger-congo`, `austronesian`, `indigenous-american`, `dravidian`, `sino-tibetan` or `other` |
 | `q=khanate` | filters the timeline by a search term |
+| `scale=even` | gives every century the same width |
 | `view=globe` | starts on the globe |
 | `big=1` | starts with the map enlarged |
 | `tab=map` | on a phone, opens the `map`, `index` or `about` tab |
-| `skin=light` | picks `light`, `dark` or `retro` |
+| `skin=retro` | shows `light`, `dark` or `retro` without changing the visitor's saved choice |
 
 ### Building
 
