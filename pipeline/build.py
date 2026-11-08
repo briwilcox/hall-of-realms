@@ -16,6 +16,15 @@ from paths import BUILD, DIST, SRC_HTML
 MARKER = "/*MAPDATA*/"
 DATA_TAG = f'<script id="mapdata" type="application/json">{MARKER}</script>'
 SOURCE_ARCHIVE = "hall-of-realms-source.tar.gz"
+SITE_URL = "https://www.brianmwilcox.com/hall-of-realms/"
+# The artifact host wraps the page in this skeleton; a standalone site build has to supply it.
+SKELETON_HEAD = (
+    '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+    '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
+    f'<link rel="canonical" href="{SITE_URL}">\n'
+    "<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}"
+    "body{margin:0;font:14px/1.4 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>\n"
+)
 SITE_FOOTER = (
     f'<p>Hall of Realms is free software under the GPL-3.0. <a href="{SOURCE_ARCHIVE}">Download the complete source</a> '
     "(page, build pipeline and border-processing code) to rebuild or modify it.</p>"
@@ -55,6 +64,8 @@ def main() -> None:
     page = page.replace(DATA_TAG, "").replace(
         '<script src="https://cdnjs.cloudflare.com/', '<script defer src="https://cdnjs.cloudflare.com/'
     )
+    head_end = page.index("</style>") + len("</style>")
+    page = SKELETON_HEAD + page[:head_end] + "\n</head>\n<body>\n" + page[head_end:].lstrip("\n") + "\n</body>\n</html>\n"
     (site / "index.html").write_text(page, encoding="utf-8")
     sizes = ", ".join(f"{p.name} {p.stat().st_size // 1024} KB" for p in sorted(site.iterdir()))
     print(f"wrote {site.relative_to(DIST.parent)}/: {sizes}")
