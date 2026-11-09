@@ -54,9 +54,9 @@ Everything a reader sees lives in `src/hall-of-realms.src.html`:
 
 ## Known limits
 
-- Dates are conventional ranges from standard reference chronologies. Early dates are approximate, and many polities began and ended gradually.
+- The entry table was compiled for this project, not taken from a single reference work. Early dates are approximate, and many polities began and ended gradually.
 - Color shows the ruling group's language, which often differs from the language of the people they ruled.
-- The border data has 48 historical snapshots plus present-day borders. The map shows the latest snapshot at or before the chosen year, so between snapshots it lags events.
+- The border data has 48 historical snapshots plus present-day borders from Natural Earth 4.1.0, released in 2018, so border changes since then do not appear. The map shows the latest snapshot at or before the chosen year, so between snapshots it lags events.
 - Territories are matched to entries and families by name, alias tables and keyword rules. About 1.2% of border detail stays grey, and some matches are wrong.
 
 ## License
@@ -71,7 +71,7 @@ The page is one HTML document. Canvas draws the timeline and axis, and [d3](http
 flowchart LR
   subgraph Sources
     HB["historical-basemaps<br/>48 GeoJSON snapshots"]
-    WA["world-atlas<br/>Natural Earth 2026 borders and land"]
+    WA["world-atlas<br/>Natural Earth 4.1.0 borders and land"]
   end
   subgraph Pipeline["pipeline/ (typed Python, stdlib only)"]
     F[fetch.py] --> B["borders.py<br/>simplify, orient, delta-encode"]
