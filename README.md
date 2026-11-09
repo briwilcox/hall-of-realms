@@ -1,10 +1,10 @@
 # Hall of Realms
 
-An interactive atlas of 695 states, empires and peoples from 3100 BCE to 2026, live at [brianmwilcox.com/hall-of-realms](https://www.brianmwilcox.com/hall-of-realms/).
+An interactive atlas of 701 states, empires and peoples from 3100 BCE to 2026, live at [brianmwilcox.com/hall-of-realms](https://www.brianmwilcox.com/hall-of-realms/).
 
 The world splits into twelve regional halls, and every row in a hall follows one line of succession. A bar's color shows the language family of the group that ruled. Picking a year redraws that year's borders on a flat map or a globe and lists everything standing then. Every entry opens an article with its dates, its rulers' language, its predecessors, successors and contemporaries, and a locator map of its largest mapped extent.
 
-The timeline zooms from five millennia down to single years. A list of 382 succession links in the source decides who followed whom, so a chosen entry draws lines to its predecessors and successors wherever their bars sit. On a phone the page splits into four tabs (Timeline, Map, Index and About), articles open in a sheet that a downward swipe closes, and the timeline and map pan and zoom by touch. Light (the default) and Dark match brianmwilcox.com and follow its theme setting; a third look, Retro, is styled after a 1990s CD-ROM encyclopedia.
+The timeline zooms from five millennia down to single years. A list of 425 succession links in the source decides who followed whom, so a chosen entry draws lines to its predecessors and successors wherever their bars sit. On a phone the page splits into four tabs (Timeline, Map, Index and About), articles open in a sheet that a downward swipe closes, and the timeline and map pan and zoom by touch. Light (the default) and Dark match brianmwilcox.com and follow its theme setting; a third look, Retro, is styled after a 1990s CD-ROM encyclopedia.
 
 ## Usage
 
@@ -54,7 +54,7 @@ Everything a reader sees lives in `src/hall-of-realms.src.html`:
 
 ## Known limits
 
-- The entry table was compiled for this project, not taken from a single reference work. Early dates are approximate, and many polities began and ended gradually.
+- The entry table was compiled for this project, not taken from a single reference work. In November 2026 every entry was compared with Wikipedia and Wikidata, and [docs/fact-check-2026-11.md](docs/fact-check-2026-11.md) lists each resulting change with its source. 37 entries, mostly broad peoples and cultures, have no dates in either source and stay unverified. Early dates are approximate, and many polities began and ended gradually.
 - Color shows the ruling group's language, which often differs from the language of the people they ruled.
 - The border data has 48 historical snapshots plus present-day borders from Natural Earth 4.1.0, released in 2018, so border changes since then do not appear. The map shows the latest snapshot at or before the chosen year, so between snapshots it lags events.
 - Territories are matched to entries and families by name, alias tables and keyword rules. About 1.2% of border detail stays grey, and some matches are wrong.
