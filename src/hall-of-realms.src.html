@@ -92,27 +92,49 @@ button:focus-visible,input:focus-visible,canvas:focus-visible,a:focus-visible{ou
 .chip.dim{opacity:.4}
 .chip i.hatch{background-image:repeating-linear-gradient(135deg,var(--ink-3) 0 1.5px,transparent 1.5px 4px);border:1px solid var(--ink-3)}
 .legend .note{font-size:12px;color:var(--ink-3)}
-.wrap{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:18px;align-items:start}
-@media (max-width:1250px){.wrap{grid-template-columns:minmax(0,1fr) 370px}}
-.chartbox{background:var(--sheet);border:1px solid var(--rule);border-radius:2px;min-width:0;box-shadow:0 1px 0 var(--rule)}
-.casehead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;padding:10px 12px 8px;border-bottom:1px solid var(--rule)}
-.casehead h2{font-family:var(--display);font-weight:400;font-size:20px;letter-spacing:.08em;margin:0}
-.casehead span{font-size:12px;color:var(--ink-3)}
-.axiswrap{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--sheet);border-bottom:1px solid var(--rule)}
+/* Windows: on a wide screen the timeline, atlas, entry and year list are tiles in a workspace one screen tall. Script places each tile; on a phone the tiles dissolve into the tabbed page. */
+.ws{position:relative;height:calc(100vh - 24px);height:calc(100dvh - 24px);min-height:600px}
+.win{position:absolute;display:flex;flex-direction:column;min-width:0;background:var(--sheet);border:1px solid var(--rule);border-radius:2px;overflow:hidden;box-shadow:0 1px 0 var(--rule)}
+.win > :not(.win-bar){flex:1 1 auto;min-height:0}
+.win-bar{flex:none;display:flex;align-items:baseline;gap:9px;padding:7px 12px 6px 8px;border-bottom:1px solid var(--rule);cursor:grab;user-select:none;-webkit-user-select:none;touch-action:none}
+.win-bar .grip{align-self:center;width:8px;height:14px;flex:none;background:radial-gradient(circle,var(--ink-3) 1.1px,transparent 1.5px) 0 0/4px 4.67px;opacity:.7;transition:opacity .15s}
+.win-bar:hover .grip{opacity:1}
+.win-title{font-family:var(--display);font-weight:400;font-size:17px;letter-spacing:.06em;margin:0;white-space:nowrap}
+.win-note{font-size:12px;color:var(--ink-3);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.win.moving{opacity:.45}
+body.ws-moving,body.ws-moving *{cursor:grabbing!important}
+body.ws-resizing{-webkit-user-select:none;user-select:none}
+.ws-split{position:absolute;z-index:3;touch-action:none}
+.ws-split[data-dir="row"]{cursor:col-resize}
+.ws-split[data-dir="col"]{cursor:row-resize}
+.ws-split::after{content:"";position:absolute;inset:0;margin:auto;border-radius:1px;background:var(--accent);opacity:0;transition:opacity .15s}
+.ws-split[data-dir="row"]::after{width:2px}
+.ws-split[data-dir="col"]::after{height:2px}
+.ws-split:hover::after,.ws-split.on::after,.ws-split:focus-visible::after{opacity:.8}
+.ws-split:focus-visible{outline:none}
+.ws-drop{position:absolute;z-index:8;pointer-events:none;display:grid;place-items:center;border:2px solid var(--accent);border-radius:3px;background:color-mix(in srgb,var(--accent) 13%,transparent);transition:left .12s,top .12s,width .12s,height .12s}
+.ws-drop[hidden]{display:none}
+.ws-drop span{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--ink);background:var(--sheet);border:1px solid var(--accent);border-radius:2px;padding:4px 10px;white-space:nowrap}
+.chartbox{position:relative;background:var(--sheet);min-width:0}
+.axiswrap{position:sticky;top:0;z-index:5;background:var(--sheet);border-bottom:1px solid var(--rule)}
 canvas{display:block;width:100%}
 #axis{height:62px;cursor:ew-resize;touch-action:none}
 #chart{touch-action:pan-y;cursor:grab}
 #chart.dragging{cursor:grabbing}
 .hint{font-size:12px;color:var(--ink-3);padding:6px 10px;border-top:1px solid var(--rule-2)}
-aside{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);max-height:calc(100vh - 24px);overflow:auto;background:var(--sheet);border:1px solid var(--rule);border-radius:2px}
-#ledger{padding:0}
-#entrypane{display:none}
-html.has-entry #entrypane{display:block}
 #entrypane:focus{outline:none}
 .sheet-top{display:none}
 #entrybody{padding:14px 16px 0}
 #yearlist{padding:16px 16px 20px}
-.mapcard{position:sticky;top:0;z-index:2;background:var(--sheet);border-bottom:1px solid var(--rule);padding:10px 12px 10px;display:grid;gap:7px}
+.entry-empty{display:grid;gap:8px;padding:4px 0 18px;max-width:46ch}
+.entry-empty p{margin:0;font-family:var(--prose);font-size:15px;line-height:1.55;color:var(--ink-2)}
+.mapcard{background:var(--sheet);padding:10px 12px;display:grid;gap:7px}
+@media (min-width:901px){
+  .chartbox,#entrypane,#yearlist{overflow:auto;overscroll-behavior:contain}
+  .chartbox .hint,.narrow-only{display:none}
+  .mapcard:not(.big){grid-template-rows:auto minmax(0,1fr) auto auto;overflow:hidden}
+  .mapcard:not(.big) #map{height:100%}
+}
 .maphead{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .maphead .snap{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);flex:1 1 140px;min-width:0;line-height:1.3}
 .maphead .snap b{color:var(--ink);font-weight:500}
@@ -134,7 +156,7 @@ html.has-entry #entrypane{display:block}
 .mapcard.big{position:fixed;z-index:40;top:max(14px,env(safe-area-inset-top,0px));bottom:max(14px,env(safe-area-inset-bottom,0px));left:max(14px,env(safe-area-inset-left,0px));right:max(14px,env(safe-area-inset-right,0px));
   border:1px solid var(--rule);border-radius:3px;grid-template-rows:auto minmax(0,1fr) auto auto;box-shadow:0 0 0 100vmax rgba(8,12,10,.55),0 20px 60px rgba(0,0,0,.35);padding:14px 16px}
 .mapcard.big #map{height:100%}
-body.mapbig aside{z-index:50}
+body.mapbig #w-map{z-index:50}
 .mapcard.big .maphead .snap{font-size:13px}
 /* encyclopedia entry */
 .entry{display:grid;gap:10px;padding-bottom:16px;border-bottom:3px double var(--rule);animation:rise .3s cubic-bezier(.2,.8,.2,1)}
@@ -230,10 +252,10 @@ footer a{color:var(--accent)}
 [data-skin="retro"] .directory .search input::placeholder{color:#6a6a6a}
 [data-skin="retro"] .directory #matchInfo,[data-skin="retro"] #matchInfo{color:#000}
 [data-skin="retro"] .key{background:var(--sheet);box-shadow:var(--in);padding:8px}
-[data-skin="retro"] .chartbox,[data-skin="retro"] aside,[data-skin="retro"] .index{background:var(--chrome);border:0;border-radius:0;box-shadow:var(--out);padding:3px}
-[data-skin="retro"] .casehead,[data-skin="retro"] .index-head{background:var(--titlebar);border:0;padding:4px 8px;margin:0}
-[data-skin="retro"] .casehead h2,[data-skin="retro"] .index-head h2{font:700 13px var(--body);letter-spacing:.01em;color:#fff}
-[data-skin="retro"] .casehead span,[data-skin="retro"] .index-head p{color:#dfe7ff;font-family:var(--body);font-style:normal;font-size:12px}
+[data-skin="retro"] .index{background:var(--chrome);border:0;border-radius:0;box-shadow:var(--out);padding:3px}
+[data-skin="retro"] .index-head{background:var(--titlebar);border:0;padding:4px 8px;margin:0}
+[data-skin="retro"] .index-head h2{font:700 13px var(--body);letter-spacing:.01em;color:#fff}
+[data-skin="retro"] .index-head p{color:#dfe7ff;font-family:var(--body);font-style:normal;font-size:12px}
 [data-skin="retro"] .axiswrap{background:var(--sheet);border-bottom:1px solid #808080}
 [data-skin="retro"] #chart{box-shadow:none}
 [data-skin="retro"] .hint{background:var(--chrome);color:#000;border-top:0}
@@ -246,7 +268,6 @@ footer a{color:var(--accent)}
 [data-skin="retro"] .mapbar input[type=range]::-webkit-slider-thumb{border-radius:0;background:var(--chrome);border:0;box-shadow:var(--out)}
 [data-skin="retro"] .mapbar input[type=range]::-moz-range-thumb{border-radius:0;background:var(--chrome);border:0;box-shadow:var(--out)}
 [data-skin="retro"] .mapcard.big{border:0;border-radius:0;box-shadow:var(--out),0 0 0 100vmax rgba(20,40,44,.55)}
-[data-skin="retro"] #ledger{background:var(--sheet);box-shadow:var(--in);margin:3px}
 [data-skin="retro"] .entry{border-bottom:2px groove #c0c0c0}
 [data-skin="retro"] .entry .eyebrow{background:var(--titlebar);color:#fff;padding:4px 8px;margin:-14px -16px 2px;letter-spacing:.02em;text-transform:none;font-size:12px}
 [data-skin="retro"] .entry .eyebrow button{color:#fff;font-family:var(--body);box-shadow:none;background:none;padding:0}
@@ -272,9 +293,19 @@ footer a{color:var(--accent)}
 [data-skin="retro"] footer,[data-skin="retro"] footer h2{color:#ffffff}
 [data-skin="retro"] footer{font-family:var(--body);font-size:12.5px}
 [data-skin="retro"] footer a{color:#ffff9e}
-[data-skin="retro"] aside::-webkit-scrollbar{width:16px}
-[data-skin="retro"] aside::-webkit-scrollbar-track{background:#dcdcdc}
-[data-skin="retro"] aside::-webkit-scrollbar-thumb{background:#c0c0c0;box-shadow:var(--out)}
+[data-skin="retro"] .win{background:var(--chrome);border:0;border-radius:0;box-shadow:var(--out);padding:3px}
+[data-skin="retro"] .win-bar{background:var(--titlebar);border:0;padding:4px 8px 4px 6px;gap:8px;align-items:center}
+[data-skin="retro"] .win-title{font:700 13px var(--body);letter-spacing:.01em;color:#fff}
+[data-skin="retro"] .win-note{color:#dfe7ff;font-family:var(--body);font-size:12px}
+[data-skin="retro"] .win-bar .grip{background-image:radial-gradient(circle,#fff 1.1px,transparent 1.4px);opacity:.85}
+[data-skin="retro"] .win > :not(.win-bar){margin-top:3px}
+[data-skin="retro"] .win :is(.chartbox,#entrypane,#yearlist){background:var(--sheet);box-shadow:var(--in)}
+[data-skin="retro"] .ws-drop{border:2px dashed #000;border-radius:0;background:rgba(0,0,128,.14)}
+[data-skin="retro"] .ws-drop span{font-family:var(--body);border:1px solid #000;border-radius:0;background:#ffffe1;color:#000}
+[data-skin="retro"] .ws-split::after{background:#000}
+[data-skin="retro"] .win :is(.chartbox,#entrypane,#yearlist)::-webkit-scrollbar{width:16px}
+[data-skin="retro"] .win :is(.chartbox,#entrypane,#yearlist)::-webkit-scrollbar-track{background:#dcdcdc}
+[data-skin="retro"] .win :is(.chartbox,#entrypane,#yearlist)::-webkit-scrollbar-thumb{background:#c0c0c0;box-shadow:var(--out)}
 [data-skin="retro"] :focus-visible{outline:1px dotted #000;outline-offset:-4px}
 [data-skin="retro"] .sugg{border:1px solid #000;border-radius:0;box-shadow:2px 2px 0 rgba(0,0,0,.35);padding:0;font-family:var(--body)}
 [data-skin="retro"] .sugg li{border-radius:0}
@@ -284,7 +315,7 @@ footer a{color:var(--accent)}
 
 /* Light and Dark follow brianmwilcox.com: Playfair Display headings, DM Sans text, JetBrains Mono labels. */
 :root:not([data-skin="retro"]) h1{font-weight:900;letter-spacing:-.015em;line-height:1.02}
-:root:not([data-skin="retro"]) :is(.casehead h2,.entry h2,.xs-year,.xs-region h3,.index-head h2,.cols h3){font-weight:700;letter-spacing:-.005em}
+:root:not([data-skin="retro"]) :is(.win-title,.entry h2,.xs-year,.xs-region h3,.index-head h2,.cols h3){font-weight:700;letter-spacing:-.005em}
 :root:not([data-skin="retro"]) :is(.tip b,.letters a){font-weight:700;letter-spacing:0}
 :root:not([data-skin="retro"]) .lede::first-letter{font-weight:900}
 :root:not([data-skin="retro"]) :is(.overline,.eyebrow,.visit h2){font-family:var(--mono);font-weight:500;letter-spacing:.16em}
@@ -301,8 +332,11 @@ footer a{color:var(--accent)}
   .narrow-only{display:inline}
   .wide-only{display:none}
   body{padding-block:12px calc(84px + env(safe-area-inset-bottom,0px))}
-  .wrap{display:block}
-  aside,#ledger{display:contents}
+  .ws,.win{display:contents}
+  .win-bar,.ws-split,.ws-drop,.wsgrp,.entry-empty{display:none}
+  .chartbox{border-block:1px solid var(--rule)}
+  .axiswrap{top:env(safe-area-inset-top,0px)}
+  [data-skin="retro"] .chartbox{background:var(--chrome);box-shadow:var(--out);padding:3px}
   .crumbs{margin:0 0 10px;font-size:11px}
   header{gap:10px;margin-bottom:12px}
   .inscription{gap:6px;padding-bottom:10px}
@@ -325,7 +359,6 @@ footer a{color:var(--accent)}
   .legend .chip{font-size:13px;padding:4px 10px 4px 8px}
   .entry .actions a{display:inline-flex;align-items:center}
   .chartbox{margin-left:calc(-1 * max(16px, env(safe-area-inset-left,0px)));margin-right:calc(-1 * max(16px, env(safe-area-inset-right,0px)));border-inline:0;border-radius:0}
-  .casehead{display:none}
   .hint{padding:10px 16px;font-size:13px}
   .mapcard{margin-left:calc(-1 * max(16px, env(safe-area-inset-left,0px)));margin-right:calc(-1 * max(16px, env(safe-area-inset-right,0px)));
     padding:10px max(16px, env(safe-area-inset-right,0px)) 12px max(16px, env(safe-area-inset-left,0px));position:static;border-top:1px solid var(--rule);gap:9px}
@@ -432,10 +465,11 @@ footer a{color:var(--accent)}
     <p class="deck"><span id="count">701</span> states and peoples across <span id="yrs">5,125</span> years, from Early Dynastic Egypt in 3100 BCE to the present.</p>
   </div>
   <div class="walltext">
-    <p class="lede">Each region of the world gets a hall, and each row in a hall follows one line of succession. A bar's color shows the language its rulers spoke. Choosing a year redraws the borders on the map<span class="wide-only"> at right</span><span class="narrow-only"> in the Map tab</span> and lists everything standing then; selecting anything opens its encyclopedia entry.</p>
+    <p class="lede">Each region of the world gets a hall, and each row in a hall follows one line of succession. A bar's color shows the language its rulers spoke. Choosing a year redraws the borders on the globe<span class="narrow-only"> in the Map tab</span> and lists everything standing then; selecting anything opens its encyclopedia entry and turns the globe to where and when it stood.</p>
     <div class="visit"><h2>Using the exhibit</h2><ul>
       <li><span class="m-only">Hovering over the timeline shows the world in that year, and a click on empty space pins it.</span><span class="t-only">A tap on empty timeline space pins that year and lists everything standing then.</span></li>
-      <li><span class="m-only">A click</span><span class="t-only">A tap</span> on a bar, a territory or an index entry opens its article, and lines on the timeline link it to its predecessors and successors.</li>
+      <li><span class="m-only">A click</span><span class="t-only">A tap</span> on a bar opens its article and takes the globe to that place in the year under the <span class="m-only">pointer</span><span class="t-only">finger</span>, or the nearest year whose border map shows it. A territory or an index entry opens the same way, and lines on the timeline link the entry to its predecessors and successors.</li>
+      <li class="wide-only">The timeline, atlas, entry and year list are windows. Dragging a title bar onto another window docks it at that side, or in the middle swaps the two; the outer edges of the workspace take a window along a whole side. Dragging the gap between windows resizes them, and Reset layout restores the first arrangement.</li>
       <li><span class="m-only">Dragging pans the timeline, which coasts on after a quick flick. Pinching, or scrolling over the time axis, zooms it.</span><span class="t-only">Swiping sideways pans the timeline, which coasts on after a quick flick, and pinching zooms it.</span></li>
       <li>Typing in the search box lists matching entries as the letters arrive.</li>
       <li>Dragging the globe turns it. Play runs the borders forward through time, and the ‹ and › buttons step through the border maps one at a time.</li>
@@ -453,34 +487,43 @@ footer a{color:var(--accent)}
     <div class="group" role="group" aria-label="Theme"><span class="group-label">Theme</span><button type="button" data-skin="light" aria-pressed="true">Light</button><button type="button" data-skin="dark" aria-pressed="false">Dark</button><button type="button" data-skin="retro" aria-pressed="false" title="Mid-90s CD-ROM encyclopedia look">Retro</button></div>
     </div>
     <div class="group zoomgrp" role="group" aria-label="Zoom"><span class="group-label">Zoom</span><button id="zIn" aria-label="Zoom in">+</button><button id="zOut" aria-label="Zoom out">−</button></div>
+    <div class="group wsgrp" role="group" aria-label="Windows"><span class="group-label">Windows</span><button type="button" id="wsReset">Reset layout</button></div>
   </div>
   <div class="key"><span class="group-label">Key · language family of the ruling group; <span class="m-only">a click</span><span class="t-only">a tap</span> on one shows only that family, and a second one shows them all</span>
   <div class="legend" id="legend" role="group" aria-label="Language families"></div></div>
 </header>
 
-<div class="wrap">
-  <div class="chartbox">
-    <div class="casehead"><h2>Timeline of the Halls</h2><span>Each row follows one line of succession; the dotted line marks 1 CE.</span></div>
-    <div class="axiswrap"><canvas id="axis" aria-label="Time axis and overview. Scrolling or dragging here changes the visible years."></canvas></div>
-    <canvas id="chart" tabindex="0" aria-label="World history timeline. Arrow keys pan, plus and minus zoom."></canvas>
-    <div class="hint"><span class="m-only">A click on a bar opens its article, and a click on empty space pins the year (Esc releases it). On a trackpad, pinching zooms and a sideways swipe pans.</span><span class="t-only">A tap on a bar opens its article, and a tap on empty space pins that year. Swiping sideways moves through time, and pinching zooms.</span> Lines link the chosen entry to its predecessors and successors.</div>
-  </div>
-  <aside id="panel">
+<div class="ws" id="ws">
+  <section class="win" id="w-timeline" data-win="timeline" aria-labelledby="wt-timeline">
+    <div class="win-bar"><span class="grip" aria-hidden="true"></span><h2 class="win-title" id="wt-timeline">Timeline of the Halls</h2><span class="win-note">Each row follows one line of succession; the dotted line marks 1 CE.</span></div>
+    <div class="chartbox" id="chartbox">
+      <div class="axiswrap"><canvas id="axis" aria-label="Time axis and overview. Scrolling or dragging here changes the visible years."></canvas></div>
+      <canvas id="chart" tabindex="0" aria-label="World history timeline. Arrow keys pan, plus and minus zoom."></canvas>
+      <div class="hint"><span class="m-only">A click on a bar opens its article and takes the globe there, and a click on empty space pins the year (Esc releases it). On a trackpad, pinching zooms and a sideways swipe pans.</span><span class="t-only">A tap on a bar opens its article and moves the map to that place and year, and a tap on empty space pins that year. Swiping sideways moves through time, and pinching zooms.</span> Lines link the chosen entry to its predecessors and successors.</div>
+    </div>
+  </section>
+  <section class="win" id="w-map" data-win="map" aria-labelledby="wt-map">
+    <div class="win-bar"><span class="grip" aria-hidden="true"></span><h2 class="win-title" id="wt-map">Atlas</h2></div>
     <section class="mapcard" id="mapcard" aria-label="Map of the chosen year">
       <div class="maphead">
         <span class="snap" id="snapLabel"></span>
-        <div class="group" role="group" aria-label="Map style"><button id="vFlat" type="button" aria-pressed="true">Map</button><button id="vGlobe" type="button" aria-pressed="false">Globe</button></div>
+        <div class="group" role="group" aria-label="Map style"><button id="vGlobe" type="button" aria-pressed="true">Globe</button><button id="vFlat" type="button" aria-pressed="false">Map</button></div>
         <button id="vBig" type="button" aria-pressed="false">Enlarge</button>
       </div>
       <canvas id="map" aria-label="Map of states and cultures in the chosen year. Dragging turns the globe, and scrolling or pinching zooms."></canvas>
       <div class="mapbar"><button id="snapPrev" class="step" type="button" aria-label="Previous border map" title="Previous border map">‹</button><button id="play" type="button">Play</button><button id="snapNext" class="step" type="button" aria-label="Next border map" title="Next border map">›</button><input id="yr" type="range" min="0" max="1000" step="1" value="1000" aria-label="Year"><span class="yr" id="yrOut"></span></div>
       <div class="maplegend"><span class="m-only">Hovering over a territory shows its name, and a click opens its article. Scrolling zooms the map; dragging turns the globe.</span><span class="t-only">A tap on a territory opens its article or shows its name. Dragging turns the globe, and pinching zooms.</span></div>
     </section>
-    <div id="ledger">
-      <div id="entrypane" tabindex="-1" aria-label="Encyclopedia entry"><div class="sheet-top" aria-hidden="true"><span class="grab"></span></div><div id="entrybody"></div></div>
-      <div id="yearlist"></div>
-    </div>
-  </aside>
+  </section>
+  <section class="win" id="w-entry" data-win="entry" aria-labelledby="wt-entry">
+    <div class="win-bar"><span class="grip" aria-hidden="true"></span><h2 class="win-title" id="wt-entry">Encyclopedia</h2></div>
+    <div id="entrypane" tabindex="-1" aria-label="Encyclopedia entry"><div class="sheet-top" aria-hidden="true"><span class="grab"></span></div><div id="entrybody"></div></div>
+  </section>
+  <section class="win" id="w-year" data-win="year" aria-labelledby="wt-year">
+    <div class="win-bar"><span class="grip" aria-hidden="true"></span><h2 class="win-title" id="wt-year">Cross-section</h2><span class="win-note">Everything standing in the chosen year</span></div>
+    <div id="yearlist"></div>
+  </section>
+  <div class="ws-drop" id="wsDrop" hidden><span></span></div>
 </div>
 <section class="index" aria-labelledby="idxTitle">
   <div class="index-head"><h2 id="idxTitle">Index</h2><p>Every entry in the exhibit, alphabetical by its proper name.</p></div>
@@ -1773,12 +1816,12 @@ function drawAxis() {
 }
 
 // ---- Cross-section panel ------------------------------------------------------
-const ledger = document.getElementById("ledger"), yearList = document.getElementById("yearlist");
+const yearList = document.getElementById("yearlist"), chartbox = document.getElementById("chartbox");
 const entryPane = document.getElementById("entrypane"), entryBody = document.getElementById("entrybody"), srEl = document.getElementById("sr");
 const compactMQ = matchMedia("(max-width: 900px)");
 const compact = () => compactMQ.matches;
 const reduceMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
-let baseYear = NOW, sheetOpen = false, lastEntryId = -1, sheetShownAt = 0;
+let baseYear = NOW, sheetOpen = false, lastEntryId = -2, sheetShownAt = 0;
 const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 let lastPanelKey = "";
 // The entry re-renders only when the selection changes; the year list follows the cursor.
@@ -1792,8 +1835,9 @@ function renderEntry() {
   if (id === lastEntryId) return;
   lastEntryId = id;
   if (selected) { entryBody.innerHTML = entryHTML(selected); entryPane.scrollTop = 0; drawLocator(selected); }
-  else if (!c) entryBody.innerHTML = ""; // on a phone the old text stays put while the sheet slides away
+  else if (!c) entryBody.innerHTML = EMPTY_ENTRY; // on a phone the old text stays put while the sheet slides away
 }
+const EMPTY_ENTRY = `<div class="entry-empty"><span class="eyebrow">Encyclopedia entry</span><p>No entry is open. A click on a bar, a territory or an index name opens its article here, and the atlas turns to that place in that year.</p></div>`;
 function renderPanel() {
   const yr = Math.round(curYear());
   mapSync(); renderEntry(); updateFab(); syncHash();
@@ -1814,19 +1858,22 @@ function renderPanel() {
   const filt = [query ? `names matching “${esc(query)}”` : "", allFamsOn() ? "" : pl(famOn.size, "language family", "language families") + " shown"].filter(Boolean).join(", ");
   yearList.innerHTML = `<div class="xs-head"><span class="eyebrow">The world in</span><span class="xs-year">${fy(yr)}</span><span class="xs-sum">${pl(nS, "state", "states")} and ${pl(nC, "people", "peoples")} across ${pl(nR, "hall", "halls")} · year ${mode}${filt ? ` · ${filt}` : ""}</span>${pinnedYear != null ? `<button type="button" class="unpin" data-act="unpin">Unpin</button>` : ""}</div>` + h;
 }
-ledger.addEventListener("click", e => {
+function ledgerClick(e) {
   const b = e.target.closest("button"); if (!b) return;
-  if (b.dataset.id) openEntry(ITEMS[+b.dataset.id]);
+  // a name in the year list keeps the year it was listed under; a cross-reference in an entry goes to its own time
+  if (b.dataset.id) { const it = ITEMS[+b.dataset.id]; if (yearList.contains(b)) select(it, true); else openEntry(it); }
   else if (b.dataset.act === "zoom" && selected) { const it = selected; if (compact()) { sheetOpen = false; if (tab !== "timeline") setTab("timeline"); renderPanel(); } zoomTo(it.s, Math.min(it.e, NOW), true); }
   else if (b.dataset.act === "map" && selected) {
-    const si = MD.ext[selected.id]; if (si != null) pinnedYear = Math.min(SNAPYEARS[si], NOW);
+    const si = MD.ext[selected.id]; if (si != null) pinnedYear = showYear(selected, SNAPYEARS[si]);
     if (compact()) { sheetOpen = false; setTab("map"); }
-    stopPlay(); lastPanelKey = ""; renderPanel(); draw(); focusMap(selected);
+    stopPlay(); lastPanelKey = ""; renderPanel(); draw(); flyTo(selected);
   }
   else if (b.dataset.act === "close") closeEntry();
   else if (b.dataset.act === "share") shareLink(b);
   else if (b.dataset.act === "unpin") { pinnedYear = null; lastPanelKey = ""; renderPanel(); draw(); }
-});
+}
+entryPane.addEventListener("click", ledgerClick);
+yearList.addEventListener("click", ledgerClick);
 // Hovering a name in the year list lights up its bar and its territory.
 yearList.addEventListener("pointerover", e => {
   if (e.pointerType !== "mouse") return;
@@ -1834,22 +1881,57 @@ yearList.addEventListener("pointerover", e => {
   if (it !== hoverItem) { hoverItem = it; draw(); mapSync(); }
 });
 yearList.addEventListener("pointerleave", () => { if (hoverItem) { hoverItem = null; draw(); mapSync(); } });
-function select(it, scroll) {
-  selected = it; sheetOpen = true; lastPanelKey = ""; renderPanel(); draw();
-  srEl.textContent = "Entry: " + it.name;
+// Selecting an entry opens its article and takes the atlas to it. `year` (when given) pins that year first;
+// `zoom: false` turns the map without changing its scale, for a click on the map itself.
+function select(it, scroll, { year = null, zoom = true } = {}) {
+  selected = it; sheetOpen = true; lastPanelKey = "";
+  if (year != null) { pinnedYear = year; hoverYear = null; stopPlay(); }
+  renderPanel(); draw();
+  srEl.textContent = "Entry: " + it.name + (year != null ? ", " + fy(year) : "");
   if (scroll && !compact()) scrollToItem(it);
-  focusMap(it);
-  const a = document.getElementById("panel");
+  flyTo(it, zoom);
   if (compact()) entryPane.focus({ preventScroll: true });
-  else if (a.scrollTop > 0) a.scrollTo({ top: 0, behavior: reduceMotion() ? "auto" : "smooth" });
+}
+// The year a selection takes the map to: the wanted year when its border map shows the entry, or else the
+// nearest year whose map does, preferring years inside the entry's own span.
+function showYear(it, want) {
+  const lo = Math.max(Y0, it.rawS), hi = Math.max(lo, it.e >= NOW ? NOW : it.e - 1);
+  const y = Math.max(lo, Math.min(hi, Math.round(want))), ks = SNAPS_OF.get(it.id);
+  if (!ks) return y;
+  let best = y, bd = Infinity;
+  for (const k of ks) {
+    const a = k === 0 ? Y0 : SNAPYEARS[k], b = k + 1 < SNAPYEARS.length ? SNAPYEARS[k + 1] - 1 : NOW;
+    const ia = Math.max(a, lo), ib = Math.min(b, hi), inside = ia <= ib;
+    const c = inside ? Math.max(ia, Math.min(ib, y)) : Math.max(a, Math.min(b, y));
+    const d = Math.abs(c - y) + (inside ? 0 : 1e5);
+    if (d < bd) { bd = d; best = c; }
+  }
+  return best;
+}
+// For a selection made away from the timeline: an entry standing in the current year keeps that year (or the
+// nearest year its map shows it); any other goes to the year of its largest mapped extent, or the middle of
+// its span when no border map has it.
+function entryYear(it) {
+  const y = Math.round(curYear()), ks = SNAPS_OF.get(it.id);
+  if (it.rawS <= y && y < it.e + (it.e >= NOW ? 1 : 0)) { const s = ks ? showYear(it, y) : y; return s === y && pinnedYear == null ? null : s; }
+  const ext = MD.ext[it.id];
+  return showYear(it, ext != null ? SNAPYEARS[ext] : (Math.max(Y0, it.rawS) + Math.min(it.e, NOW)) / 2);
 }
 function closeEntry() { selected = null; sheetOpen = false; lastPanelKey = ""; renderPanel(); draw(); }
 function hideSheet() { sheetOpen = false; renderEntry(); updateFab(); }
 function scrollToItem(it) {
   const R = layout.find(r => r.lanes.some(l => l.includes(it))); if (!R) return;
-  const li = R.lanes.findIndex(l => l.includes(it));
+  const li = R.lanes.findIndex(l => l.includes(it)), behavior = reduceMotion() ? "auto" : "smooth";
+  if (!compact()) {
+    // the workspace comes into view if it is mostly off screen, then the timeline window scrolls to the row
+    const wr = ws.getBoundingClientRect();
+    if (wr.top > innerHeight * 0.45 || wr.bottom < innerHeight * 0.55) window.scrollTo({ top: Math.max(0, scrollY + wr.top - 12), behavior });
+    const y = chart.offsetTop + R.y + RPAD_T + li * LANE, top = chartbox.scrollTop + chart.offsetTop, bottom = chartbox.scrollTop + chartbox.clientHeight;
+    if (y < top + 8 || y + LANE > bottom - 8) chartbox.scrollTo({ top: Math.max(0, y - chart.offsetTop - (chartbox.clientHeight - chart.offsetTop) * 0.4), behavior });
+    return;
+  }
   const top = chart.getBoundingClientRect().top + window.scrollY + R.y + RPAD_T + li * LANE;
-  window.scrollTo({ top: Math.max(0, top - window.innerHeight * 0.35), behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  window.scrollTo({ top: Math.max(0, top - window.innerHeight * 0.35), behavior });
 }
 
 // ---- View changes -------------------------------------------------------------
@@ -1935,7 +2017,8 @@ chart.addEventListener("pointerup", e => {
   const [x, y] = local(e, chart);
   if (drag && !drag.moved && pointers.size === 1) {
     const it = x > G ? hit(x, y) : null;
-    if (it) select(it, false);
+    // a click on a bar goes to that entry's place in the year under the pointer
+    if (it) select(it, false, { year: showYear(it, Yat(x)) });
     else if (x > G) {
       // a mouse click toggles the pin; a tap moves it, since a touch screen has no hover to preview years
       const yr = Math.max(Y0, Math.min(NOW, Math.round(Yat(x))));
@@ -2085,6 +2168,9 @@ sugg.addEventListener("click", e => { const li = e.target.closest("li[data-id]")
 const curYear = () => pinnedYear ?? hoverYear ?? baseYear;
 const MD = window.HALL_OF_REALMS_MAPDATA || JSON.parse(document.getElementById("mapdata").textContent);
 const SNAPYEARS = MD.snaps.map(s => s[0]);
+// Which border maps show each entry, read from the packed data without decoding any shapes.
+const SNAPS_OF = new Map();
+MD.snaps.forEach((s, i) => { for (const f of s[1]) if (f[4] >= 0) { const a = SNAPS_OF.get(f[4]); if (!a) SNAPS_OF.set(f[4], [i]); else if (a[a.length - 1] !== i) a.push(i); } });
 const snapCache = new Map();
 function decRing(a) { const r = []; let x = 0, y = 0; for (let i = 0; i < a.length; i += 2) { x += a[i]; y += a[i + 1]; r.push([x / 100, y / 100]); } r.push(r[0]); return r; }
 function decPolys(P) {
@@ -2109,7 +2195,7 @@ function getSnap(i) {
 }
 const mapCv = document.getElementById("map"), mg = mapCv.getContext("2d"), mapcard = document.getElementById("mapcard");
 const GK0 = 0.78;
-let mapMode = "flat", rot = [-20, -24], gk = GK0, fk = 1, fpan = [0, 0], MW = 400, MH = 200, bigMap = false;
+let mapMode = "globe", rot = [-20, -24], gk = GK0, fk = 1, fpan = [0, 0], MW = 400, MH = 200, bigMap = false;
 let mapHover = null, mapHatch = null, mapDirty = true, lastMapKey = "", curSnap = -1;
 let yrSliding = false, fadeCv = null, fadeT0 = 0, spin = 0;
 function proj() {
@@ -2123,7 +2209,8 @@ function proj() {
 }
 function sizeMap() {
   const w = mapCv.clientWidth; if (!w) return; MW = w;
-  if (bigMap) MH = Math.max(200, mapCv.clientHeight);
+  // enlarged or in a window, the map fills the space it is given; on a phone its height follows its width
+  if (bigMap || !compact()) { if (mapCv.style.height) mapCv.style.height = ""; MH = Math.max(160, mapCv.clientHeight); }
   else { MH = Math.round(mapMode === "globe" ? Math.min(w * 0.8, 400) : w * 0.5); mapCv.style.height = MH + "px"; }
   mapCv.width = Math.round(MW * DPR); mapCv.height = Math.round(MH * DPR);
   mapDirty = true; mapSync();
@@ -2198,14 +2285,14 @@ function drawMap() {
   }
   g.beginPath(); path({ type: "Sphere" }); g.strokeStyle = C.rule; g.lineWidth = 1; g.stroke();
   // labels
-  const small = MW < 500, minA = small ? 70 : bigMap ? 700 : 1800, placed = [];
+  const small = MW < 500, roomy = bigMap || MW * MH > 300000, minA = small ? 70 : roomy ? 900 : 1800, placed = [];
   const cand = [];
   for (const f of feats) { if (famDim(f)) continue; const a = path.area(f); if (a < minA) continue; cand.push([a, f]); }
   cand.sort((a, b) => (small ? a[1].cult - b[1].cult : 0) || b[0] - a[0]);
   g.textAlign = "center"; g.textBaseline = "middle"; g.lineJoin = "round";
   for (const [a, f] of cand.slice(0, 160)) {
-    const c = path.centroid(f); if (!isFinite(c[0])) continue;
-    const fs = Math.max(small ? 8.5 : 9, Math.min(bigMap ? 16 : 13, Math.sqrt(a) / 7));
+    const c = path.centroid(f.body || (f.body = mainBody(f.geometry))); if (!isFinite(c[0])) continue; // a label sits on the mainland, not between it and far-off islands
+    const fs = Math.max(small ? 8.5 : 9, Math.min(roomy ? 15 : 13, Math.sqrt(a) / 7));
     g.font = `${f.cult ? "italic 400" : "600"} ${fs}px ${C.fLabel}`;
     if (f.short === undefined) { f.short = shortName(f.name); f.tiny = tinyName(f.name); }
     const fit = Math.sqrt(a) * (small ? 5 : 1.9);
@@ -2249,6 +2336,7 @@ function midPinch() { const [a, b] = [...mPtrs.values()]; return [(a[0] + b[0]) 
 mapCv.addEventListener("pointerdown", e => {
   const [x, y] = local(e, mapCv); mPtrs.set(e.pointerId, [x, y]); mapCv.setPointerCapture(e.pointerId);
   if (spin) { cancelAnimationFrame(spin); spin = 0; }
+  stopFlight();
   if (mPtrs.size === 2) { const [mx, my, d] = midPinch(); mPinch = { d, gk, fk, b: [(mx - MW / 2 - fpan[0]) / fk, (my - MH / 2 - fpan[1]) / fk] }; mDrag = null; }
   else if (mPtrs.size === 1) mDrag = { x, y, rot: rot.slice(), pan: fpan.slice(), moved: false, trail: [[e.timeStamp, x, y]] };
 });
@@ -2291,7 +2379,7 @@ mapCv.addEventListener("pointerup", e => {
   }
   if (mDrag && !mDrag.moved) {
     const f = mapHit(x, y);
-    if (f && f.item >= 0) { const it = ITEMS[f.item]; select(it, !bigMap); if (!(U(it.s) >= view.v0 && U(Math.min(it.e, NOW)) <= view.v1)) zoomTo(it.s, Math.min(it.e, NOW)); }
+    if (f && f.item >= 0) { const it = ITEMS[f.item]; select(it, !bigMap, { zoom: false }); if (!(U(it.s) >= view.v0 && U(Math.min(it.e, NOW)) <= view.v1)) zoomTo(it.s, Math.min(it.e, NOW)); }
     else if (f && e.pointerType !== "mouse") {
       // a territory with no timeline entry: show its name where the finger landed
       tip.innerHTML = territoryTip(f); tip.hidden = false; const tw = tip.offsetWidth, th = tip.offsetHeight;
@@ -2318,7 +2406,7 @@ function spinFrom(vx, vy) { // pixels per millisecond
   spin = requestAnimationFrame(step);
 }
 mapCv.addEventListener("wheel", e => {
-  e.preventDefault(); const [x, y] = local(e, mapCv); const fct = Math.exp(-e.deltaY * 0.0022);
+  e.preventDefault(); stopFlight(); const [x, y] = local(e, mapCv); const fct = Math.exp(-e.deltaY * 0.0022);
   if (mapMode === "globe") gk = Math.max(0.6, Math.min(9, gk * fct));
   else {
     const nk = Math.max(1, Math.min(12, fk * fct)); const b = (x - MW / 2 - fpan[0]) / fk, by = (y - MH / 2 - fpan[1]) / fk;
@@ -2326,20 +2414,71 @@ mapCv.addEventListener("wheel", e => {
   }
   mapDirty = true; mapSync();
 }, { passive: false });
-function focusMap(it) {
-  if (mapMode !== "globe" || !it) return;
+// ---- Going to an entry's place ----
+// The atlas turns (and, by default, zooms) to an entry's largest territory on the current border map, or on
+// the map of its largest extent when the current one lacks it. An entry no border map shows goes to the
+// middle of its first hall instead.
+const HALLGEO = { EUR: [15, 50], NAF: [22, 25], WAF: [2, 11], SAF: [32, -8], MEA: [46, 31], CAS: [72, 47], SAS: [79, 22], EAS: [112, 34], SEA: [109, 8], OCE: [152, -12], NAM: [-98, 30], SAM: [-62, -16] };
+let flight = 0;
+function stopFlight() { if (flight) { cancelAnimationFrame(flight); flight = 0; } }
+function reachDeg(c, geom) { // how far the shape reaches from c, in degrees of arc
+  let m = 0; const walk = a => { if (typeof a[0] === "number") { const d = d3.geoDistance(c, a); if (d > m) m = d; } else a.forEach(walk); };
+  walk(geom.coordinates); return m * 180 / Math.PI;
+}
+// The part of a territory worth flying to: its largest piece and the pieces within 30 degrees of it,
+// so modern France means the mainland and Corsica, not a box around French Guiana and Réunion as well.
+function mainBody(geom) {
+  if (geom.type !== "MultiPolygon" || geom.coordinates.length < 2) return geom;
+  const parts = geom.coordinates.map(p => { const g = { type: "Polygon", coordinates: p }, a = d3.geoArea(g); return { p, a: Math.min(a, 4 * Math.PI - a), c: d3.geoCentroid(g) }; });
+  const top = parts.reduce((a, b) => b.a > a.a ? b : a), lim = 30 * Math.PI / 180;
+  return { type: "MultiPolygon", coordinates: parts.filter(q => q === top || d3.geoDistance(q.c, top.c) < lim).map(q => q.p) };
+}
+function flyTo(it, zoom = true) {
+  if (!it) return;
   if (spin) { cancelAnimationFrame(spin); spin = 0; }
-  const fs = getSnap(curSnap).filter(f => f.item === it.id); if (!fs.length) return;
-  const big = fs.reduce((a, b) => d3.geoArea(a) > d3.geoArea(b) ? a : b);
-  const c = d3.geoCentroid(big), from = rot.slice(), to = [-c[0], Math.max(-70, Math.min(70, -c[1]))];
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { rot = to; mapDirty = true; mapSync(); return; }
-  const ip = d3.interpolate(from, to), t0 = performance.now();
-  (function step(t) { const k = Math.min(1, (t - t0) / 650); rot = ip(d3.easeCubicInOut(k)); mapDirty = true; mapSync(); if (k < 1) requestAnimationFrame(step); })(t0);
+  stopFlight();
+  let fs = getSnap(snapIndex(curYear())).filter(f => f.item === it.id);
+  if (!fs.length && MD.ext[it.id] != null) fs = getSnap(MD.ext[it.id]).filter(f => f.item === it.id);
+  const big = fs.length ? fs.reduce((a, b) => d3.geoArea(a) > d3.geoArea(b) ? a : b) : null;
+  const body = big ? mainBody(big.geometry) : null;
+  const c = body ? d3.geoCentroid(body) : HALLGEO[it.regs[0]] || [20, 20];
+  const geom = body || d3.geoCircle().center(c).radius(16)();
+  const from = { rot: rot.slice(), gk, fk, pan: fpan.slice() }, to = { ...from };
+  if (mapMode === "globe") {
+    const R = Math.min(MW, MH) / 2 - 8, th = Math.max(1.2, Math.min(89, reachDeg(c, geom)));
+    if (zoom) to.gk = Math.max(GK0, Math.min(6, 0.36 * Math.min(MW, MH) / (R * Math.sin(th * Math.PI / 180))));
+    // take the short way round
+    const lam = from.rot[0] + ((((-c[0] - from.rot[0]) % 360) + 540) % 360) - 180;
+    to.rot = [lam, Math.max(-70, Math.min(70, -c[1]))];
+  } else {
+    const p0 = d3.geoEqualEarth().fitExtent([[4, 4], [MW - 4, MH - 4]], { type: "Sphere" });
+    const [[x0, y0], [x1, y1]] = d3.geoPath(p0).bounds(geom);
+    if (zoom) to.fk = Math.max(1, Math.min(10, Math.min(MW * 0.72 / Math.max(1, x1 - x0), MH * 0.72 / Math.max(1, y1 - y0))));
+    to.pan = to.fk <= 1.001 ? [0, 0] : [-to.fk * ((x0 + x1) / 2 - MW / 2), -to.fk * ((y0 + y1) / 2 - MH / 2)];
+  }
+  const set = s => { rot = s.rot; gk = s.gk; fk = s.fk; fpan = s.pan; fadeT0 = 0; mapDirty = true; mapSync(); };
+  const far = mapMode === "globe" ? d3.geoDistance([-from.rot[0], -from.rot[1]], [-to.rot[0], -to.rot[1]]) : 0;
+  const moved = far > 0.01 || Math.abs(Math.log(to.gk / from.gk)) > 0.04 || Math.abs(Math.log(to.fk / from.fk)) > 0.04 || Math.hypot(to.pan[0] - from.pan[0], to.pan[1] - from.pan[1]) > 3;
+  if (!moved) return;
+  if (reduceMotion()) { set(to); return; }
+  // on the globe a long trip pulls back mid-way, so it reads as travel; on the flat map the centre glides while the scale changes geometrically
+  const dip = Math.min(0.5, far * 0.32), ms = 650 + Math.min(500, far * 260), t0 = performance.now();
+  const ip = d3.interpolate(from.rot, to.rot), lg = [Math.log(from.gk), Math.log(to.gk)], lf = [Math.log(from.fk), Math.log(to.fk)];
+  const cb = s => [MW / 2 - s.pan[0] / s.fk, MH / 2 - s.pan[1] / s.fk], c0 = cb(from), c1 = cb(to);
+  const step = t => {
+    const k = Math.min(1, (t - t0) / ms), e = d3.easeCubicInOut(k);
+    const kf = Math.exp(lf[0] + (lf[1] - lf[0]) * e), cx1 = c0[0] + (c1[0] - c0[0]) * e, cy1 = c0[1] + (c1[1] - c0[1]) * e;
+    const g = Math.exp(lg[0] + (lg[1] - lg[0]) * e), gm = Math.max(Math.min(g, GK0), g * (1 - dip * Math.sin(Math.PI * e)));
+    set({ rot: ip(e), gk: gm, fk: kf, pan: kf <= 1.001 ? [0, 0] : [-kf * (cx1 - MW / 2), -kf * (cy1 - MH / 2)] });
+    flight = k < 1 ? requestAnimationFrame(step) : 0;
+  };
+  flight = requestAnimationFrame(step);
 }
 function setMapMode(m) {
+  stopFlight();
   if (m === "globe" && mapMode !== "globe") gk = GK0;
   mapMode = m; document.getElementById("vFlat").setAttribute("aria-pressed", m === "flat"); document.getElementById("vGlobe").setAttribute("aria-pressed", m === "globe");
-  sizeMap(); if (selected) focusMap(selected); syncHash();
+  sizeMap(); if (selected) flyTo(selected); syncHash();
 }
 document.getElementById("vFlat").addEventListener("click", () => setMapMode("flat"));
 document.getElementById("vGlobe").addEventListener("click", () => setMapMode("globe"));
@@ -2452,8 +2591,9 @@ function drawLocator(it) {
   g.beginPath(); for (const f of feats) if (f.item !== it.id && !f.cult) path(f); g.strokeStyle = rgba(C.ink, 0.18); g.lineWidth = 0.5; g.stroke();
   g.beginPath(); for (const f of mine) path(f); g.fillStyle = C.fam[it.fam]; g.fill(); g.strokeStyle = C.ink; g.lineWidth = 1.1; g.stroke();
 }
-function openEntry(it) {
-  select(it, true);
+// Opening an entry from the index, the search box or a cross-reference also goes to its time (see entryYear).
+function openEntry(it, keepYear = false) {
+  select(it, true, { year: keepYear ? null : entryYear(it) });
   if (!(U(it.s) >= view.v0 && U(Math.min(it.e, NOW)) <= view.v1)) zoomTo(it.s, Math.min(it.e, NOW));
 }
 // ---- Index --------------------------------------------------------------------
@@ -2524,7 +2664,7 @@ function endSheetDrag(e) {
 }
 entryPane.addEventListener("touchend", endSheetDrag);
 entryPane.addEventListener("touchcancel", endSheetDrag);
-compactMQ.addEventListener("change", () => { lastEntryId = -1; renderEntry(); updateFab(); hideSugg(); requestAnimationFrame(() => { resize(); sizeMap(); }); syncHash(); });
+compactMQ.addEventListener("change", () => { lastEntryId = -2; renderEntry(); updateFab(); hideSugg(); requestAnimationFrame(() => { layoutWins(); resize(); sizeMap(); }); syncHash(); });
 // The address keeps the whole view (entry, pinned year, era or visible years, language filter, search,
 // scale, map style, phone tab and theme), so a copied link reopens what its sender saw.
 const HASHKEYS = ["sel", "y", "era", "t", "fam", "q", "scale", "view", "big", "tab", "skin", "top"];
@@ -2538,7 +2678,7 @@ function stateHash() {
   if (!allFamsOn()) h.set("fam", FAMS.filter(f => famOn.has(f[0])).map(f => FAMSLUG[f[0]]).join(","));
   if (q.value.trim()) h.set("q", q.value.trim());
   if (mode === "even") h.set("scale", "even");
-  if (mapMode === "globe") h.set("view", "globe");
+  if (mapMode === "flat") h.set("view", "map");
   if (bigMap && !compact()) h.set("big", "1");
   if (compact() && tab !== "timeline") h.set("tab", tab);
   if (root.dataset.skin && root.dataset.skin !== "light") h.set("skin", root.dataset.skin);
@@ -2566,6 +2706,137 @@ function shareLink(b) {
   else say("Link is in the address bar");
 }
 
+// ---- Windows --------------------------------------------------------------------
+// On a wide screen the timeline, atlas, entry and year list are tiles. The layout is a tree of two-way splits.
+// Dragging a title bar onto another window docks it at that side, or in the middle swaps the two; the
+// workspace's outer edges take a window along a whole side; dragging the gap between tiles resizes their
+// split. Each browser keeps its own layout.
+const ws = document.getElementById("ws"), wsDrop = document.getElementById("wsDrop");
+const WINS = Object.fromEntries([...ws.querySelectorAll(".win")].map(w => [w.dataset.win, w]));
+const WMIN = { timeline: [440, 220], map: [320, 280], entry: [280, 200], year: [240, 160] };
+const WTITLE = { timeline: "the timeline", map: "the atlas", entry: "the entry", year: "the cross-section" };
+const WGAP = 10, LAYOUT_KEY = "hall-of-realms-layout";
+const leaf = id => ({ id }), split = (dir, r, a, b) => ({ dir, r, a, b });
+const defaultLayout = () => split("col", 0.6, split("row", 0.68, leaf("map"), split("col", 0.58, leaf("entry"), leaf("year"))), leaf("timeline"));
+function leaves(n, out = []) { if (n.id) out.push(n.id); else { leaves(n.a, out); leaves(n.b, out); } return out; }
+function validLayout(n) {
+  const ok = m => !!m && typeof m === "object" && (typeof m.id === "string" ? m.id in WINS : (m.dir === "row" || m.dir === "col") && m.r > 0 && m.r < 1 && ok(m.a) && ok(m.b));
+  if (!ok(n)) return false;
+  const ids = leaves(n); return ids.length === Object.keys(WINS).length && new Set(ids).size === ids.length;
+}
+function loadLayout() { try { const t = JSON.parse(localStorage.getItem(LAYOUT_KEY) || "null"); if (validLayout(t)) return t; } catch (e) {} return defaultLayout(); }
+function saveLayout() { try { localStorage.setItem(LAYOUT_KEY, JSON.stringify(wsTree)); } catch (e) {} }
+let wsTree = loadLayout(), wsRects = new Map(), wsSplits = [], wsMove = null, wsResize = null, wsFrame = 0;
+const removeLeaf = (n, id) => n.id ? n : n.a.id === id ? n.b : n.b.id === id ? n.a : { ...n, a: removeLeaf(n.a, id), b: removeLeaf(n.b, id) };
+const mapLeaves = (n, fn) => n.id ? fn(n) : { ...n, a: mapLeaves(n.a, fn), b: mapLeaves(n.b, fn) };
+function minOf(n) {
+  if (n.id) return WMIN[n.id];
+  const a = minOf(n.a), b = minOf(n.b);
+  return n.dir === "row" ? [a[0] + b[0] + WGAP, Math.max(a[1], b[1])] : [Math.max(a[0], b[0]), a[1] + b[1] + WGAP];
+}
+function place(n, x, y, w, h) {
+  if (n.id) { wsRects.set(n.id, [x, y, w, h]); return; }
+  const row = n.dir === "row", tot = (row ? w : h) - WGAP, k = row ? 0 : 1, ma = minOf(n.a)[k], mb = minOf(n.b)[k];
+  // each side keeps its minimum size while there is room for both
+  const s = tot >= ma + mb ? Math.max(ma, Math.min(tot - mb, Math.round(tot * n.r))) : Math.round(tot * ma / (ma + mb));
+  wsSplits.push({ n, row, tot, o: row ? x : y, ma, mb, box: row ? [x + s, y, WGAP, h] : [x, y + s, w, WGAP] });
+  if (row) { place(n.a, x, y, s, h); place(n.b, x + s + WGAP, y, w - s - WGAP, h); }
+  else { place(n.a, x, y, w, s); place(n.b, x, y + s + WGAP, w, h - s - WGAP); }
+}
+function layoutWins() {
+  if (compact()) return;
+  const w = ws.clientWidth, h = ws.clientHeight; if (!w || !h) return;
+  wsRects.clear(); wsSplits = [];
+  place(wsTree, 0, 0, w, h);
+  for (const [id, r] of wsRects) Object.assign(WINS[id].style, { left: r[0] + "px", top: r[1] + "px", width: r[2] + "px", height: r[3] + "px" });
+  const els = [...ws.querySelectorAll(".ws-split")];
+  els.slice(wsSplits.length).forEach(el => el.remove());
+  wsSplits.forEach((s, i) => {
+    let el = els[i];
+    if (!el) { el = document.createElement("div"); el.className = "ws-split"; el.tabIndex = 0; el.setAttribute("role", "separator"); ws.insertBefore(el, wsDrop); }
+    el.dataset.i = i; el.dataset.dir = s.row ? "row" : "col";
+    el.setAttribute("aria-orientation", s.row ? "vertical" : "horizontal");
+    el.setAttribute("aria-label", `Resize ${WTITLE[leaves(s.n.a)[0]]} against ${WTITLE[leaves(s.n.b)[0]]}`);
+    el.setAttribute("aria-valuenow", String(Math.round(s.n.r * 100)));
+    Object.assign(el.style, { left: s.box[0] + "px", top: s.box[1] + "px", width: s.box[2] + "px", height: s.box[3] + "px" });
+  });
+}
+const relayout = () => { if (!wsFrame) wsFrame = requestAnimationFrame(() => { wsFrame = 0; layoutWins(); }); };
+new ResizeObserver(relayout).observe(ws);
+// Where a dragged window would land: one side of another window, its middle (a swap), or an outer edge.
+function dropAt(cx, cy, src) {
+  const b = ws.getBoundingClientRect(), px = cx - b.left, py = cy - b.top, E = 26;
+  if (px < -40 || py < -40 || px > b.width + 40 || py > b.height + 40) return null;
+  const edge = px < E ? "left" : px > b.width - E ? "right" : py < E ? "top" : py > b.height - E ? "bottom" : null;
+  if (edge) return { side: edge };
+  for (const [id, r] of wsRects) {
+    if (id === src || px < r[0] || px > r[0] + r[2] || py < r[1] || py > r[1] + r[3]) continue;
+    const fx = (px - r[0]) / r[2], fy = (py - r[1]) / r[3], d = { left: fx, right: 1 - fx, top: fy, bottom: 1 - fy };
+    const side = Object.keys(d).reduce((a, k) => d[k] < d[a] ? k : a);
+    return d[side] < 0.3 ? { id, side } : { id, swap: true };
+  }
+  return null;
+}
+const SIDE = { left: "Left of", right: "Right of", top: "Above", bottom: "Below" };
+const EDGE = { left: "Full height, left", right: "Full height, right", top: "Full width, top", bottom: "Full width, bottom" };
+function showDrop(t) {
+  if (!t) { wsDrop.hidden = true; return; }
+  const [x, y, w, h] = t.id ? wsRects.get(t.id) : [0, 0, ws.clientWidth, ws.clientHeight], f = t.id ? 0.5 : 0.34;
+  const r = t.swap ? [x, y, w, h] : t.side === "left" ? [x, y, w * f, h] : t.side === "right" ? [x + w * (1 - f), y, w * f, h] : t.side === "top" ? [x, y, w, h * f] : [x, y + h * (1 - f), w, h * f];
+  const first = wsDrop.hidden;
+  if (first) wsDrop.style.transition = "none";
+  wsDrop.hidden = false;
+  Object.assign(wsDrop.style, { left: r[0] + "px", top: r[1] + "px", width: r[2] + "px", height: r[3] + "px" });
+  wsDrop.firstChild.textContent = t.swap ? `Swap with ${WTITLE[t.id]}` : t.id ? `${SIDE[t.side]} ${WTITLE[t.id]}` : EDGE[t.side];
+  if (first) { void wsDrop.offsetWidth; wsDrop.style.transition = ""; }
+}
+function dock(tree, src, t) {
+  if (t.swap) return mapLeaves(tree, n => n.id === src ? leaf(t.id) : n.id === t.id ? leaf(src) : n);
+  const rest = removeLeaf(tree, src), me = leaf(src), first = t.side === "left" || t.side === "top", dir = t.side === "left" || t.side === "right" ? "row" : "col";
+  if (!t.id) return first ? split(dir, 0.34, me, rest) : split(dir, 0.66, rest, me);
+  return mapLeaves(rest, n => n.id !== t.id ? n : first ? split(dir, 0.5, me, n) : split(dir, 0.5, n, me));
+}
+ws.addEventListener("pointerdown", e => {
+  if (compact() || e.button !== 0) return;
+  const sp = e.target.closest(".ws-split");
+  if (sp) {
+    const s = wsSplits[+sp.dataset.i]; if (!s) return;
+    wsResize = { s, el: sp, id: e.pointerId }; sp.setPointerCapture(e.pointerId); sp.classList.add("on"); document.body.classList.add("ws-resizing"); e.preventDefault(); return;
+  }
+  const bar = e.target.closest(".win-bar"); if (!bar || e.target.closest("button,a,input")) return;
+  wsMove = { id: bar.parentElement.dataset.win, x: e.clientX, y: e.clientY, on: false, t: null, pid: e.pointerId };
+  bar.setPointerCapture(e.pointerId); e.preventDefault();
+});
+ws.addEventListener("pointermove", e => {
+  if (wsResize && e.pointerId === wsResize.id) {
+    const b = ws.getBoundingClientRect(), s = wsResize.s;
+    const pos = (s.row ? e.clientX - b.left : e.clientY - b.top) - s.o - WGAP / 2;
+    s.n.r = Math.max(s.ma, Math.min(s.tot - s.mb, pos)) / s.tot; relayout(); return;
+  }
+  if (!wsMove || e.pointerId !== wsMove.pid) return;
+  if (!wsMove.on) {
+    if (Math.hypot(e.clientX - wsMove.x, e.clientY - wsMove.y) < 6) return;
+    wsMove.on = true; WINS[wsMove.id].classList.add("moving"); document.body.classList.add("ws-moving"); tip.hidden = true;
+  }
+  wsMove.t = dropAt(e.clientX, e.clientY, wsMove.id); showDrop(wsMove.t);
+});
+function endWs(e, ok) {
+  if (wsResize && e.pointerId === wsResize.id) { wsResize.el.classList.remove("on"); document.body.classList.remove("ws-resizing"); wsResize = null; saveLayout(); return; }
+  if (!wsMove || e.pointerId !== wsMove.pid) return;
+  const m = wsMove; wsMove = null;
+  WINS[m.id].classList.remove("moving"); document.body.classList.remove("ws-moving"); wsDrop.hidden = true;
+  if (ok && m.on && m.t) { wsTree = dock(wsTree, m.id, m.t); saveLayout(); layoutWins(); srEl.textContent = "Window moved"; }
+}
+ws.addEventListener("pointerup", e => endWs(e, true));
+ws.addEventListener("pointercancel", e => endWs(e, false));
+// the gaps also take arrow keys, so the layout can be resized from the keyboard
+ws.addEventListener("keydown", e => {
+  const sp = e.target.closest(".ws-split"); if (!sp) return;
+  const s = wsSplits[+sp.dataset.i], d = { ArrowLeft: -1, ArrowUp: -1, ArrowRight: 1, ArrowDown: 1 }[e.key]; if (!s || !d) return;
+  e.preventDefault(); s.n.r = Math.max(s.ma / s.tot, Math.min(1 - s.mb / s.tot, s.n.r + d * 0.03)); saveLayout(); layoutWins(); sp.focus();
+});
+document.getElementById("wsReset").addEventListener("click", () => { wsTree = defaultLayout(); try { localStorage.removeItem(LAYOUT_KEY); } catch (e) {} layoutWins(); srEl.textContent = "Window layout reset"; });
+
 // ---- Theme & boot -------------------------------------------------------------
 function retheme() { twCache.clear(); readColors(); hatch = null; mapHatch = null; draw(); mapDirty = true; mapSync(); if (selected) drawLocator(selected); }
 const SKINS = ["light", "dark", "retro"];
@@ -2587,7 +2858,7 @@ new ResizeObserver(() => resize()).observe(chart.parentElement);
 readColors();
 // open on a readable window: the last 3,100 years
 setView(U(-1200), 1);
-resize(); sizeMap(); renderIndex();
+layoutWins(); resize(); sizeMap(); renderIndex();
 // Deep links, read on load and on every hash change: #sel=Song%20dynasty&y=1100&era=medieval&fam=sino-tibetan&skin=retro
 function findEntry(name) {
   const n = name.trim().toLowerCase().replace(/_/g, " ");
@@ -2601,7 +2872,7 @@ function applyHash(initial) {
   const fams = (h.get("fam") || "").split(",").map(x => FAMBY.get(x.trim().toLowerCase())).filter(Boolean);
   if (fams.length || !allFamsOn()) setFams(fams.length ? fams : FAMS.map(f => f[0]));
   const qv = h.get("q") || ""; if (qv !== q.value) { q.value = qv; q.dispatchEvent(new Event("input")); }
-  const mm = h.get("view") === "globe" ? "globe" : "flat"; if (mm !== mapMode) setMapMode(mm);
+  const mm = ["map", "flat"].includes(h.get("view")) ? "flat" : "globe"; if (mm !== mapMode) setMapMode(mm);
   const y = Number(h.get("y")); pinnedYear = h.get("y") && Number.isFinite(y) ? Math.max(Y0, Math.min(NOW, Math.round(y))) : null;
   const era = ERAS.find(e => slug(e[0]) === (h.get("era") || "").toLowerCase());
   const tt = (h.get("t") || "").split(",").map(Number);
@@ -2615,7 +2886,9 @@ function applyHash(initial) {
   const big = h.get("big") === "1"; if (big !== bigMap) setBig(big);
   if (h.get("top")) setTimeout(() => scrollTo(0, 0), 900);
   const it = h.get("sel") ? findEntry(h.get("sel")) : null;
-  if (it) { if (it !== selected) { if (placed) select(it, true); else openEntry(it); } }
+  // a link's own year wins; a link with only an entry goes to that entry's time
+  const keepYear = h.get("y") != null;
+  if (it) { if (it !== selected) { if (placed) select(it, true, { year: keepYear ? null : entryYear(it) }); else openEntry(it, keepYear); } }
   else if (selected) closeEntry();
   lastPanelKey = ""; renderPanel(); draw();
   hashReady = true; lastHash = null; syncHash();

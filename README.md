@@ -2,9 +2,9 @@
 
 An interactive atlas of 701 states, empires and peoples from 3100 BCE to 2026, live at [brianmwilcox.com/hall-of-realms](https://www.brianmwilcox.com/hall-of-realms/).
 
-The world splits into twelve regional halls, and every row in a hall follows one line of succession. A bar's color shows the language family of the group that ruled. Picking a year redraws that year's borders on a flat map or a globe and lists everything standing then. Every entry opens an article with its dates, its rulers' language, its predecessors, successors and contemporaries, and a locator map of its largest mapped extent.
+The world splits into twelve regional halls, and every row in a hall follows one line of succession. A bar's color shows the language family of the group that ruled. Picking a year redraws that year's borders on a globe or a flat map and lists everything standing then. A click on a bar opens the entry's article and turns the globe to its territory in the year under the pointer, or in the nearest year whose border map shows it. Each article gives the entry's dates, its rulers' language, its predecessors, successors and contemporaries, and a locator map of its largest mapped extent.
 
-The timeline zooms from five millennia down to single years. A list of 425 succession links in the source decides who followed whom, so a chosen entry draws lines to its predecessors and successors wherever their bars sit. On a phone the page splits into four tabs (Timeline, Map, Index and About), articles open in a sheet that a downward swipe closes, and the timeline and map pan and zoom by touch. Light (the default) and Dark match brianmwilcox.com and follow its theme setting; a third look, Retro, is styled after a 1990s CD-ROM encyclopedia.
+The timeline zooms from five millennia down to single years. A list of 425 succession links in the source decides who followed whom, so a chosen entry draws lines to its predecessors and successors wherever their bars sit. On a wide screen the timeline, atlas, article and year list are four windows: dragging a title bar onto another window docks it at that side or swaps the two, dragging the gap between windows resizes them, and the browser keeps the arrangement until Reset layout restores the original. On a phone the page splits into four tabs (Timeline, Map, Index and About), articles open in a sheet that a downward swipe closes, and the timeline and map pan and zoom by touch. Light (the default) and Dark match brianmwilcox.com and follow its theme setting; a third look, Retro, is styled after a 1990s CD-ROM encyclopedia.
 
 ## Usage
 
@@ -14,14 +14,14 @@ The address keeps the whole view current (open entry, pinned year, era or visibl
 
 | Parameter | Effect |
 |---|---|
-| `sel=Roman%20Empire` | opens that entry; capitals don't matter, underscores stand for spaces, and a partial name such as `sel=khiva` opens the best search match |
+| `sel=Roman%20Empire` | opens that entry; capitals don't matter, underscores stand for spaces, and a partial name such as `sel=khiva` opens the best search match. Without `y`, the page pins a year in which the entry stood, unless it still exists. |
 | `y=1250` | pins the year (negative for BCE) |
 | `era=classical` | shows an era: `all`, `bronze-age`, `classical`, `medieval`, `early-modern` or `modern` |
 | `t=-500,1500` | shows those years on the timeline (negative for BCE); ignored when `era` is set |
 | `fam=turkic,dravidian` | shows only those language families: `indo-european`, `afro-asiatic`, `turkic`, `niger-congo`, `austronesian`, `indigenous-american`, `dravidian`, `sino-tibetan` or `other` |
 | `q=khanate` | filters the timeline by a search term |
 | `scale=even` | gives every century the same width |
-| `view=globe` | starts on the globe |
+| `view=map` | starts on the flat map instead of the globe |
 | `big=1` | starts with the map enlarged |
 | `tab=map` | on a phone, opens the `map`, `index` or `about` tab |
 | `skin=retro` | shows `light`, `dark` or `retro` without changing the visitor's saved choice |
