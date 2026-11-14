@@ -1,0 +1,10 @@
+# Reviewed matches for the author's public-push personal-data check.
+# One regular expression per line, searched case-insensitively against the
+# whole line that holds a match. Keep each pattern as narrow as the text allows.
+
+# Spans of time in historical text ("61 years", "the last 3,100 years")
+\b[0-9][0-9,]*\s+years\b
+
+# The author's site and name in the site breadcrumb and commit messages
+brianmwilcox\.com
+>Brian Wilcox<
