@@ -50,12 +50,14 @@ h1{font-family:var(--display);font-weight:400;font-size:clamp(38px,6vw,76px);let
 .inscription{display:grid;gap:10px;justify-items:start;padding-bottom:14px;border-bottom:1px solid var(--accent);box-shadow:0 4px 0 -3px var(--accent)}
 .deck{margin:0;font-family:var(--body);font-size:15.5px;line-height:1.45;color:var(--ink-2);max-width:48ch;text-wrap:pretty}
 .deck span{color:var(--ink);font-variant-numeric:tabular-nums}
-.walltext{display:grid;grid-template-columns:minmax(0,62ch) minmax(0,40ch);gap:12px 48px;align-items:start}
+.walltext{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;align-items:start}
+.lede{max-width:72ch}
 .lede{margin:0;font-family:var(--prose);font-size:18px;line-height:1.55;color:var(--ink)}
 .lede::first-letter{font-family:var(--display);font-size:3.1em;float:left;line-height:.82;margin:.06em .08em 0 0;color:var(--accent)}
 .visit h2{font-family:var(--body);font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.2em;color:var(--accent);margin:0 0 6px}
-.visit ul{margin:0;padding:0 0 0 1.1em;font-family:var(--prose);font-size:15px;line-height:1.5;color:var(--ink-2);display:grid;gap:2px}
-@media (max-width:900px){.walltext{grid-template-columns:minmax(0,1fr)}}
+.visit ul{margin:0;padding:0 0 0 1.1em;font-family:var(--prose);font-size:15px;line-height:1.5;color:var(--ink-2);columns:3 30ch;column-gap:48px}
+.visit li{break-inside:avoid;margin:0 0 6px}
+
 .directory{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:10px 12px;background:var(--plaque);color:var(--plaque-ink);border:1px solid var(--rule);border-radius:2px}
 .directory .group-label{color:color-mix(in srgb,var(--plaque-ink) 65%,transparent)}
 .directory button{background:transparent;color:var(--plaque-ink);border-color:color-mix(in srgb,var(--plaque-ink) 30%,transparent)}
@@ -468,12 +470,12 @@ footer a{color:var(--accent)}
     <p class="lede">Each region of the world gets a hall, and each row in a hall follows one line of succession. A bar's color shows the language its rulers spoke. Choosing a year redraws the borders on the globe<span class="narrow-only"> in the Map tab</span> and lists everything standing then; selecting anything opens its encyclopedia entry and turns the globe to where and when it stood.</p>
     <div class="visit"><h2>Using the exhibit</h2><ul>
       <li><span class="m-only">Hovering over the timeline shows the world in that year, and a click on empty space pins it.</span><span class="t-only">A tap on empty timeline space pins that year and lists everything standing then.</span></li>
-      <li><span class="m-only">A click</span><span class="t-only">A tap</span> on a bar opens its article and takes the globe to that place in the year under the <span class="m-only">pointer</span><span class="t-only">finger</span>, or the nearest year whose border map shows it. A territory or an index entry opens the same way, and lines on the timeline link the entry to its predecessors and successors.</li>
-      <li class="wide-only">The timeline, atlas, entry and year list are windows. Dragging a title bar onto another window docks it at that side, or in the middle swaps the two; the outer edges of the workspace take a window along a whole side. Dragging the gap between windows resizes them, and Reset layout restores the first arrangement.</li>
       <li><span class="m-only">Dragging pans the timeline, which coasts on after a quick flick. Pinching, or scrolling over the time axis, zooms it.</span><span class="t-only">Swiping sideways pans the timeline, which coasts on after a quick flick, and pinching zooms it.</span></li>
-      <li>Typing in the search box lists matching entries as the letters arrive.</li>
+      <li><span class="m-only">A click</span><span class="t-only">A tap</span> on a bar opens its article and takes the globe to that place in the year under the <span class="m-only">pointer</span><span class="t-only">finger</span>, or the nearest year whose border map shows it. A territory or an index entry opens the same way, and lines on the timeline link the entry to its predecessors and successors.</li>
       <li>Dragging the globe turns it. Play runs the borders forward through time, and the ‹ and › buttons step through the border maps one at a time.</li>
-      <li>The address follows the view, so a copied link reopens the same entry, years, language filter and theme.</li>
+      <li>Typing in the search box lists matching entries with each letter typed.</li>
+      <li class="wide-only">The timeline, atlas, entry and year list are windows. Dragging a title bar onto another window docks it at that side, or in the middle swaps the two; a window dropped on an outer edge of the workspace runs along that whole side. Dragging the gap between windows resizes them, and Reset layout restores the first arrangement.</li>
+      <li>The page address updates with the view, so a copied link reopens the same entry, years, language filter and theme.</li>
     </ul></div>
   </div>
   <div class="directory controls">
